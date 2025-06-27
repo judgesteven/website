@@ -9,7 +9,6 @@ import {
   Bell,
   Search,
   Filter,
-  Plus,
   Eye,
   Edit,
   Trash2,
@@ -27,6 +26,7 @@ import {
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
+import AddMysteryBoxModal from './AddMysteryBoxModal';
 
 const prizes = [
   { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
@@ -35,12 +35,28 @@ const prizes = [
   { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, claimed: 3, status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
 ];
 
+const raffles = [
+  { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', entries: 1247, endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
+  { name: 'Weekly Draw', description: 'Win $100 gift card', entries: 567, endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
+  { name: 'Holiday Special', description: 'Win vacation package', entries: 234, endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
+  { name: 'Tech Bundle', description: 'Win iPhone + AirPods', entries: 89, endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
+];
+
+const mysteryBoxes = [
+  { name: 'Common Box', description: 'Basic rewards', price: 100, contents: 'Points, Badges', opened: 1247, status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
+  { name: 'Rare Box', description: 'Better rewards', price: 250, contents: 'Points, Badges, Prizes', opened: 567, status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
+  { name: 'Epic Box', description: 'Premium rewards', price: 500, contents: 'Points, Badges, Prizes, Gift Cards', opened: 234, status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
+  { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
+];
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
+  const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
+  const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
 
   const stats = [
     { title: 'Total Users', value: '12,847', change: '+12%', icon: Users, color: 'text-blue-600' },
@@ -108,20 +124,6 @@ const Dashboard = () => {
     { name: 'Level 50', description: 'Reach level 50', icon: '⭐', rarity: 'Mythic', earned: 12, points: 1000 }
   ];
 
-  const raffles = [
-    { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', entries: 1247, endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
-    { name: 'Weekly Draw', description: 'Win $100 gift card', entries: 567, endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
-    { name: 'Holiday Special', description: 'Win vacation package', entries: 234, endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
-    { name: 'Tech Bundle', description: 'Win iPhone + AirPods', entries: 89, endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
-  ];
-
-  const mysteryBoxes = [
-    { name: 'Common Box', description: 'Basic rewards', price: 100, contents: 'Points, Badges', opened: 1247, status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
-    { name: 'Rare Box', description: 'Better rewards', price: 250, contents: 'Points, Badges, Prizes', opened: 567, status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
-    { name: 'Epic Box', description: 'Premium rewards', price: 500, contents: 'Points, Badges, Prizes, Gift Cards', opened: 234, status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
-    { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
-  ];
-
   const tabs = [
     { id: 'overview', name: 'Overview', icon: BarChart3 },
     { id: 'players', name: 'Players', icon: Users },
@@ -144,6 +146,11 @@ const Dashboard = () => {
   const handleAddRaffle = (raffle) => {
     setRafflesList((prev) => [...prev, raffle]);
     setAddRaffleOpen(false);
+  };
+
+  const handleAddMysteryBox = (box) => {
+    setMysteryBoxesList((prev) => [...prev, box]);
+    setAddMysteryBoxOpen(false);
   };
 
   return (
@@ -519,12 +526,12 @@ const Dashboard = () => {
                       <Box className="w-6 h-6 text-primary-600" />
                       <h3 className="text-lg font-semibold text-gray-900">Mystery Boxes</h3>
                     </div>
-                    <button className="btn-primary">
+                    <button className="btn-primary" onClick={() => setAddMysteryBoxOpen(true)}>
                       Create Box
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mysteryBoxes.map((box, index) => (
+                    {mysteryBoxesList.map((box, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
@@ -577,6 +584,7 @@ const Dashboard = () => {
                     ))}
                   </div>
                 </div>
+                <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
               </div>
             )}
 
