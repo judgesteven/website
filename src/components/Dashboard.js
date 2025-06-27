@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  BarChart3, 
   Users, 
   Trophy, 
-  TrendingUp, 
   Settings, 
   Bell,
   Search,
@@ -12,7 +10,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  Target,
   Award,
   Users2,
   Flag,
@@ -23,7 +20,6 @@ import {
   Gift,
   Box,
   Ticket,
-  CheckCircle,
   Star,
   Zap,
   Activity,
@@ -57,7 +53,7 @@ const mysteryBoxes = [
 ];
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('players');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
   const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
@@ -138,7 +134,6 @@ const Dashboard = () => {
   ];
 
   const tabs = [
-    { id: 'overview', name: 'Overview', icon: BarChart3 },
     { id: 'players', name: 'Players', icon: Users },
     { id: 'teams', name: 'Teams', icon: Users2 },
     { id: 'missions', name: 'Missions', icon: Flag },
@@ -146,9 +141,7 @@ const Dashboard = () => {
     { id: 'achievements', name: 'Achievements', icon: Medal },
     { id: 'levels', name: 'Levels', icon: Layers },
     { id: 'leaderboards', name: 'Leaderboards', icon: Crown },
-    { id: 'quizzes', name: 'Quizzes', icon: HelpCircle },
-    { id: 'analytics', name: 'Analytics', icon: TrendingUp },
-    { id: 'settings', name: 'Settings', icon: Settings }
+    { id: 'quizzes', name: 'Quizzes', icon: HelpCircle }
   ];
 
   const handleAddPrize = (prize) => {
@@ -232,76 +225,6 @@ const Dashboard = () => {
           </div>
 
           <div className="p-6">
-            {activeTab === 'overview' && (
-              <div className="grid lg:grid-cols-2 gap-8">
-                {/* Recent Activity */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
-                    <button className="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                      View all
-                    </button>
-                  </div>
-                  <div className="space-y-4">
-                    {recentActivities.map((activity, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
-                      >
-                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                          <Award className="w-4 h-4 text-primary-600" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">
-                            <span className="font-semibold">{activity.user}</span> {activity.action}
-                          </p>
-                          <p className="text-xs text-gray-500">{activity.time}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Top Users */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Top Players</h3>
-                    <button className="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                      View leaderboard
-                    </button>
-                  </div>
-                  <div className="space-y-3">
-                    {topUsers.map((user, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                            {user.avatar}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                            <p className="text-xs text-gray-500">Level {user.level}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-semibold text-gray-900">{user.points.toLocaleString()}</p>
-                          <p className="text-xs text-gray-500">points</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
             {activeTab === 'players' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -406,7 +329,7 @@ const Dashboard = () => {
                       Add Prize
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {prizesList.map((prize, index) => (
                       <motion.div
                         key={index}
@@ -599,22 +522,6 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
-              </div>
-            )}
-
-            {activeTab === 'analytics' && (
-              <div className="text-center py-12">
-                <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Analytics Dashboard</h3>
-                <p className="text-gray-600">View detailed analytics and performance metrics.</p>
-              </div>
-            )}
-
-            {activeTab === 'settings' && (
-              <div className="text-center py-12">
-                <Settings className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Platform Settings</h3>
-                <p className="text-gray-600">Configure your gamification platform settings.</p>
               </div>
             )}
 
