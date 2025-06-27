@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Calendar, Clock, Tag, DollarSign, Image as ImageIcon, Trophy, Target } from 'lucide-react';
 
 const refreshOptions = [
   { value: '', label: 'None' },
@@ -49,114 +50,138 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-gradient-to-br from-white via-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl shadow-2xl w-full max-w-2xl p-0 relative animate-fadeInUp overflow-y-auto max-h-[90vh]">
-        {/* Close Button */}
-        <button
-          className="absolute top-4 right-4 text-gray-400 hover:text-primary-600 hover:bg-blue-100 rounded-full p-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary-300"
-          onClick={onClose}
-          aria-label="Close"
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
         >
-          <X className="w-7 h-7" />
-        </button>
-        <div className="p-10 pb-6">
-          <h2 className="text-3xl font-extrabold mb-2 text-primary-700 tracking-tight">Add New Prize</h2>
-          <p className="text-gray-500 mb-8">Fill out the details below to create a new prize.</p>
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Prize Details */}
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900">Add New Prize</h2>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-6 space-y-8">
+            {/* Prize Details Section */}
             <div>
-              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Prize Details</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Trophy className="w-5 h-5 mr-2 text-blue-600" />
+                Prize Details
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Unique ID</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
                   <input 
                     name="id" 
                     value={form.id} 
                     onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter prize ID"
                     required 
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                   <input 
                     name="name" 
                     value={form.name} 
                     onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter prize name"
                     required 
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                   <textarea 
                     name="description" 
                     value={form.description} 
                     onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                    rows={2} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter prize description"
+                    rows="3"
                     required 
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Image URL</label>
-                  <input 
-                    name="image" 
-                    value={form.image} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                  />
-                  {form.image && (
-                    <div className="mt-3 flex justify-center">
-                      <img src={form.image} alt="Prize Preview" className="h-24 rounded-xl shadow-lg border-2 border-blue-200 object-contain bg-white" onError={e => e.target.style.display='none'} />
-                    </div>
-                  )}
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                  <div className="relative">
+                    <input 
+                      name="image" 
+                      value={form.image} 
+                      onChange={handleChange} 
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter image URL"
+                    />
+                    <ImageIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                   <input 
                     name="category" 
                     value={form.category} 
                     onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter category"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Tags (comma separated)</label>
-                  <input 
-                    name="tags" 
-                    value={form.tags} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <div className="relative">
+                    <input 
+                      name="tags" 
+                      value={form.tags} 
+                      onChange={handleChange} 
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter tags (comma separated)"
+                    />
+                    <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Credits</label>
-                  <input 
-                    name="credits" 
-                    type="number" 
-                    value={form.credits} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                    min="0" 
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                  <div className="relative">
+                    <input 
+                      name="credits" 
+                      type="number" 
+                      value={form.credits} 
+                      onChange={handleChange} 
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter credits cost"
+                      min="0" 
+                    />
+                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
               </div>
             </div>
-            <hr className="my-2 border-blue-200" />
-            {/* Limits & Dates */}
+
+            {/* Limits & Dates Section */}
             <div>
-              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Limits & Dates</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Clock className="w-5 h-5 mr-2 text-green-600" />
+                Limits & Dates
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Redemption Limit</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Redemption Limit</label>
                   <div className="flex items-center space-x-2">
                     <input 
                       name="redemptionLimit" 
                       type="number" 
                       value={form.unlimitedRedemption ? '' : form.redemptionLimit} 
                       onChange={handleChange} 
-                      className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter limit"
                       min="0" 
                       disabled={form.unlimitedRedemption} 
                     />
@@ -167,14 +192,15 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Stock Limit</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Stock Limit</label>
                   <div className="flex items-center space-x-2">
                     <input 
                       name="stockLimit" 
                       type="number" 
                       value={form.unlimitedStock ? '' : form.stockLimit} 
                       onChange={handleChange} 
-                      className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Enter stock limit"
                       min="0" 
                       disabled={form.unlimitedStock} 
                     />
@@ -185,135 +211,135 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Start Date</label>
-                  <input 
-                    name="startDate" 
-                    type="date" 
-                    value={form.startDate} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                  <div className="relative">
+                    <input 
+                      name="startDate" 
+                      type="date" 
+                      value={form.startDate} 
+                      onChange={handleChange} 
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">End Date</label>
-                  <input 
-                    name="endDate" 
-                    type="date" 
-                    value={form.endDate} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                  <div className="relative">
+                    <input 
+                      name="endDate" 
+                      type="date" 
+                      value={form.endDate} 
+                      onChange={handleChange} 
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Refresh Period</label>
-                  <select 
-                    name="refreshPeriod" 
-                    value={form.refreshPeriod} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                  <select
+                    name="refreshPeriod"
+                    value={form.refreshPeriod}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    {refreshOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    {refreshOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                   </select>
                 </div>
               </div>
             </div>
-            <hr className="my-2 border-blue-200" />
+
             {/* Requirements Section */}
             <div>
-              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Requirements</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Target className="w-5 h-5 mr-2 text-purple-600" />
+                Requirements
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Category</label>
-                  <input 
-                    name="reqCategory" 
-                    value={form.reqCategory} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <input
+                    type="text"
+                    name="reqCategory"
+                    value={form.reqCategory}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Required category"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Tags (comma separated)</label>
-                  <input 
-                    name="reqTags" 
-                    value={form.reqTags} 
-                    onChange={handleChange} 
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="reqTags"
+                      value={form.reqTags}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="Required tags (comma separated)"
+                    />
+                    <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Level</label>
-                  <select
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <input
+                    type="number"
                     name="level"
                     value={form.level}
                     onChange={handleChange}
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
-                  >
-                    <option value="">Select Level</option>
-                    <option value="1">Beginner</option>
-                    <option value="2">Explorer</option>
-                    <option value="3">Adventurer</option>
-                    <option value="4">Champion</option>
-                    <option value="5">Master</option>
-                  </select>
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Minimum level required"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Mission</label>
-                  <select
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                  <input
+                    type="text"
                     name="mission"
                     value={form.mission}
                     onChange={handleChange}
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
-                  >
-                    <option value="">Select Mission</option>
-                    <option value="daily-checkin">Daily Check-in</option>
-                    <option value="social-share">Social Share</option>
-                    <option value="refer-friend">Refer a Friend</option>
-                    <option value="complete-profile">Complete Profile</option>
-                  </select>
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Required mission"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-1 text-gray-700">Achievement</label>
-                  <select
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement</label>
+                  <input
+                    type="text"
                     name="achievement"
                     value={form.achievement}
                     onChange={handleChange}
-                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
-                  >
-                    <option value="">Select Achievement</option>
-                    <option value="first-blood">First Blood</option>
-                    <option value="social-butterfly">Social Butterfly</option>
-                    <option value="team-player">Team Player</option>
-                    <option value="quiz-master">Quiz Master</option>
-                    <option value="level-50">Level 50</option>
-                  </select>
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Required achievement"
+                  />
                 </div>
               </div>
             </div>
-            <div className="flex justify-end space-x-4 mt-8">
-              <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
-              <button type="submit" className="btn-primary">Save</button>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+              >
+                Create Prize
+              </button>
             </div>
           </form>
-        </div>
+        </motion.div>
       </div>
-      <style>{`
-        .animate-fadeInUp {
-          animation: fadeInUp 0.25s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-        }
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(40px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .btn-primary {
-          @apply bg-primary-600 text-white px-6 py-2.5 rounded-xl font-bold shadow hover:bg-primary-700 hover:scale-105 active:scale-95 transition-all duration-150;
-        }
-        .btn-secondary {
-          @apply bg-blue-100 text-primary-700 px-6 py-2.5 rounded-xl font-bold shadow hover:bg-blue-200 hover:scale-105 active:scale-95 transition-all duration-150;
-        }
-      `}</style>
-    </div>
+    </AnimatePresence>
   );
 };
 

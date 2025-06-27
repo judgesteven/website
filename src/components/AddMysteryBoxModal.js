@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Upload, Calendar, Clock, Tag, Hash, DollarSign, Image as ImageIcon, Box, Target } from 'lucide-react';
+import { X, Calendar, Clock, Tag, DollarSign, Image as ImageIcon, Box, Target } from 'lucide-react';
 
 const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
