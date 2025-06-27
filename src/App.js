@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
+import Partners from './components/Partners';
 import HowItWorks from './components/HowItWorks';
 import Dashboard from './components/Dashboard';
 import Projects from './components/Projects';
@@ -19,6 +20,7 @@ function App() {
             <>
               <Hero />
               <Features />
+              <Partners />
               <HowItWorks />
             </>
           } />
