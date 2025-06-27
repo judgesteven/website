@@ -22,7 +22,13 @@ import {
   Medal,
   Gift,
   Box,
-  Ticket
+  Ticket,
+  CheckCircle,
+  Star,
+  Zap,
+  Activity,
+  BookOpen,
+  ClipboardCheck
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -59,10 +65,14 @@ const Dashboard = () => {
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
 
   const stats = [
-    { title: 'Total Users', value: '12,847', change: '+12%', icon: Users, color: 'text-blue-600' },
-    { title: 'Active Users', value: '8,234', change: '+8%', icon: TrendingUp, color: 'text-green-600' },
-    { title: 'Points Awarded', value: '2.4M', change: '+15%', icon: Trophy, color: 'text-yellow-600' },
-    { title: 'Engagement Rate', value: '87%', change: '+5%', icon: Target, color: 'text-purple-600' }
+    { title: 'Players Registered', value: '12,847', subtitle: '8,234 Active', change: '+12%', icon: Users, color: 'text-blue-600' },
+    { title: 'Missions Started', value: '5,234', subtitle: '3,456 Completed', change: '+18%', icon: Flag, color: 'text-green-600' },
+    { title: 'Prizes Claimed', value: '2,847', subtitle: 'Total Claims', change: '+25%', icon: Trophy, color: 'text-yellow-600' },
+    { title: 'Achievements Unlocked', value: '8,456', subtitle: '6,234 Granted', change: '+15%', icon: Medal, color: 'text-purple-600' },
+    { title: 'Level-Ups', value: '1,234', subtitle: 'Total Promotions', change: '+22%', icon: Star, color: 'text-indigo-600' },
+    { title: 'Points Awarded', value: '2.4M', subtitle: '1.8M Credits Earned', change: '+30%', icon: Zap, color: 'text-orange-600' },
+    { title: 'Streaks Started', value: '3,456', subtitle: '2,123 Active', change: '+8%', icon: Activity, color: 'text-red-600' },
+    { title: 'Quizzes Completed', value: '4,567', subtitle: 'Surveys: 2,345', change: '+12%', icon: BookOpen, color: 'text-teal-600' }
   ];
 
   const recentActivities = [
@@ -186,6 +196,7 @@ const Dashboard = () => {
                 <div>
                   <p className="text-gray-600 text-sm">{stat.title}</p>
                   <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-gray-500 text-xs">{stat.subtitle}</p>
                   <p className="text-green-600 text-sm font-medium">{stat.change} from last month</p>
                 </div>
                 <div className={`p-3 rounded-lg bg-gray-50 ${stat.color}`}>
