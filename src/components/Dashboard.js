@@ -28,10 +28,10 @@ import {
 import AddPrizeModal from './AddPrizeModal';
 
 const prizes = [
-  { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop' },
-  { name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, claimed: 45, status: 'Active', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop' },
-  { name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, claimed: 12, status: 'Active', image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop' },
-  { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, claimed: 3, status: 'Limited', image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop' }
+  { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
+  { name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, claimed: 45, status: 'Active', image: 'https://picsum.photos/400/300?random=2' },
+  { name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, claimed: 12, status: 'Active', image: 'https://picsum.photos/400/300?random=3' },
+  { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, claimed: 3, status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
 ];
 
 const Dashboard = () => {
@@ -106,17 +106,17 @@ const Dashboard = () => {
   ];
 
   const raffles = [
-    { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', entries: 1247, endDate: '2024-02-29', status: 'Active', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop' },
-    { name: 'Weekly Draw', description: 'Win $100 gift card', entries: 567, endDate: '2024-02-07', status: 'Active', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop' },
-    { name: 'Holiday Special', description: 'Win vacation package', entries: 234, endDate: '2024-12-25', status: 'Upcoming', image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop' },
-    { name: 'Tech Bundle', description: 'Win iPhone + AirPods', entries: 89, endDate: '2024-01-15', status: 'Ended', image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=300&fit=crop' }
+    { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', entries: 1247, endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
+    { name: 'Weekly Draw', description: 'Win $100 gift card', entries: 567, endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
+    { name: 'Holiday Special', description: 'Win vacation package', entries: 234, endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
+    { name: 'Tech Bundle', description: 'Win iPhone + AirPods', entries: 89, endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
   ];
 
   const mysteryBoxes = [
-    { name: 'Common Box', description: 'Basic rewards', price: 100, contents: 'Points, Badges', opened: 1247, status: 'Active', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=300&fit=crop' },
-    { name: 'Rare Box', description: 'Better rewards', price: 250, contents: 'Points, Badges, Prizes', opened: 567, status: 'Active', image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop' },
-    { name: 'Epic Box', description: 'Premium rewards', price: 500, contents: 'Points, Badges, Prizes, Gift Cards', opened: 234, status: 'Active', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop' },
-    { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop' }
+    { name: 'Common Box', description: 'Basic rewards', price: 100, contents: 'Points, Badges', opened: 1247, status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
+    { name: 'Rare Box', description: 'Better rewards', price: 250, contents: 'Points, Badges, Prizes', opened: 567, status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
+    { name: 'Epic Box', description: 'Premium rewards', price: 500, contents: 'Points, Badges, Prizes, Gift Cards', opened: 234, status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
+    { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
   ];
 
   const tabs = [
@@ -397,7 +397,7 @@ const Dashboard = () => {
                                 e.target.nextSibling.style.display = 'flex';
                               }}
                             />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center hidden">
+                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
                               <Gift className="w-16 h-16 text-gray-400" />
                             </div>
                           </div>
@@ -467,7 +467,7 @@ const Dashboard = () => {
                                 e.target.nextSibling.style.display = 'flex';
                               }}
                             />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center hidden">
+                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
                               <Ticket className="w-16 h-16 text-gray-400" />
                             </div>
                           </div>
@@ -534,7 +534,7 @@ const Dashboard = () => {
                                 e.target.nextSibling.style.display = 'flex';
                               }}
                             />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center hidden">
+                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
                               <Box className="w-16 h-16 text-gray-400" />
                             </div>
                           </div>
