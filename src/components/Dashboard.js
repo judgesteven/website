@@ -26,6 +26,7 @@ import {
   Ticket
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
+import AddRaffleModal from './AddRaffleModal';
 
 const prizes = [
   { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
@@ -37,7 +38,9 @@ const prizes = [
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
+  const [addRaffleOpen, setAddRaffleOpen] = useState(false);
   const [prizesList, setPrizesList] = useState(prizes);
+  const [rafflesList, setRafflesList] = useState(raffles);
 
   const stats = [
     { title: 'Total Users', value: '12,847', change: '+12%', icon: Users, color: 'text-blue-600' },
@@ -136,6 +139,11 @@ const Dashboard = () => {
   const handleAddPrize = (prize) => {
     setPrizesList((prev) => [...prev, prize]);
     setAddPrizeOpen(false);
+  };
+
+  const handleAddRaffle = (raffle) => {
+    setRafflesList((prev) => [...prev, raffle]);
+    setAddRaffleOpen(false);
   };
 
   return (
@@ -443,12 +451,12 @@ const Dashboard = () => {
                       <Ticket className="w-6 h-6 text-primary-600" />
                       <h3 className="text-lg font-semibold text-gray-900">Raffles</h3>
                     </div>
-                    <button className="btn-primary">
+                    <button className="btn-primary" onClick={() => setAddRaffleOpen(true)}>
                       Create Raffle
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {raffles.map((raffle, index) => (
+                    {rafflesList.map((raffle, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
@@ -498,6 +506,7 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <AddRaffleModal open={addRaffleOpen} onClose={() => setAddRaffleOpen(false)} onSave={handleAddRaffle} />
                 </div>
 
                 {/* Divider between Raffles and Mystery Boxes */}

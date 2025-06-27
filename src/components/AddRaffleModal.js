@@ -1,0 +1,345 @@
+import React, { useState } from 'react';
+import { X } from 'lucide-react';
+
+const refreshOptions = [
+  { value: '', label: 'None' },
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'monthly', label: 'Monthly' },
+];
+
+const prizeOptions = [
+  { value: 'gift-card-50', label: 'Gift Card $50', units: 1 },
+  { value: 'company-swag', label: 'Company Swag', units: 5 },
+  { value: 'premium-subscription', label: 'Premium Subscription', units: 1 },
+  { value: 'conference-ticket', label: 'Conference Ticket', units: 1 },
+  { value: 'tech-bundle', label: 'Tech Bundle', units: 1 },
+];
+
+const AddRaffleModal = ({ open, onClose, onSave }) => {
+  const [form, setForm] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    credits: '',
+    redemptionLimit: '',
+    unlimitedRedemption: false,
+    selectedPrize: '',
+    prizeUnits: 1,
+    startDate: '',
+    endDate: '',
+    drawDate: '',
+    refreshPeriod: '',
+    reqCategory: '',
+    reqTags: '',
+    level: '',
+    mission: '',
+    achievement: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+      ...(name === 'unlimitedRedemption' && checked ? { redemptionLimit: '' } : {}),
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(form);
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="bg-gradient-to-br from-white via-blue-50 to-blue-100 border-2 border-blue-200 rounded-2xl shadow-2xl w-full max-w-2xl p-0 relative animate-fadeInUp overflow-y-auto max-h-[90vh]">
+        {/* Close Button */}
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-primary-600 hover:bg-blue-100 rounded-full p-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary-300"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <X className="w-7 h-7" />
+        </button>
+        <div className="p-10 pb-6">
+          <h2 className="text-3xl font-extrabold mb-2 text-primary-700 tracking-tight">Create New Raffle</h2>
+          <p className="text-gray-500 mb-8">Fill out the details below to create a new raffle.</p>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Raffle Details */}
+            <div>
+              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Raffle Details</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Unique ID</label>
+                  <input 
+                    name="id" 
+                    value={form.id} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    required 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Name</label>
+                  <input 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    required 
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Description</label>
+                  <textarea 
+                    name="description" 
+                    value={form.description} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    rows={2} 
+                    required 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Image URL</label>
+                  <input 
+                    name="image" 
+                    value={form.image} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                  {form.image && (
+                    <div className="mt-3 flex justify-center">
+                      <img src={form.image} alt="Raffle Preview" className="h-24 rounded-xl shadow-lg border-2 border-blue-200 object-contain bg-white" onError={e => e.target.style.display='none'} />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Category</label>
+                  <input 
+                    name="category" 
+                    value={form.category} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Tags (comma separated)</label>
+                  <input 
+                    name="tags" 
+                    value={form.tags} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Credits</label>
+                  <input 
+                    name="credits" 
+                    type="number" 
+                    value={form.credits} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    min="0" 
+                  />
+                </div>
+              </div>
+            </div>
+            <hr className="my-2 border-blue-200" />
+            {/* Limits & Timers */}
+            <div>
+              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Limits & Timers</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Redemption Limit</label>
+                  <div className="flex items-center space-x-2">
+                    <input 
+                      name="redemptionLimit" 
+                      type="number" 
+                      value={form.unlimitedRedemption ? '' : form.redemptionLimit} 
+                      onChange={handleChange} 
+                      className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                      min="0" 
+                      disabled={form.unlimitedRedemption} 
+                    />
+                    <label className="flex items-center text-sm">
+                      <input type="checkbox" name="unlimitedRedemption" checked={form.unlimitedRedemption} onChange={handleChange} className="mr-1" />
+                      Unlimited
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Select Prize</label>
+                  <select
+                    name="selectedPrize"
+                    value={form.selectedPrize}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Prize</option>
+                    {prizeOptions.map((prize) => (
+                      <option key={prize.value} value={prize.value}>{prize.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Prize Units</label>
+                  <input 
+                    name="prizeUnits" 
+                    type="number" 
+                    value={form.prizeUnits} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                    min="1" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Start Date</label>
+                  <input 
+                    name="startDate" 
+                    type="date" 
+                    value={form.startDate} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">End Date</label>
+                  <input 
+                    name="endDate" 
+                    type="date" 
+                    value={form.endDate} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Draw Date</label>
+                  <input 
+                    name="drawDate" 
+                    type="date" 
+                    value={form.drawDate} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Refresh Period</label>
+                  <select 
+                    name="refreshPeriod" 
+                    value={form.refreshPeriod} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    {refreshOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr className="my-2 border-blue-200" />
+            {/* Requirements Section */}
+            <div>
+              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Requirements</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Category</label>
+                  <input 
+                    name="reqCategory" 
+                    value={form.reqCategory} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Tags (comma separated)</label>
+                  <input 
+                    name="reqTags" 
+                    value={form.reqTags} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Level</label>
+                  <select
+                    name="level"
+                    value={form.level}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Level</option>
+                    <option value="1">Beginner</option>
+                    <option value="2">Explorer</option>
+                    <option value="3">Adventurer</option>
+                    <option value="4">Champion</option>
+                    <option value="5">Master</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Mission</label>
+                  <select
+                    name="mission"
+                    value={form.mission}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Mission</option>
+                    <option value="daily-checkin">Daily Check-in</option>
+                    <option value="social-share">Social Share</option>
+                    <option value="refer-friend">Refer a Friend</option>
+                    <option value="complete-profile">Complete Profile</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Achievement</label>
+                  <select
+                    name="achievement"
+                    value={form.achievement}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Achievement</option>
+                    <option value="first-blood">First Blood</option>
+                    <option value="social-butterfly">Social Butterfly</option>
+                    <option value="team-player">Team Player</option>
+                    <option value="quiz-master">Quiz Master</option>
+                    <option value="level-50">Level 50</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end space-x-4 mt-8">
+              <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
+              <button type="submit" className="btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <style>{`
+        .animate-fadeInUp {
+          animation: fadeInUp 0.25s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+        }
+        @keyframes fadeInUp {
+          0% { opacity: 0; transform: translateY(40px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .btn-primary {
+          @apply bg-primary-600 text-white px-6 py-2.5 rounded-xl font-bold shadow hover:bg-primary-700 hover:scale-105 active:scale-95 transition-all duration-150;
+        }
+        .btn-secondary {
+          @apply bg-blue-100 text-primary-700 px-6 py-2.5 rounded-xl font-bold shadow hover:bg-blue-200 hover:scale-105 active:scale-95 transition-all duration-150;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default AddRaffleModal; 
