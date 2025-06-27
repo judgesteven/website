@@ -28,6 +28,7 @@ import {
   Zap,
   Activity,
   BookOpen,
+  DollarSign,
   ClipboardCheck
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
@@ -70,9 +71,11 @@ const Dashboard = () => {
     { title: 'Prizes Claimed', value: '2,847', subtitle: 'Total Claims', change: '+25%', icon: Trophy, color: 'text-yellow-600' },
     { title: 'Achievements Unlocked', value: '8,456', subtitle: '6,234 Granted', change: '+15%', icon: Medal, color: 'text-purple-600' },
     { title: 'Level-Ups', value: '1,234', subtitle: 'Total Promotions', change: '+22%', icon: Star, color: 'text-indigo-600' },
-    { title: 'Points Awarded', value: '2.4M', subtitle: '1.8M Credits Earned', change: '+30%', icon: Zap, color: 'text-orange-600' },
+    { title: 'Points Awarded', value: '2.4M', subtitle: 'Total Points', change: '+30%', icon: Zap, color: 'text-orange-600' },
+    { title: 'Credits Earned', value: '1.8M', subtitle: 'Total Credits', change: '+28%', icon: DollarSign, color: 'text-emerald-600' },
     { title: 'Streaks Started', value: '3,456', subtitle: '2,123 Active', change: '+8%', icon: Activity, color: 'text-red-600' },
-    { title: 'Quizzes Completed', value: '4,567', subtitle: 'Surveys: 2,345', change: '+12%', icon: BookOpen, color: 'text-teal-600' }
+    { title: 'Quizzes Completed', value: '4,567', subtitle: 'Total Quizzes', change: '+12%', icon: BookOpen, color: 'text-teal-600' },
+    { title: 'Surveys Completed', value: '2,345', subtitle: 'Total Surveys', change: '+15%', icon: ClipboardCheck, color: 'text-cyan-600' }
   ];
 
   const recentActivities = [
@@ -183,7 +186,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
