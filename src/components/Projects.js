@@ -258,9 +258,9 @@ const Projects = () => {
                 <input
                   type="email"
                   placeholder="Enter your company email"
-                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="flex-1 px-4 py-3 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
                 />
-                <button className="bg-white text-primary-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
+                <button className="bg-white text-primary-600 font-semibold px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center">
                   <Mail className="w-4 h-4 mr-2" />
                   Send
                 </button>

@@ -165,10 +165,10 @@ const leaderboard = await gameLayer.leaderboards.get({
                 and SDKs make integration seamless for any platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="bg-white text-primary-600 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                <button className="bg-white text-primary-600 font-semibold py-3 px-6 rounded-xl hover:bg-gray-50 transition-colors duration-200">
                   View Documentation
                 </button>
-                <button className="border-2 border-white text-white font-semibold py-3 px-6 rounded-lg hover:bg-white hover:text-primary-600 transition-colors duration-200">
+                <button className="border-2 border-white text-white font-semibold py-3 px-6 rounded-xl hover:bg-white hover:text-primary-600 transition-colors duration-200">
                   Start Free Trial
                 </button>
               </div>
