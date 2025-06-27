@@ -6,6 +6,7 @@ import Features from './components/Features';
 import HowItWorks from './components/HowItWorks';
 import Dashboard from './components/Dashboard';
 import Projects from './components/Projects';
+import Pricing from './components/Pricing';
 import Footer from './components/Footer';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           } />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
         <Footer />
       </div>
