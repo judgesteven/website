@@ -152,7 +152,6 @@ const Dashboard = () => {
               <Bell className="w-5 h-5" />
             </button>
             <button className="btn-primary">
-              <Plus className="w-4 h-4 mr-2" />
               New Campaign
             </button>
           </div>
@@ -292,7 +291,6 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Add Player
                   </button>
                 </div>
@@ -376,7 +374,6 @@ const Dashboard = () => {
                       <h3 className="text-lg font-semibold text-gray-900">Prizes</h3>
                     </div>
                     <button className="btn-primary" onClick={() => setAddPrizeOpen(true)}>
-                      <Plus className="w-4 h-4 mr-2" />
                       Add Prize
                     </button>
                   </div>
@@ -418,6 +415,9 @@ const Dashboard = () => {
                   <AddPrizeModal open={addPrizeOpen} onClose={() => setAddPrizeOpen(false)} onSave={handleAddPrize} />
                 </div>
 
+                {/* Divider between Prizes and Raffles */}
+                <hr className="my-10 border-t-2 border-blue-100" />
+
                 {/* Raffles Section */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
@@ -426,7 +426,6 @@ const Dashboard = () => {
                       <h3 className="text-lg font-semibold text-gray-900">Raffles</h3>
                     </div>
                     <button className="btn-primary">
-                      <Plus className="w-4 h-4 mr-2" />
                       Create Raffle
                     </button>
                   </div>
@@ -465,6 +464,9 @@ const Dashboard = () => {
                   </div>
                 </div>
 
+                {/* Divider between Raffles and Mystery Boxes */}
+                <hr className="my-10 border-t-2 border-blue-100" />
+
                 {/* Mystery Boxes Section */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
@@ -473,7 +475,6 @@ const Dashboard = () => {
                       <h3 className="text-lg font-semibold text-gray-900">Mystery Boxes</h3>
                     </div>
                     <button className="btn-primary">
-                      <Plus className="w-4 h-4 mr-2" />
                       Create Box
                     </button>
                   </div>
@@ -537,7 +538,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Teams</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Create Team
                   </button>
                 </div>
@@ -584,7 +584,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Create Mission
                   </button>
                 </div>
@@ -633,7 +632,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Levels</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Add Level
                   </button>
                 </div>
@@ -691,7 +689,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Leaderboards</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Create Leaderboard
                   </button>
                 </div>
@@ -740,7 +737,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Quizzes</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Create Quiz
                   </button>
                 </div>
@@ -798,7 +794,6 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Achievements</h3>
                   <button className="btn-primary">
-                    <Plus className="w-4 h-4 mr-2" />
                     Create Achievement
                   </button>
                 </div>
