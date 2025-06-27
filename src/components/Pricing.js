@@ -2,13 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Zap, 
-  Users, 
   CheckCircle, 
-  Star,
   Mail,
-  Shield,
-  TrendingUp,
-  Euro
+  Shield
 } from 'lucide-react';
 
 const Pricing = () => {

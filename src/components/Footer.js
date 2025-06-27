@@ -5,7 +5,7 @@ import { Zap, Twitter, Linkedin, Github, Mail } from 'lucide-react';
 const Footer = () => {
   const footerLinks = {
     product: [
-      { name: 'Features', href: '/projects' },
+      { name: 'Projects', href: '/projects' },
       { name: 'API Documentation', href: '/docs' },
       { name: 'SDKs', href: '/sdk' },
       { name: 'Pricing', href: '/pricing' },
