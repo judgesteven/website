@@ -85,7 +85,7 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Mystery Box</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Create New Mystery Win</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -362,7 +362,7 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                 type="submit"
                 className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
               >
-                Create Mystery Box
+                Create Mystery Win
               </button>
             </div>
           </form>

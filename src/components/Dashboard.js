@@ -527,7 +527,7 @@ const Dashboard = () => {
                       <h3 className="text-lg font-semibold text-gray-900">Mystery Boxes</h3>
                     </div>
                     <button className="btn-primary" onClick={() => setAddMysteryBoxOpen(true)}>
-                      Create Box
+                      Create Mystery Win
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
