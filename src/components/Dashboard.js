@@ -10,7 +10,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  Award,
   Users2,
   Flag,
   Layers,
@@ -25,11 +24,16 @@ import {
   Activity,
   BookOpen,
   DollarSign,
-  ClipboardCheck
+  ClipboardCheck,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
 import AddMysteryBoxModal from './AddMysteryBoxModal';
+import EditPrizeModal from './EditPrizeModal';
+import EditRaffleModal from './EditRaffleModal';
+import EditMysteryBoxModal from './EditMysteryBoxModal';
 
 const prizes = [
   { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
@@ -57,9 +61,21 @@ const Dashboard = () => {
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
   const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
+  const [editPrizeOpen, setEditPrizeOpen] = useState(false);
+  const [editRaffleOpen, setEditRaffleOpen] = useState(false);
+  const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
+  const [selectedPrize, setSelectedPrize] = useState(null);
+  const [selectedRaffle, setSelectedRaffle] = useState(null);
+  const [selectedMysteryBox, setSelectedMysteryBox] = useState(null);
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
+  
+  // Pagination states
+  const [prizesPage, setPrizesPage] = useState(0);
+  const [rafflesPage, setRafflesPage] = useState(0);
+  const [mysteryBoxesPage, setMysteryBoxesPage] = useState(0);
+  const itemsPerPage = 3;
 
   const stats = [
     { title: 'Players Registered', value: '12,847', subtitle: '8,234 Active', change: '+12%', icon: Users, color: 'text-blue-600' },
@@ -72,13 +88,6 @@ const Dashboard = () => {
     { title: 'Streaks Started', value: '3,456', subtitle: '2,123 Active', change: '+8%', icon: Activity, color: 'text-red-600' },
     { title: 'Quizzes Completed', value: '4,567', subtitle: 'Total Quizzes', change: '+12%', icon: BookOpen, color: 'text-teal-600' },
     { title: 'Surveys Completed', value: '2,345', subtitle: 'Total Surveys', change: '+15%', icon: ClipboardCheck, color: 'text-cyan-600' }
-  ];
-
-  const recentActivities = [
-    { user: 'John Doe', action: 'earned 100 points', time: '2 minutes ago', type: 'points' },
-    { user: 'Jane Smith', action: 'achieved "First Blood" badge', time: '5 minutes ago', type: 'badge' },
-    { user: 'Mike Johnson', action: 'reached level 5', time: '10 minutes ago', type: 'level' },
-    { user: 'Sarah Wilson', action: 'completed daily challenge', time: '15 minutes ago', type: 'challenge' }
   ];
 
   const topUsers = [
@@ -150,14 +159,125 @@ const Dashboard = () => {
     setAddPrizeOpen(false);
   };
 
+  const handleEditPrize = (prize) => {
+    setPrizesList((prev) => 
+      prev.map((p, index) => 
+        p === selectedPrize ? { ...p, ...prize } : p
+      )
+    );
+    setEditPrizeOpen(false);
+    setSelectedPrize(null);
+  };
+
+  const handleDeletePrize = (prize) => {
+    setPrizesList((prev) => prev.filter((p) => p !== prize));
+    setEditPrizeOpen(false);
+    setSelectedPrize(null);
+  };
+
+  const handlePrizeClick = (prize) => {
+    setSelectedPrize(prize);
+    setEditPrizeOpen(true);
+  };
+
   const handleAddRaffle = (raffle) => {
     setRafflesList((prev) => [...prev, raffle]);
     setAddRaffleOpen(false);
   };
 
+  const handleEditRaffle = (raffle) => {
+    setRafflesList((prev) => 
+      prev.map((r, index) => 
+        r === selectedRaffle ? { ...r, ...raffle } : r
+      )
+    );
+    setEditRaffleOpen(false);
+    setSelectedRaffle(null);
+  };
+
+  const handleDeleteRaffle = (raffle) => {
+    setRafflesList((prev) => prev.filter((r) => r !== raffle));
+    setEditRaffleOpen(false);
+    setSelectedRaffle(null);
+  };
+
+  const handleRaffleClick = (raffle) => {
+    setSelectedRaffle(raffle);
+    setEditRaffleOpen(true);
+  };
+
   const handleAddMysteryBox = (box) => {
     setMysteryBoxesList((prev) => [...prev, box]);
     setAddMysteryBoxOpen(false);
+  };
+
+  const handleEditMysteryBox = (box) => {
+    setMysteryBoxesList((prev) => 
+      prev.map((b, index) => 
+        b === selectedMysteryBox ? { ...b, ...box } : b
+      )
+    );
+    setEditMysteryBoxOpen(false);
+    setSelectedMysteryBox(null);
+  };
+
+  const handleDeleteMysteryBox = (box) => {
+    setMysteryBoxesList((prev) => prev.filter((b) => b !== box));
+    setEditMysteryBoxOpen(false);
+    setSelectedMysteryBox(null);
+  };
+
+  const handleMysteryBoxClick = (box) => {
+    setSelectedMysteryBox(box);
+    setEditMysteryBoxOpen(true);
+  };
+
+  // Pagination helpers
+  const getPageItems = (items, page) => {
+    const start = page * itemsPerPage;
+    return items.slice(start, start + itemsPerPage);
+  };
+
+  const getTotalPages = (items) => Math.ceil(items.length / itemsPerPage);
+
+  const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
+    if (totalPages <= 1) return null;
+    
+    return (
+      <div className="flex items-center justify-center space-x-2 mt-6">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 0}
+          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        
+        <div className="flex space-x-1">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => onPageChange(i)}
+              className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                currentPage === i
+                  ? 'bg-primary-600 text-white'
+                  : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+        
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages - 1}
+          className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    );
   };
 
   return (
@@ -330,14 +450,15 @@ const Dashboard = () => {
                       Add Prize
                     </button>
                   </div>
-                  <div className="flex overflow-x-auto gap-6 pb-4">
-                    {prizesList.map((prize, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {getPageItems(prizesList, prizesPage).map((prize, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
+                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handlePrizeClick(prize)}
                       >
                         {prize.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -383,7 +504,18 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <PaginationControls currentPage={prizesPage} totalPages={getTotalPages(prizesList)} onPageChange={(newPage) => setPrizesPage(newPage)} />
                   <AddPrizeModal open={addPrizeOpen} onClose={() => setAddPrizeOpen(false)} onSave={handleAddPrize} />
+                  <EditPrizeModal 
+                    open={editPrizeOpen} 
+                    onClose={() => {
+                      setEditPrizeOpen(false);
+                      setSelectedPrize(null);
+                    }} 
+                    onSave={handleEditPrize}
+                    onDelete={handleDeletePrize}
+                    prize={selectedPrize}
+                  />
                 </div>
 
                 {/* Divider between Prizes and Raffles */}
@@ -400,14 +532,15 @@ const Dashboard = () => {
                       Create Raffle
                     </button>
                   </div>
-                  <div className="flex overflow-x-auto gap-6 pb-4">
-                    {rafflesList.map((raffle, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {getPageItems(rafflesList, rafflesPage).map((raffle, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
+                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handleRaffleClick(raffle)}
                       >
                         {raffle.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -451,31 +584,43 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <PaginationControls currentPage={rafflesPage} totalPages={getTotalPages(rafflesList)} onPageChange={(newPage) => setRafflesPage(newPage)} />
                   <AddRaffleModal open={addRaffleOpen} onClose={() => setAddRaffleOpen(false)} onSave={handleAddRaffle} />
+                  <EditRaffleModal 
+                    open={editRaffleOpen} 
+                    onClose={() => {
+                      setEditRaffleOpen(false);
+                      setSelectedRaffle(null);
+                    }} 
+                    onSave={handleEditRaffle}
+                    onDelete={handleDeleteRaffle}
+                    raffle={selectedRaffle}
+                  />
                 </div>
 
-                {/* Divider between Raffles and Mystery Boxes */}
+                {/* Divider between Raffles and Mystery Wins */}
                 <hr className="my-10 border-t-2 border-blue-100" />
 
-                {/* Mystery Boxes Section */}
+                {/* Mystery Wins Section */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-3">
                       <Box className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Mystery Boxes</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">Mystery Wins</h3>
                     </div>
                     <button className="btn-primary" onClick={() => setAddMysteryBoxOpen(true)}>
                       Create Mystery Win
                     </button>
                   </div>
-                  <div className="flex overflow-x-auto gap-6 pb-4">
-                    {mysteryBoxesList.map((box, index) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {getPageItems(mysteryBoxesList, mysteryBoxesPage).map((box, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
+                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handleMysteryBoxClick(box)}
                       >
                         {box.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -521,8 +666,19 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <PaginationControls currentPage={mysteryBoxesPage} totalPages={getTotalPages(mysteryBoxesList)} onPageChange={(newPage) => setMysteryBoxesPage(newPage)} />
                 </div>
                 <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
+                <EditMysteryBoxModal 
+                  open={editMysteryBoxOpen} 
+                  onClose={() => {
+                    setEditMysteryBoxOpen(false);
+                    setSelectedMysteryBox(null);
+                  }} 
+                  onSave={handleEditMysteryBox}
+                  onDelete={handleDeleteMysteryBox}
+                  mysteryBox={selectedMysteryBox}
+                />
               </div>
             )}
 
