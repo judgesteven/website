@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// Navigation component with updated link texts
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
