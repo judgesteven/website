@@ -24,6 +24,11 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
     startDate: '',
     endDate: '',
     refreshPeriod: '',
+    reqCategory: '',
+    reqTags: '',
+    level: '',
+    mission: '',
+    achievement: '',
   });
 
   const handleChange = (e) => {
@@ -210,6 +215,78 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                     {refreshOptions.map((opt) => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <hr className="my-2 border-blue-200" />
+            {/* Requirements Section */}
+            <div>
+              <h3 className="text-lg font-bold text-primary-600 mb-3 tracking-wide">Requirements</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Category</label>
+                  <input 
+                    name="reqCategory" 
+                    value={form.reqCategory} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Tags (comma separated)</label>
+                  <input 
+                    name="reqTags" 
+                    value={form.reqTags} 
+                    onChange={handleChange} 
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Level</label>
+                  <select
+                    name="level"
+                    value={form.level}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Level</option>
+                    <option value="1">Beginner</option>
+                    <option value="2">Explorer</option>
+                    <option value="3">Adventurer</option>
+                    <option value="4">Champion</option>
+                    <option value="5">Master</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Mission</label>
+                  <select
+                    name="mission"
+                    value={form.mission}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Mission</option>
+                    <option value="daily-checkin">Daily Check-in</option>
+                    <option value="social-share">Social Share</option>
+                    <option value="refer-friend">Refer a Friend</option>
+                    <option value="complete-profile">Complete Profile</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1 text-gray-700">Achievement</label>
+                  <select
+                    name="achievement"
+                    value={form.achievement}
+                    onChange={handleChange}
+                    className="w-full border border-blue-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition shadow-sm bg-white placeholder-gray-400"
+                  >
+                    <option value="">Select Achievement</option>
+                    <option value="first-blood">First Blood</option>
+                    <option value="social-butterfly">Social Butterfly</option>
+                    <option value="team-player">Team Player</option>
+                    <option value="quiz-master">Quiz Master</option>
+                    <option value="level-50">Level 50</option>
                   </select>
                 </div>
               </div>
