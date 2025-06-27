@@ -330,14 +330,14 @@ const Dashboard = () => {
                       Add Prize
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="flex overflow-x-auto gap-6 pb-4">
                     {prizesList.map((prize, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden"
+                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
                       >
                         {prize.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -400,14 +400,14 @@ const Dashboard = () => {
                       Create Raffle
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="flex overflow-x-auto gap-6 pb-4">
                     {rafflesList.map((raffle, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden"
+                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
                       >
                         {raffle.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -468,14 +468,14 @@ const Dashboard = () => {
                       Create Mystery Win
                     </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="flex overflow-x-auto gap-6 pb-4">
                     {mysteryBoxesList.map((box, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden"
+                        className="card p-0 overflow-hidden flex-shrink-0 w-80"
                       >
                         {box.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
