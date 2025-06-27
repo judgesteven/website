@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Features from './components/Features';
 import HowItWorks from './components/HowItWorks';
 import Dashboard from './components/Dashboard';
+import Projects from './components/Projects';
 import Footer from './components/Footer';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             </>
           } />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/projects" element={<Projects />} />
         </Routes>
         <Footer />
       </div>
