@@ -99,7 +99,7 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Box className="w-5 h-5 mr-2 text-blue-600" />
-                Mystery Box Details
+                Mystery Win Details
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
