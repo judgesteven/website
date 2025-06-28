@@ -619,12 +619,8 @@ const Dashboard = () => {
                               <span className="font-medium">${prize.value}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Stock:</span>
+                              <span className="text-gray-500">Available:</span>
                               <span className="font-medium">{prize.stock || 0}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Redeemed:</span>
-                              <span className="font-medium">{prize.redeemed || 0}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Start Date:</span>
