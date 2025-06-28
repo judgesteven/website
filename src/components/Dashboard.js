@@ -69,7 +69,9 @@ const missions = [
     startDate: '2024-01-01',
     endDate: '2024-12-31',
     createdOn: '2024-01-01',
-    status: 'Active'
+    status: 'Active',
+    pointsAwarded: 100,
+    creditsEarned: 50
   },
   { 
     name: 'Social Share', 
@@ -78,7 +80,9 @@ const missions = [
     startDate: '2024-02-01',
     endDate: '2024-11-30',
     createdOn: '2024-02-01',
-    status: 'Active'
+    status: 'Active',
+    pointsAwarded: 250,
+    creditsEarned: 100
   },
   { 
     name: 'Refer a Friend', 
@@ -87,7 +91,9 @@ const missions = [
     startDate: '2024-03-01',
     endDate: '2024-10-31',
     createdOn: '2024-03-01',
-    status: 'Upcoming'
+    status: 'Upcoming',
+    pointsAwarded: 500,
+    creditsEarned: 200
   },
   { 
     name: 'Complete Profile', 
@@ -96,7 +102,9 @@ const missions = [
     startDate: '2024-01-15',
     endDate: '2024-06-30',
     createdOn: '2024-01-15',
-    status: 'Completed'
+    status: 'Completed',
+    pointsAwarded: 150,
+    creditsEarned: 75
   }
 ];
 
@@ -971,6 +979,14 @@ const Dashboard = () => {
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">End Date:</span>
                               <span className="font-medium">{mission.endDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Points Awarded:</span>
+                              <span className="font-medium">{mission.pointsAwarded || 0}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Credits Earned:</span>
+                              <span className="font-medium">{mission.creditsEarned || 0}</span>
                             </div>
                           </div>
                         </div>
