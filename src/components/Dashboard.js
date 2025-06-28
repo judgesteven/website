@@ -973,20 +973,20 @@ const Dashboard = () => {
                           </div>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Start Date:</span>
-                              <span className="font-medium">{mission.startDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">End Date:</span>
-                              <span className="font-medium">{mission.endDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Points Awarded:</span>
                               <span className="font-medium">{mission.pointsAwarded || 0}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Credits Earned:</span>
                               <span className="font-medium">{mission.creditsEarned || 0}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Start Date:</span>
+                              <span className="font-medium">{mission.startDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">End Date:</span>
+                              <span className="font-medium">{mission.endDate}</span>
                             </div>
                           </div>
                         </div>
