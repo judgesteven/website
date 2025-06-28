@@ -59,6 +59,90 @@ const mysteryBoxes = [
   { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
 ];
 
+const missions = [
+  { 
+    name: 'Daily Check-in', 
+    description: 'Complete daily check-in for 7 days', 
+    image: 'https://picsum.photos/400/300?random=13',
+    startDate: '2024-01-01',
+    endDate: '2024-12-31',
+    createdOn: '2024-01-01'
+  },
+  { 
+    name: 'Social Share', 
+    description: 'Share content on social media', 
+    image: 'https://picsum.photos/400/300?random=14',
+    startDate: '2024-02-01',
+    endDate: '2024-11-30',
+    createdOn: '2024-02-01'
+  },
+  { 
+    name: 'Refer a Friend', 
+    description: 'Invite 3 friends to join', 
+    image: 'https://picsum.photos/400/300?random=15',
+    startDate: '2024-03-01',
+    endDate: '2024-10-31',
+    createdOn: '2024-03-01'
+  },
+  { 
+    name: 'Complete Profile', 
+    description: 'Fill out your complete profile', 
+    image: 'https://picsum.photos/400/300?random=16',
+    startDate: '2024-01-15',
+    endDate: '2024-06-30',
+    createdOn: '2024-01-15'
+  }
+];
+
+const levels = [
+  { level: 1, name: 'Beginner', pointsRequired: 0, users: 1247, rewards: 'Welcome Badge' },
+  { level: 2, name: 'Explorer', pointsRequired: 100, users: 892, rewards: 'Bronze Medal' },
+  { level: 3, name: 'Adventurer', pointsRequired: 500, users: 567, rewards: 'Silver Medal' },
+  { level: 4, name: 'Champion', pointsRequired: 1000, users: 234, rewards: 'Gold Medal' },
+  { level: 5, name: 'Master', pointsRequired: 2500, users: 89, rewards: 'Diamond Crown' }
+];
+
+const leaderboards = [
+  { name: 'Weekly Points', period: 'This Week', participants: 1247, topUser: 'John Doe', topScore: 15420 },
+  { name: 'Monthly Activity', period: 'This Month', participants: 892, topUser: 'Jane Smith', topScore: 12850 },
+  { name: 'Team Competition', period: 'Ongoing', participants: 234, topUser: 'Alpha Squad', topScore: 45600 },
+  { name: 'Mission Completion', period: 'All Time', participants: 567, topUser: 'Mike Johnson', topScore: 45 }
+];
+
+const quizzes = [
+  { name: 'Product Knowledge', questions: 10, participants: 234, avgScore: 85, status: 'Active' },
+  { name: 'Company History', questions: 15, participants: 156, avgScore: 78, status: 'Active' },
+  { name: 'Safety Training', questions: 20, participants: 445, avgScore: 92, status: 'Completed' },
+  { name: 'Customer Service', questions: 12, participants: 89, avgScore: 81, status: 'Draft' }
+];
+
+const achievements = [
+  { name: 'First Blood', description: 'Complete your first mission', icon: '🩸', rarity: 'Common', earned: 1247, points: 50 },
+  { name: 'Social Butterfly', description: 'Share 10 posts on social media', icon: '🦋', rarity: 'Rare', earned: 567, points: 100 },
+  { name: 'Team Player', description: 'Join 5 different teams', icon: '👥', rarity: 'Epic', earned: 234, points: 200 },
+  { name: 'Quiz Master', description: 'Score 100% on 5 quizzes', icon: '🧠', rarity: 'Legendary', earned: 89, points: 500 },
+  { name: 'Level 50', description: 'Reach level 50', icon: '⭐', rarity: 'Mythic', earned: 12, points: 1000 }
+];
+
+const tabs = [
+  { id: 'players', name: 'Players', icon: Users },
+  { id: 'teams', name: 'Teams', icon: Users2 },
+  { id: 'missions', name: 'Missions', icon: Flag },
+  { id: 'rewards', name: 'Rewards', icon: Trophy },
+  { id: 'achievements', name: 'Achievements', icon: Medal },
+  { id: 'levels', name: 'Levels', icon: Layers },
+  { id: 'leaderboards', name: 'Leaderboards', icon: Crown },
+  { id: 'quizzes', name: 'Quizzes', icon: HelpCircle },
+  { id: 'settings', name: 'Settings', icon: Settings }
+];
+
+const teams = [
+  { name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS' },
+  { name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF' },
+  { name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT' },
+  { name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU' }
+];
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('players');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
@@ -107,62 +191,6 @@ const Dashboard = () => {
     { name: 'Mike Johnson', points: 11230, level: 10, avatar: 'MJ' },
     { name: 'Sarah Wilson', points: 9870, level: 8, avatar: 'SW' },
     { name: 'Alex Brown', points: 8540, level: 7, avatar: 'AB' }
-  ];
-
-  const teams = [
-    { name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS' },
-    { name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF' },
-    { name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT' },
-    { name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU' }
-  ];
-
-  const missions = [
-    { name: 'Daily Check-in', description: 'Complete daily check-in for 7 days', points: 100, status: 'Active', participants: 234 },
-    { name: 'Social Share', description: 'Share content on social media', points: 50, status: 'Active', participants: 156 },
-    { name: 'Refer a Friend', description: 'Invite 3 friends to join', points: 200, status: 'Active', participants: 89 },
-    { name: 'Complete Profile', description: 'Fill out your complete profile', points: 75, status: 'Completed', participants: 445 }
-  ];
-
-  const levels = [
-    { level: 1, name: 'Beginner', pointsRequired: 0, users: 1247, rewards: 'Welcome Badge' },
-    { level: 2, name: 'Explorer', pointsRequired: 100, users: 892, rewards: 'Bronze Medal' },
-    { level: 3, name: 'Adventurer', pointsRequired: 500, users: 567, rewards: 'Silver Medal' },
-    { level: 4, name: 'Champion', pointsRequired: 1000, users: 234, rewards: 'Gold Medal' },
-    { level: 5, name: 'Master', pointsRequired: 2500, users: 89, rewards: 'Diamond Crown' }
-  ];
-
-  const leaderboards = [
-    { name: 'Weekly Points', period: 'This Week', participants: 1247, topUser: 'John Doe', topScore: 15420 },
-    { name: 'Monthly Activity', period: 'This Month', participants: 892, topUser: 'Jane Smith', topScore: 12850 },
-    { name: 'Team Competition', period: 'Ongoing', participants: 234, topUser: 'Alpha Squad', topScore: 45600 },
-    { name: 'Mission Completion', period: 'All Time', participants: 567, topUser: 'Mike Johnson', topScore: 45 }
-  ];
-
-  const quizzes = [
-    { name: 'Product Knowledge', questions: 10, participants: 234, avgScore: 85, status: 'Active' },
-    { name: 'Company History', questions: 15, participants: 156, avgScore: 78, status: 'Active' },
-    { name: 'Safety Training', questions: 20, participants: 445, avgScore: 92, status: 'Completed' },
-    { name: 'Customer Service', questions: 12, participants: 89, avgScore: 81, status: 'Draft' }
-  ];
-
-  const achievements = [
-    { name: 'First Blood', description: 'Complete your first mission', icon: '🩸', rarity: 'Common', earned: 1247, points: 50 },
-    { name: 'Social Butterfly', description: 'Share 10 posts on social media', icon: '🦋', rarity: 'Rare', earned: 567, points: 100 },
-    { name: 'Team Player', description: 'Join 5 different teams', icon: '👥', rarity: 'Epic', earned: 234, points: 200 },
-    { name: 'Quiz Master', description: 'Score 100% on 5 quizzes', icon: '🧠', rarity: 'Legendary', earned: 89, points: 500 },
-    { name: 'Level 50', description: 'Reach level 50', icon: '⭐', rarity: 'Mythic', earned: 12, points: 1000 }
-  ];
-
-  const tabs = [
-    { id: 'players', name: 'Players', icon: Users },
-    { id: 'teams', name: 'Teams', icon: Users2 },
-    { id: 'missions', name: 'Missions', icon: Flag },
-    { id: 'rewards', name: 'Rewards', icon: Trophy },
-    { id: 'achievements', name: 'Achievements', icon: Medal },
-    { id: 'levels', name: 'Levels', icon: Layers },
-    { id: 'leaderboards', name: 'Leaderboards', icon: Crown },
-    { id: 'quizzes', name: 'Quizzes', icon: HelpCircle },
-    { id: 'settings', name: 'Settings', icon: Settings }
   ];
 
   const handleAddPrize = (prize) => {
@@ -892,38 +920,49 @@ const Dashboard = () => {
                       Create Mission
                     </button>
                   </div>
-                  <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {missions.map((mission, index) => (
                       <motion.div
                         key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-6"
+                        className="card p-0 overflow-hidden hover:shadow-lg transition-shadow"
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-3 mb-2">
-                              <h4 className="font-semibold text-gray-900">{mission.name}</h4>
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                mission.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                              }`}>
-                                {mission.status}
-                              </span>
-                            </div>
-                            <p className="text-gray-600 text-sm mb-3">{mission.description}</p>
-                            <div className="flex items-center space-x-6 text-sm text-gray-500">
-                              <span>{mission.points} points</span>
-                              <span>{mission.participants} participants</span>
+                        {mission.image && (
+                          <div className="w-full h-48 bg-gray-200 overflow-hidden">
+                            <img 
+                              src={mission.image} 
+                              alt={mission.name}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                              <Flag className="w-16 h-16 text-gray-400" />
                             </div>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <button className="text-primary-600 hover:text-primary-900">
-                              <Eye className="w-4 h-4" />
-                            </button>
-                            <button className="text-gray-600 hover:text-gray-900">
-                              <Edit className="w-4 h-4" />
-                            </button>
+                        )}
+                        <div className="p-6">
+                          <div className="mb-4">
+                            <h4 className="font-semibold text-gray-900 mb-2">{mission.name}</h4>
+                            <p className="text-gray-600 text-sm mb-4">{mission.description}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Start Date:</span>
+                              <span className="font-medium">{mission.startDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">End Date:</span>
+                              <span className="font-medium">{mission.endDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Created On:</span>
+                              <span className="font-medium">{mission.createdOn}</span>
+                            </div>
                           </div>
                         </div>
                       </motion.div>
