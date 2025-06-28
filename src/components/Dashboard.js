@@ -41,10 +41,10 @@ import EditEventModal from './EditEventModal';
 import EditMissionModal from './EditMissionModal';
 
 const prizes = [
-  { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
-  { name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, claimed: 45, status: 'Active', image: 'https://picsum.photos/400/300?random=2' },
-  { name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, claimed: 12, status: 'Active', image: 'https://picsum.photos/400/300?random=3' },
-  { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, claimed: 3, status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
+  { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, redeemed: 8, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
+  { name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, redeemed: 45, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=2' },
+  { name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, redeemed: 12, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=3' },
+  { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, redeemed: 3, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
 ];
 
 const raffles = [
@@ -620,11 +620,19 @@ const Dashboard = () => {
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Stock:</span>
-                              <span className="font-medium">{prize.stock ? prize.stock - (prize.claimed || 0) : (prize.unlimitedStock ? 'Unlimited' : 0)} remaining</span>
+                              <span className="font-medium">{prize.stock || 0}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Claimed:</span>
-                              <span className="font-medium">{prize.claimed || 0}</span>
+                              <span className="text-gray-500">Redeemed:</span>
+                              <span className="font-medium">{prize.redeemed || 0}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Start Date:</span>
+                              <span className="font-medium">{prize.startDate || 'N/A'}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">End Date:</span>
+                              <span className="font-medium">{prize.endDate || 'N/A'}</span>
                             </div>
                           </div>
                         </div>
