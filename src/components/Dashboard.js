@@ -2940,59 +2940,103 @@ const Dashboard = () => {
                             </div>
                             <motion.button
                               type="button"
-                              className={`relative ${Object.values(missionTypingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
-                              animate={Object.values(missionTypingProgress).every(Boolean) ? {
+                              className="btn-primary relative"
+                              animate={{
                                 scale: [1, 1.05, 1],
                                 boxShadow: [
                                   "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                                   "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                                   "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
                                 ]
-                              } : {}}
+                              }}
                               transition={{
                                 duration: 2,
                                 repeat: Infinity,
                                 repeatDelay: 2
                               }}
-                              onClick={Object.values(missionTypingProgress).every(Boolean) ? () => {
-                                setGuideModalOpen(false);
-                                // Show final success message or redirect
-                              } : undefined}
-                              disabled={!Object.values(missionTypingProgress).every(Boolean)}
+                              onClick={() => {
+                                setGuideStep(6);
+                              }}
                             >
                               Create Mission
-                              {Object.values(missionTypingProgress).every(Boolean) && (
+                              <motion.div
+                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                animate={{
+                                  scale: [1, 1.3, 1],
+                                  opacity: [1, 0.7, 1]
+                                }}
+                                transition={{
+                                  duration: 1.5,
+                                  repeat: Infinity,
+                                  ease: "easeInOut"
+                                }}
+                              >
                                 <motion.div
-                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                  className="w-2 h-2 bg-white rounded-full"
                                   animate={{
-                                    scale: [1, 1.3, 1],
-                                    opacity: [1, 0.7, 1]
+                                    scale: [1, 1.2, 1]
                                   }}
                                   transition={{
                                     duration: 1.5,
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                   }}
-                                >
-                                  <motion.div
-                                    className="w-2 h-2 bg-white rounded-full"
-                                    animate={{
-                                      scale: [1, 1.2, 1]
-                                    }}
-                                    transition={{
-                                      duration: 1.5,
-                                      repeat: Infinity,
-                                      ease: "easeInOut"
-                                    }}
-                                  />
-                                </motion.div>
-                              )}
+                                />
+                              </motion.div>
                             </motion.button>
                           </div>
                         </div>
                       </form>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {guideStep === 6 && (
+                <div className="space-y-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-center"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+                      className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                    >
+                      <Check className="w-8 h-8 text-green-600" />
+                    </motion.div>
+                    
+                    <motion.h3
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      className="text-2xl font-bold text-gray-900 mb-3"
+                    >
+                      Awesome, you created your first mission!
+                    </motion.h3>
+                    
+                    <motion.p
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                      className="text-gray-600 text-lg mb-8"
+                    >
+                      Now go and create other mechanics like achievements and levels to engage your users.
+                    </motion.p>
+
+                    <motion.button
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.0 }}
+                      className="btn-primary"
+                      onClick={() => setGuideModalOpen(false)}
+                    >
+                      Close
+                    </motion.button>
+                  </motion.div>
                 </div>
               )}
             </div>
