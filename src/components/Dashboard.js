@@ -66,7 +66,8 @@ const missions = [
     image: 'https://picsum.photos/400/300?random=13',
     startDate: '2024-01-01',
     endDate: '2024-12-31',
-    createdOn: '2024-01-01'
+    createdOn: '2024-01-01',
+    status: 'Active'
   },
   { 
     name: 'Social Share', 
@@ -74,7 +75,8 @@ const missions = [
     image: 'https://picsum.photos/400/300?random=14',
     startDate: '2024-02-01',
     endDate: '2024-11-30',
-    createdOn: '2024-02-01'
+    createdOn: '2024-02-01',
+    status: 'Active'
   },
   { 
     name: 'Refer a Friend', 
@@ -82,7 +84,8 @@ const missions = [
     image: 'https://picsum.photos/400/300?random=15',
     startDate: '2024-03-01',
     endDate: '2024-10-31',
-    createdOn: '2024-03-01'
+    createdOn: '2024-03-01',
+    status: 'Upcoming'
   },
   { 
     name: 'Complete Profile', 
@@ -90,7 +93,8 @@ const missions = [
     image: 'https://picsum.photos/400/300?random=16',
     startDate: '2024-01-15',
     endDate: '2024-06-30',
-    createdOn: '2024-01-15'
+    createdOn: '2024-01-15',
+    status: 'Completed'
   }
 ];
 
@@ -947,7 +951,17 @@ const Dashboard = () => {
                         )}
                         <div className="p-6">
                           <div className="mb-4">
-                            <h4 className="font-semibold text-gray-900 mb-2">{mission.name}</h4>
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-semibold text-gray-900">{mission.name}</h4>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                mission.status === 'Active' ? 'bg-green-100 text-green-800' :
+                                mission.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
+                                mission.status === 'Completed' ? 'bg-gray-100 text-gray-800' :
+                                'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {mission.status}
+                              </span>
+                            </div>
                             <p className="text-gray-600 text-sm mb-4">{mission.description}</p>
                           </div>
                           <div className="space-y-2">
