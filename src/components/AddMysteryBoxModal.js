@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, Tag, DollarSign, Box, Target, Upload } from 'lucide-react';
 
