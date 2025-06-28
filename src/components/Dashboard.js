@@ -26,11 +26,13 @@ import {
   DollarSign,
   ClipboardCheck,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Zap as ZapIcon
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
 import AddMysteryBoxModal from './AddMysteryBoxModal';
+import AddEventModal from './AddEventModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -61,6 +63,7 @@ const Dashboard = () => {
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
   const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
+  const [addEventOpen, setAddEventOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -70,6 +73,11 @@ const Dashboard = () => {
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
+  const [eventsList, setEventsList] = useState([
+    { name: 'Product Launch', description: 'Launch event for new product', createdOn: '2024-02-15' },
+    { name: 'Holiday Campaign', description: 'Special holiday promotion', createdOn: '2024-12-01' },
+    { name: 'Team Building', description: 'Team building activities', createdOn: '2024-03-01' }
+  ]);
   
   // Pagination states
   const [prizesPage, setPrizesPage] = useState(0);
@@ -230,6 +238,11 @@ const Dashboard = () => {
   const handleMysteryBoxClick = (box) => {
     setSelectedMysteryBox(box);
     setEditMysteryBoxOpen(true);
+  };
+
+  const handleAddEvent = (event) => {
+    setEventsList((prev) => [...prev, event]);
+    setAddEventOpen(false);
   };
 
   // Pagination helpers
@@ -450,6 +463,22 @@ const Dashboard = () => {
                       Add Prize
                     </button>
                   </div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search prizes..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {getPageItems(prizesList, prizesPage).map((prize, index) => (
                       <motion.div
@@ -532,6 +561,22 @@ const Dashboard = () => {
                       Create Raffle
                     </button>
                   </div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search raffles..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {getPageItems(rafflesList, rafflesPage).map((raffle, index) => (
                       <motion.div
@@ -611,6 +656,22 @@ const Dashboard = () => {
                     <button className="btn-primary" onClick={() => setAddMysteryBoxOpen(true)}>
                       Create Mystery Win
                     </button>
+                  </div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search mystery wins..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {getPageItems(mysteryBoxesList, mysteryBoxesPage).map((box, index) => (
@@ -730,48 +791,119 @@ const Dashboard = () => {
 
             {activeTab === 'missions' && (
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
-                  <button className="btn-primary">
-                    Create Mission
-                  </button>
-                </div>
-                <div className="space-y-4">
-                  {missions.map((mission, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="card p-6"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2">
-                            <h4 className="font-semibold text-gray-900">{mission.name}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              mission.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                            }`}>
-                              {mission.status}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 text-sm mb-3">{mission.description}</p>
-                          <div className="flex items-center space-x-6 text-sm text-gray-500">
-                            <span>{mission.points} points</span>
-                            <span>{mission.participants} participants</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <button className="text-primary-600 hover:text-primary-900">
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button className="text-gray-600 hover:text-gray-900">
-                            <Edit className="w-4 h-4" />
-                          </button>
-                        </div>
+                {/* Events Section */}
+                <div className="mb-10">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <ZapIcon className="w-6 h-6 text-primary-600" />
+                    <h3 className="text-lg font-semibold text-gray-900">Events</h3>
+                  </div>
+                  <p className="text-gray-600 mb-6">Use events to power your missions</p>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search events..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
                       </div>
-                    </motion.div>
-                  ))}
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                    <button className="btn-primary" onClick={() => setAddEventOpen(true)}>
+                      Create Event
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {eventsList.map((event, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="card p-6 hover:shadow-md transition-shadow"
+                      >
+                        <div className="mb-4">
+                          <h4 className="font-semibold text-gray-900 mb-2">{event.name}</h4>
+                          <p className="text-gray-600 text-sm mb-4">{event.description}</p>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-500">Created On:</span>
+                            <span className="font-medium">{event.createdOn}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Divider between Events and Missions */}
+                <hr className="my-10 border-t-2 border-blue-100" />
+
+                {/* Missions Section */}
+                <div>
+                  <div className="flex items-center space-x-3 mb-6">
+                    <Flag className="w-6 h-6 text-primary-600" />
+                    <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
+                  </div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search missions..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                    <button className="btn-primary">
+                      Create Mission
+                    </button>
+                  </div>
+                  <div className="space-y-4">
+                    {missions.map((mission, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="card p-6"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              <h4 className="font-semibold text-gray-900">{mission.name}</h4>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                mission.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                              }`}>
+                                {mission.status}
+                              </span>
+                            </div>
+                            <p className="text-gray-600 text-sm mb-3">{mission.description}</p>
+                            <div className="flex items-center space-x-6 text-sm text-gray-500">
+                              <span>{mission.points} points</span>
+                              <span>{mission.participants} participants</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <button className="text-primary-600 hover:text-primary-900">
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <button className="text-gray-600 hover:text-gray-900">
+                              <Edit className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -999,6 +1131,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      
+      {/* Modals */}
+      <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
     </div>
   );
 };
