@@ -36,6 +36,7 @@ import AddEventModal from './AddEventModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
+import EditEventModal from './EditEventModal';
 
 const prizes = [
   { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
@@ -67,9 +68,11 @@ const Dashboard = () => {
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
+  const [editEventOpen, setEditEventOpen] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [selectedRaffle, setSelectedRaffle] = useState(null);
   const [selectedMysteryBox, setSelectedMysteryBox] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
@@ -243,6 +246,27 @@ const Dashboard = () => {
   const handleAddEvent = (event) => {
     setEventsList((prev) => [...prev, event]);
     setAddEventOpen(false);
+  };
+
+  const handleEditEvent = (event) => {
+    setEventsList((prev) => 
+      prev.map((e, index) => 
+        e === selectedEvent ? { ...e, ...event } : e
+      )
+    );
+    setEditEventOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleDeleteEvent = (event) => {
+    setEventsList((prev) => prev.filter((e) => e !== event));
+    setEditEventOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleEventClick = (event) => {
+    setSelectedEvent(event);
+    setEditEventOpen(true);
   };
 
   // Pagination helpers
@@ -824,7 +848,8 @@ const Dashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-6 hover:shadow-md transition-shadow"
+                        className="card p-6 hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => handleEventClick(event)}
                       >
                         <div className="mb-4">
                           <h4 className="font-semibold text-gray-900 mb-2">{event.name}</h4>
@@ -1134,6 +1159,16 @@ const Dashboard = () => {
       
       {/* Modals */}
       <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
+      <EditEventModal 
+        open={editEventOpen} 
+        onClose={() => {
+          setEditEventOpen(false);
+          setSelectedEvent(null);
+        }} 
+        onSave={handleEditEvent}
+        onDelete={handleDeleteEvent}
+        event={selectedEvent}
+      />
     </div>
   );
 };

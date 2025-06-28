@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Zap, Target } from 'lucide-react';
+import { X, Clock, Tag, DollarSign, Zap, Target, Trash2 } from 'lucide-react';
 
-const AddEventModal = ({ open, onClose, onSave }) => {
+const EditEventModal = ({ open, onClose, onSave, onDelete, event }) => {
   const [form, setForm] = useState({
     id: '',
     name: '',
@@ -16,6 +16,23 @@ const AddEventModal = ({ open, onClose, onSave }) => {
     stepsGranted: ''
   });
 
+  useEffect(() => {
+    if (event) {
+      setForm({
+        id: event.id || '',
+        name: event.name || '',
+        description: event.description || '',
+        category: event.category || '',
+        tags: event.tags || '',
+        restrictCompletions: event.restrictCompletions || 'unlimited',
+        points: event.points || '',
+        credits: event.credits || '',
+        achievements: event.achievements || '',
+        stepsGranted: event.stepsGranted || ''
+      });
+    }
+  }, [event]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -27,6 +44,12 @@ const AddEventModal = ({ open, onClose, onSave }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave(form);
+  };
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+      onDelete(event);
+    }
   };
 
   if (!open) return null;
@@ -42,7 +65,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Event</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Edit Event</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -205,20 +228,30 @@ const AddEventModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div className="flex justify-between pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                onClick={handleDelete}
+                className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors flex items-center"
               >
-                Cancel
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Event
               </button>
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-              >
-                Create Event
-              </button>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
             </div>
           </form>
         </motion.div>
@@ -227,4 +260,4 @@ const AddEventModal = ({ open, onClose, onSave }) => {
   );
 };
 
-export default AddEventModal; 
+export default EditEventModal; 
