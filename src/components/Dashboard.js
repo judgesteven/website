@@ -174,6 +174,8 @@ const Dashboard = () => {
   const [prizesPage, setPrizesPage] = useState(0);
   const [rafflesPage, setRafflesPage] = useState(0);
   const [mysteryBoxesPage, setMysteryBoxesPage] = useState(0);
+  const [eventsPage, setEventsPage] = useState(0);
+  const [missionsPage, setMissionsPage] = useState(0);
   const itemsPerPage = 3;
 
   const stats = [
@@ -874,7 +876,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {eventsList.map((event, index) => (
+                    {getPageItems(eventsList, eventsPage).map((event, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
@@ -894,6 +896,7 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <PaginationControls currentPage={eventsPage} totalPages={getTotalPages(eventsList)} onPageChange={(newPage) => setEventsPage(newPage)} />
                 </div>
 
                 {/* Divider between Events and Missions */}
@@ -925,7 +928,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {missions.map((mission, index) => (
+                    {getPageItems(missions, missionsPage).map((mission, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
@@ -982,6 +985,7 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
+                  <PaginationControls currentPage={missionsPage} totalPages={getTotalPages(missions)} onPageChange={(newPage) => setMissionsPage(newPage)} />
                 </div>
               </div>
             )}
