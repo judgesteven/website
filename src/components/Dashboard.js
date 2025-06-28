@@ -395,14 +395,32 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">Welcome back! Here's what's happening with your gamification platform.</p>
+        <div className="flex justify-between items-start mb-8">
+          <div className="flex items-center space-x-6">
+            {/* User Profile Section */}
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                JS
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">John Smith</h1>
+                <p className="text-gray-600">Administrator</p>
+                <p className="text-sm text-gray-500">john.smith@company.com</p>
+              </div>
+            </div>
+            
+            {/* Account Info */}
+            <div className="border-l border-gray-200 pl-6">
+              <h2 className="text-lg font-semibold text-gray-900">GameLayer Platform</h2>
+              <p className="text-gray-600">Account: Premium</p>
+              <p className="text-sm text-gray-500">Last login: Today at 9:30 AM</p>
+            </div>
           </div>
+          
           <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-400 hover:text-gray-600">
+            <button className="p-2 text-gray-400 hover:text-gray-600 relative">
               <Bell className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
             <button className="btn-primary">
               New Campaign
