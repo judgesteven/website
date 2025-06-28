@@ -48,10 +48,10 @@ const prizes = [
 ];
 
 const raffles = [
-  { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', entries: 1247, endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
-  { name: 'Weekly Draw', description: 'Win $100 gift card', entries: 567, endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
-  { name: 'Holiday Special', description: 'Win vacation package', entries: 234, endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
-  { name: 'Tech Bundle', description: 'Win iPhone + AirPods', entries: 89, endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
+  { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', credits: 1000, entries: 1247, drawDate: '2024-02-29', startDate: '2024-01-01', endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
+  { name: 'Weekly Draw', description: 'Win $100 gift card', credits: 500, entries: 567, drawDate: '2024-02-07', startDate: '2024-01-29', endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
+  { name: 'Holiday Special', description: 'Win vacation package', credits: 2000, entries: 234, drawDate: '2024-12-25', startDate: '2024-11-01', endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
+  { name: 'Tech Bundle', description: 'Win iPhone + AirPods', credits: 1500, entries: 89, drawDate: '2024-01-15', startDate: '2024-01-01', endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
 ];
 
 const mysteryBoxes = [
@@ -615,7 +615,7 @@ const Dashboard = () => {
                           <p className="text-gray-600 text-sm mb-4">{prize.description}</p>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Value:</span>
+                              <span className="text-gray-500">Credits:</span>
                               <span className="font-medium">${prize.value}</span>
                             </div>
                             <div className="flex justify-between text-sm">
@@ -712,8 +712,20 @@ const Dashboard = () => {
                           <p className="text-gray-600 text-sm mb-4">{raffle.description}</p>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Credits:</span>
+                              <span className="font-medium">{raffle.credits}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Entries:</span>
                               <span className="font-medium">{raffle.entries}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Draw Date:</span>
+                              <span className="font-medium">{raffle.drawDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Start Date:</span>
+                              <span className="font-medium">{raffle.startDate}</span>
                             </div>
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">End Date:</span>
