@@ -55,10 +55,10 @@ const raffles = [
 ];
 
 const mysteryBoxes = [
-  { name: 'Common Box', description: 'Basic rewards', price: 100, contents: 'Points, Badges', opened: 1247, status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
-  { name: 'Rare Box', description: 'Better rewards', price: 250, contents: 'Points, Badges, Prizes', opened: 567, status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
-  { name: 'Epic Box', description: 'Premium rewards', price: 500, contents: 'Points, Badges, Prizes, Gift Cards', opened: 234, status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
-  { name: 'Legendary Box', description: 'Ultimate rewards', price: 1000, contents: 'Everything + Special Items', opened: 89, status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
+  { name: 'Common Box', description: 'Basic rewards', credits: 100, available: 1000, redeemed: 753, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
+  { name: 'Rare Box', description: 'Better rewards', credits: 250, available: 500, redeemed: 433, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
+  { name: 'Epic Box', description: 'Premium rewards', credits: 500, available: 200, redeemed: 166, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
+  { name: 'Legendary Box', description: 'Ultimate rewards', credits: 1000, available: 50, redeemed: 11, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
 ];
 
 const missions = [
@@ -807,16 +807,24 @@ const Dashboard = () => {
                           <p className="text-gray-600 text-sm mb-4">{box.description}</p>
                           <div className="space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Price:</span>
-                              <span className="font-medium">{box.price} points</span>
+                              <span className="text-gray-500">Credits:</span>
+                              <span className="font-medium">{box.credits}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Contents:</span>
-                              <span className="font-medium">{box.contents}</span>
+                              <span className="text-gray-500">Available:</span>
+                              <span className="font-medium">{box.available}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Opened:</span>
-                              <span className="font-medium">{box.opened}</span>
+                              <span className="text-gray-500">Redeemed:</span>
+                              <span className="font-medium">{box.redeemed}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Start Date:</span>
+                              <span className="font-medium">{box.startDate}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">End Date:</span>
+                              <span className="font-medium">{box.endDate}</span>
                             </div>
                           </div>
                         </div>
