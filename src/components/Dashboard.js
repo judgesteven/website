@@ -38,6 +38,7 @@ import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
 import EditEventModal from './EditEventModal';
+import EditMissionModal from './EditMissionModal';
 
 const prizes = [
   { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, claimed: 8, status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
@@ -159,10 +160,12 @@ const Dashboard = () => {
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
   const [editEventOpen, setEditEventOpen] = useState(false);
+  const [editMissionOpen, setEditMissionOpen] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [selectedRaffle, setSelectedRaffle] = useState(null);
   const [selectedMysteryBox, setSelectedMysteryBox] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [selectedMission, setSelectedMission] = useState(null);
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
@@ -309,6 +312,27 @@ const Dashboard = () => {
   const handleAddMission = (mission) => {
     setMissionsList((prev) => [...prev, mission]);
     setAddMissionOpen(false);
+  };
+
+  const handleEditMission = (mission) => {
+    setMissionsList((prev) => 
+      prev.map((m, index) => 
+        m === selectedMission ? { ...m, ...mission } : m
+      )
+    );
+    setEditMissionOpen(false);
+    setSelectedMission(null);
+  };
+
+  const handleDeleteMission = (mission) => {
+    setMissionsList((prev) => prev.filter((m) => m !== mission));
+    setEditMissionOpen(false);
+    setSelectedMission(null);
+  };
+
+  const handleMissionClick = (mission) => {
+    setSelectedMission(mission);
+    setEditMissionOpen(true);
   };
 
   // Pagination helpers
@@ -600,17 +624,6 @@ const Dashboard = () => {
                     ))}
                   </div>
                   <PaginationControls currentPage={prizesPage} totalPages={getTotalPages(prizesList)} onPageChange={(newPage) => setPrizesPage(newPage)} />
-                  <AddPrizeModal open={addPrizeOpen} onClose={() => setAddPrizeOpen(false)} onSave={handleAddPrize} />
-                  <EditPrizeModal 
-                    open={editPrizeOpen} 
-                    onClose={() => {
-                      setEditPrizeOpen(false);
-                      setSelectedPrize(null);
-                    }} 
-                    onSave={handleEditPrize}
-                    onDelete={handleDeletePrize}
-                    prize={selectedPrize}
-                  />
                 </div>
 
                 {/* Divider between Prizes and Raffles */}
@@ -696,17 +709,6 @@ const Dashboard = () => {
                     ))}
                   </div>
                   <PaginationControls currentPage={rafflesPage} totalPages={getTotalPages(rafflesList)} onPageChange={(newPage) => setRafflesPage(newPage)} />
-                  <AddRaffleModal open={addRaffleOpen} onClose={() => setAddRaffleOpen(false)} onSave={handleAddRaffle} />
-                  <EditRaffleModal 
-                    open={editRaffleOpen} 
-                    onClose={() => {
-                      setEditRaffleOpen(false);
-                      setSelectedRaffle(null);
-                    }} 
-                    onSave={handleEditRaffle}
-                    onDelete={handleDeleteRaffle}
-                    raffle={selectedRaffle}
-                  />
                 </div>
 
                 {/* Divider between Raffles and Mystery Wins */}
@@ -795,17 +797,6 @@ const Dashboard = () => {
                   </div>
                   <PaginationControls currentPage={mysteryBoxesPage} totalPages={getTotalPages(mysteryBoxesList)} onPageChange={(newPage) => setMysteryBoxesPage(newPage)} />
                 </div>
-                <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
-                <EditMysteryBoxModal 
-                  open={editMysteryBoxOpen} 
-                  onClose={() => {
-                    setEditMysteryBoxOpen(false);
-                    setSelectedMysteryBox(null);
-                  }} 
-                  onSave={handleEditMysteryBox}
-                  onDelete={handleDeleteMysteryBox}
-                  mysteryBox={selectedMysteryBox}
-                />
               </div>
             )}
 
@@ -942,7 +933,8 @@ const Dashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden hover:shadow-lg transition-shadow"
+                        className="card p-0 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                        onClick={() => handleMissionClick(mission)}
                       >
                         {mission.image && (
                           <div className="w-full h-48 bg-gray-200 overflow-hidden">
@@ -1223,8 +1215,42 @@ const Dashboard = () => {
       </div>
       
       {/* Modals */}
+      <AddPrizeModal open={addPrizeOpen} onClose={() => setAddPrizeOpen(false)} onSave={handleAddPrize} />
+      <AddRaffleModal open={addRaffleOpen} onClose={() => setAddRaffleOpen(false)} onSave={handleAddRaffle} />
+      <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
       <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
       <AddMissionModal open={addMissionOpen} onClose={() => setAddMissionOpen(false)} onSave={handleAddMission} />
+      
+      <EditPrizeModal 
+        open={editPrizeOpen} 
+        onClose={() => {
+          setEditPrizeOpen(false);
+          setSelectedPrize(null);
+        }} 
+        onSave={handleEditPrize}
+        onDelete={handleDeletePrize}
+        prize={selectedPrize}
+      />
+      <EditRaffleModal 
+        open={editRaffleOpen} 
+        onClose={() => {
+          setEditRaffleOpen(false);
+          setSelectedRaffle(null);
+        }} 
+        onSave={handleEditRaffle}
+        onDelete={handleDeleteRaffle}
+        raffle={selectedRaffle}
+      />
+      <EditMysteryBoxModal 
+        open={editMysteryBoxOpen} 
+        onClose={() => {
+          setEditMysteryBoxOpen(false);
+          setSelectedMysteryBox(null);
+        }} 
+        onSave={handleEditMysteryBox}
+        onDelete={handleDeleteMysteryBox}
+        mysteryBox={selectedMysteryBox}
+      />
       <EditEventModal 
         open={editEventOpen} 
         onClose={() => {
@@ -1234,6 +1260,16 @@ const Dashboard = () => {
         onSave={handleEditEvent}
         onDelete={handleDeleteEvent}
         event={selectedEvent}
+      />
+      <EditMissionModal 
+        open={editMissionOpen} 
+        onClose={() => {
+          setEditMissionOpen(false);
+          setSelectedMission(null);
+        }} 
+        onSave={handleEditMission}
+        onDelete={handleDeleteMission}
+        mission={selectedMission}
       />
     </div>
   );

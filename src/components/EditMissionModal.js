@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw } from 'lucide-react';
+import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw, Trash2 } from 'lucide-react';
 
-const AddMissionModal = ({ open, onClose, onSave }) => {
+const EditMissionModal = ({ open, onClose, onSave, onDelete, mission }) => {
   const [form, setForm] = useState({
     id: '',
     name: '',
@@ -28,6 +28,35 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
     }
   });
 
+  useEffect(() => {
+    if (mission) {
+      setForm({
+        id: mission.id || '',
+        name: mission.name || '',
+        description: mission.description || '',
+        image: mission.image || '',
+        category: mission.category || '',
+        tags: mission.tags || '',
+        restrictCompletions: mission.restrictCompletions || 'unlimited',
+        priority: mission.priority || 'medium',
+        startDate: mission.startDate || '',
+        endDate: mission.endDate || '',
+        refreshPeriod: mission.refreshPeriod || 'none',
+        points: mission.points || '',
+        credits: mission.credits || '',
+        achievements: mission.achievements || '',
+        stepsGranted: mission.stepsGranted || '',
+        requirements: {
+          category: mission.requirements?.category || '',
+          tags: mission.requirements?.tags || '',
+          level: mission.requirements?.level || '',
+          mission: mission.requirements?.mission || '',
+          achievement: mission.requirements?.achievement || ''
+        }
+      });
+    }
+  }, [mission]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (name.startsWith('requirements.')) {
@@ -52,6 +81,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
     onSave(form);
   };
 
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to delete this mission? This action cannot be undone.')) {
+      onDelete(mission);
+    }
+  };
+
   if (!open) return null;
 
   return (
@@ -65,7 +100,7 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Mission</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Edit Mission</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -366,20 +401,30 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div className="flex justify-between pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                onClick={handleDelete}
+                className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors flex items-center"
               >
-                Cancel
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Mission
               </button>
-              <button
-                type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
-              >
-                Create Mission
-              </button>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
             </div>
           </form>
         </motion.div>
@@ -388,4 +433,4 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
   );
 };
 
-export default AddMissionModal; 
+export default EditMissionModal; 
