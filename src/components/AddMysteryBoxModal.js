@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, Tag, DollarSign, Image as ImageIcon, Box, Target } from 'lucide-react';
+import { X, Calendar, Clock, Tag, DollarSign, Image as ImageIcon, Box, Target, Upload } from 'lucide-react';
 
 const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -24,11 +24,42 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
     reqAchievement: ''
   });
 
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedImage(file);
+      
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagePreview(event.target.result);
+        // Also update the form image field with the base64 data
+        setFormData(prev => ({
+          ...prev,
+          image: event.target.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeUploadedImage = () => {
+    setUploadedImage(null);
+    setImagePreview('');
+    setFormData(prev => ({
+      ...prev,
+      image: ''
     }));
   };
 
@@ -61,6 +92,8 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
       reqMission: '',
       reqAchievement: ''
     });
+    setUploadedImage(null);
+    setImagePreview('');
   };
 
   const prizes = [
@@ -135,18 +168,59 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                     placeholder="Enter box description"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="image"
-                      value={formData.image}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter image URL"
-                    />
-                    <ImageIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Mystery Win Image</label>
+                  <div className="space-y-4">
+                    {/* File Upload Section */}
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                        <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                        <span className="text-gray-600">Browse for image</span>
+                      </label>
+                      {uploadedImage && (
+                        <button
+                          type="button"
+                          onClick={removeUploadedImage}
+                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="relative">
+                        <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                          <img
+                            src={imagePreview}
+                            alt="Mystery Win preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="mt-2 text-sm text-gray-500">
+                          {uploadedImage?.name}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* URL Input (fallback) */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                      <input 
+                        name="image" 
+                        value={formData.image} 
+                        onChange={handleChange} 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter image URL (optional if file uploaded)"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div>

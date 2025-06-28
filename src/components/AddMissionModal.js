@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw, Upload, Image as ImageIcon } from 'lucide-react';
+import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw, Upload } from 'lucide-react';
 
 const AddMissionModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
