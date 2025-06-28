@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, Tag, DollarSign, Image as ImageIcon, Ticket, Target, Upload } from 'lucide-react';
+import { X, Calendar, Clock, Tag, DollarSign, Ticket, Target, Upload } from 'lucide-react';
 
 const refreshOptions = [
   { value: '', label: 'None' },
