@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw, Upload } from 'lucide-react';
+import { X, Clock, Tag, DollarSign, Target, Flag, Calendar, Star, RefreshCw, Upload, Zap, HelpCircle, FileText } from 'lucide-react';
 
 const AddMissionModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
@@ -19,6 +19,11 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
     credits: '',
     achievements: '',
     stepsGranted: '',
+    objectives: {
+      event: '',
+      quiz: '',
+      survey: ''
+    },
     requirements: {
       category: '',
       tags: '',
@@ -40,6 +45,15 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
         requirements: {
           ...prev.requirements,
           [requirementField]: value
+        }
+      }));
+    } else if (name.startsWith('objectives.')) {
+      const objectiveField = name.split('.')[1];
+      setForm((prev) => ({
+        ...prev,
+        objectives: {
+          ...prev.objectives,
+          [objectiveField]: value
         }
       }));
     } else {
@@ -136,7 +150,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Description
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <textarea 
                     name="description" 
                     value={form.description} 
@@ -144,11 +163,15 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter mission description"
                     rows="3"
-                    required 
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mission Image
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="space-y-4">
                     {/* File Upload Section */}
                     <div className="flex items-center space-x-4">
@@ -203,24 +226,36 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                  <input 
-                    name="category" 
-                    value={form.category} 
-                    onChange={handleChange} 
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    name="requirements.category"
+                    value={form.requirements.category}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter category"
+                    placeholder="Enter required category"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="relative">
-                    <input 
-                      name="tags" 
-                      value={form.tags} 
-                      onChange={handleChange} 
+                    <input
+                      type="text"
+                      name="requirements.tags"
+                      value={form.requirements.tags}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter tags (comma separated)"
+                      placeholder="Enter required tags"
                     />
                     <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
@@ -251,7 +286,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Priority
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <select
                     name="priority"
                     value={form.priority}
@@ -312,6 +352,67 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
               </div>
             </div>
 
+            {/* Objectives Section */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Zap className="w-5 h-5 mr-2 text-orange-600" />
+                Objectives
+              </h3>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Event
+                  </label>
+                  <select
+                    name="objectives.event"
+                    value={form.objectives.event}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select an event</option>
+                    <option value="daily_checkin">Daily Check-in</option>
+                    <option value="weekly_challenge">Weekly Challenge</option>
+                    <option value="monthly_goal">Monthly Goal</option>
+                    <option value="special_event">Special Event</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Quiz
+                  </label>
+                  <select
+                    name="objectives.quiz"
+                    value={form.objectives.quiz}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select a quiz</option>
+                    <option value="product_knowledge">Product Knowledge</option>
+                    <option value="safety_training">Safety Training</option>
+                    <option value="compliance_test">Compliance Test</option>
+                    <option value="skill_assessment">Skill Assessment</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Survey
+                  </label>
+                  <select
+                    name="objectives.survey"
+                    value={form.objectives.survey}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select a survey</option>
+                    <option value="customer_satisfaction">Customer Satisfaction</option>
+                    <option value="employee_feedback">Employee Feedback</option>
+                    <option value="market_research">Market Research</option>
+                    <option value="product_feedback">Product Feedback</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             {/* Rewards Section */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -320,7 +421,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Points</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Points
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input 
                     name="points" 
                     type="number" 
@@ -332,7 +438,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Credits
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="relative">
                     <input 
                       name="credits" 
@@ -347,7 +458,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievements</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Achievements
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="achievements"
@@ -358,7 +474,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Number of Steps Granted</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Number of Steps Granted
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="number"
                     name="stepsGranted"
@@ -380,7 +501,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="requirements.category"
@@ -391,7 +517,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="relative">
                     <input
                       type="text"
@@ -405,7 +536,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Level
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="number"
                     name="requirements.level"
@@ -417,7 +553,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mission
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="requirements.mission"
@@ -428,7 +569,12 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Achievement
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="requirements.achievement"

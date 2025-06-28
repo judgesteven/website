@@ -28,7 +28,11 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap as ZapIcon,
-  X
+  X,
+  Clock,
+  Target,
+  Tag,
+  Check
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -171,6 +175,48 @@ const Dashboard = () => {
   const [editEventOpen, setEditEventOpen] = useState(false);
   const [editMissionOpen, setEditMissionOpen] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
+  const [guideStep, setGuideStep] = useState(1);
+  const [typingProgress, setTypingProgress] = useState({
+    id: false,
+    name: false,
+    description: false,
+    category: false,
+    tags: false,
+    restrictCompletions: false,
+    points: false,
+    credits: false,
+    achievements: false,
+    stepsGranted: false
+  });
+  const [missionTypingProgress, setMissionTypingProgress] = useState({
+    id: false,
+    name: false,
+    description: false,
+    image: false,
+    category: false,
+    tags: false,
+    restrictCompletions: false,
+    priority: false,
+    startDate: false,
+    endDate: false,
+    refreshPeriod: false,
+    objectivesEvent: false,
+    objectivesQuiz: false,
+    objectivesSurvey: false,
+    points: false,
+    credits: false,
+    achievements: false,
+    stepsGranted: false,
+    requirementsCategory: false,
+    requirementsTags: false,
+    requirementsLevel: false,
+    requirementsMission: false,
+    requirementsAchievement: false
+  });
+  const [currentTypingField, setCurrentTypingField] = useState(null);
+  const [currentMissionTypingField, setCurrentMissionTypingField] = useState(null);
+  const [typedText, setTypedText] = useState('');
+  const [missionTypedText, setMissionTypedText] = useState('');
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [selectedRaffle, setSelectedRaffle] = useState(null);
   const [selectedMysteryBox, setSelectedMysteryBox] = useState(null);
@@ -347,6 +393,169 @@ const Dashboard = () => {
 
   const handleGuideMe = () => {
     setGuideModalOpen(true);
+    setGuideStep(1);
+    // Reset typing progress
+    setTypingProgress({
+      id: false,
+      name: false,
+      description: false,
+      category: false,
+      tags: false,
+      restrictCompletions: false,
+      points: false,
+      credits: false,
+      achievements: false,
+      stepsGranted: false
+    });
+    setMissionTypingProgress({
+      id: false,
+      name: false,
+      description: false,
+      image: false,
+      category: false,
+      tags: false,
+      restrictCompletions: false,
+      priority: false,
+      startDate: false,
+      endDate: false,
+      refreshPeriod: false,
+      objectivesEvent: false,
+      objectivesQuiz: false,
+      objectivesSurvey: false,
+      points: false,
+      credits: false,
+      achievements: false,
+      stepsGranted: false,
+      requirementsCategory: false,
+      requirementsTags: false,
+      requirementsLevel: false,
+      requirementsMission: false,
+      requirementsAchievement: false
+    });
+    setCurrentTypingField(null);
+    setCurrentMissionTypingField(null);
+    setTypedText('');
+    setMissionTypedText('');
+  };
+
+  const handleGuideCreateEvent = () => {
+    setGuideStep(2);
+    // Start typing animation sequence
+    startTypingAnimation();
+  };
+
+  const startTypingAnimation = () => {
+    const fields = [
+      { key: 'id', text: 'daily_checkin' },
+      { key: 'name', text: 'Daily Check-in' },
+      { key: 'description', text: 'Complete your daily check-in to earn rewards and maintain your streak' },
+      { key: 'category', text: 'Engagement' },
+      { key: 'tags', text: 'daily, check-in, engagement, streak' },
+      { key: 'restrictCompletions', text: '1' },
+      { key: 'points', text: '50' },
+      { key: 'credits', text: '25' },
+      { key: 'achievements', text: 'Daily Check-in Master' },
+      { key: 'stepsGranted', text: '1' }
+    ];
+
+    let currentIndex = 0;
+    const typeField = () => {
+      if (currentIndex >= fields.length) {
+        return;
+      }
+
+      const field = fields[currentIndex];
+      setCurrentTypingField(field.key);
+      setTypedText('');
+
+      let charIndex = 0;
+      const typeChar = () => {
+        if (charIndex < field.text.length) {
+          setTypedText(prev => prev + field.text[charIndex]);
+          charIndex++;
+          setTimeout(typeChar, 50); // 50ms delay between characters
+        } else {
+          // Field completed, mark as done and move to next
+          setTypingProgress(prev => ({ ...prev, [field.key]: true }));
+          setCurrentTypingField(null);
+          setTypedText('');
+          currentIndex++;
+          setTimeout(typeField, 300); // 300ms delay between fields
+        }
+      };
+      typeChar();
+    };
+
+    // Start the animation sequence
+    setTimeout(typeField, 500);
+  };
+
+  const handleGuideEventCreated = () => {
+    setGuideStep(4);
+  };
+
+  const handleGuideCreateMission = () => {
+    setGuideStep(5);
+    startMissionTypingAnimation();
+  };
+
+  const startMissionTypingAnimation = () => {
+    const fields = [
+      { key: 'id', text: 'daily_checkin_mission' },
+      { key: 'name', text: 'Daily Check-in Mission' },
+      { key: 'description', text: 'Complete your daily check-in for 7 consecutive days to earn rewards and maintain your streak' },
+      { key: 'image', text: 'https://picsum.photos/400/300?random=20' },
+      { key: 'category', text: 'Engagement' },
+      { key: 'tags', text: 'daily, check-in, engagement, streak, consecutive' },
+      { key: 'restrictCompletions', text: '1' },
+      { key: 'priority', text: 'High' },
+      { key: 'startDate', text: '2024-01-01' },
+      { key: 'endDate', text: '2024-12-31' },
+      { key: 'refreshPeriod', text: 'Daily' },
+      { key: 'objectivesEvent', text: 'Product Launch' },
+      { key: 'objectivesQuiz', text: 'Daily Check-in Quiz' },
+      { key: 'objectivesSurvey', text: 'User Satisfaction Survey' },
+      { key: 'points', text: '100' },
+      { key: 'credits', text: '50' },
+      { key: 'achievements', text: 'Daily Check-in Master, Streak Keeper' },
+      { key: 'stepsGranted', text: '7' },
+      { key: 'requirementsCategory', text: 'Engagement' },
+      { key: 'requirementsTags', text: 'daily, check-in' },
+      { key: 'requirementsLevel', text: '1' },
+      { key: 'requirementsMission', text: 'daily_checkin' },
+      { key: 'requirementsAchievement', text: 'First Check-in' }
+    ];
+
+    let currentIndex = 0;
+    const typeField = () => {
+      if (currentIndex >= fields.length) {
+        return;
+      }
+
+      const field = fields[currentIndex];
+      setCurrentMissionTypingField(field.key);
+      setMissionTypedText('');
+
+      let charIndex = 0;
+      const typeChar = () => {
+        if (charIndex < field.text.length) {
+          setMissionTypedText(prev => prev + field.text[charIndex]);
+          charIndex++;
+          setTimeout(typeChar, 50); // 50ms delay between characters
+        } else {
+          // Field completed, mark as done and move to next
+          setMissionTypingProgress(prev => ({ ...prev, [field.key]: true }));
+          setCurrentMissionTypingField(null);
+          setMissionTypedText('');
+          currentIndex++;
+          setTimeout(typeField, 300); // 300ms delay between fields
+        }
+      };
+      typeChar();
+    };
+
+    // Start the animation sequence
+    setTimeout(typeField, 500);
   };
 
   // Pagination helpers
@@ -396,6 +605,15 @@ const Dashboard = () => {
       </div>
     );
   };
+
+  // Blinking cursor component
+  const BlinkingCursor = () => (
+    <motion.span
+      className="inline-block w-0.5 h-5 bg-blue-500 ml-1"
+      animate={{ opacity: [1, 0, 1] }}
+      transition={{ duration: 1, repeat: Infinity }}
+    />
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -1337,7 +1555,7 @@ const Dashboard = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -1351,130 +1569,1432 @@ const Dashboard = () => {
             </div>
 
             <div className="p-6">
-              <div className="text-center mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">How to Create Your First Mission</h3>
-                <p className="text-gray-600 mb-6">Follow this step-by-step guide to create engaging missions for your users.</p>
-              </div>
-
-              {/* Animation Container */}
-              <div className="relative bg-gray-50 rounded-xl p-8 mb-8 min-h-[400px]">
-                <div className="text-center mb-6">
-                  <h4 className="text-lg font-medium text-gray-900 mb-2">Step 1: Create an Event</h4>
-                  <p className="text-gray-600">First, you'll need to create an event that will power your mission.</p>
-                </div>
-
-                {/* Simulated Dashboard Interface */}
-                <div className="bg-white rounded-lg p-6 shadow-sm max-w-2xl mx-auto">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <ZapIcon className="w-6 h-6 text-primary-600" />
-                    <h5 className="text-lg font-semibold text-gray-900">Events</h5>
+              {guideStep === 1 && (
+                <>
+                  <div className="text-center mb-8">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">How to Create Your First Mission</h3>
+                    <p className="text-gray-600 mb-6">Follow this step-by-step guide to create engaging missions for your users.</p>
                   </div>
-                  <p className="text-gray-600 mb-4">Use events to power your missions</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                        <input
-                          type="text"
-                          placeholder="Search events..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                          disabled
-                        />
-                      </div>
-                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm" disabled>
-                        <Filter className="w-4 h-4 mr-2" />
-                        Filter
-                      </button>
+
+                  {/* Animation Container */}
+                  <div className="relative bg-gray-50 rounded-xl p-8 mb-8 min-h-[400px]">
+                    <div className="text-center mb-6">
+                      <h4 className="text-lg font-medium text-gray-900 mb-2">Step 1: Create an Event</h4>
+                      <p className="text-gray-600">First, you'll need to create an event that will power your mission.</p>
                     </div>
-                    
-                    {/* Animated Create Event Button */}
-                    <motion.button 
-                      className="btn-primary relative"
-                      animate={{
-                        scale: [1, 1.05, 1],
-                        boxShadow: [
-                          "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                          "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                          "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                        ]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        repeatDelay: 3
-                      }}
-                      onClick={() => {
-                        // Simulate opening the event modal
-                        setTimeout(() => {
-                          setGuideModalOpen(false);
-                          setAddEventOpen(true);
-                        }, 500);
-                      }}
-                    >
-                      Create Event
+
+                    {/* Simulated Dashboard Interface */}
+                    <div className="bg-white rounded-lg p-6 shadow-sm max-w-2xl mx-auto">
+                      <div className="flex items-center space-x-3 mb-4">
+                        <ZapIcon className="w-6 h-6 text-primary-600" />
+                        <h5 className="text-lg font-semibold text-gray-900">Events</h5>
+                      </div>
+                      <p className="text-gray-600 mb-4">Use events to power your missions</p>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <input
+                              type="text"
+                              placeholder="Search events..."
+                              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              disabled
+                            />
+                          </div>
+                          <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm" disabled>
+                            <Filter className="w-4 h-4 mr-2" />
+                            Filter
+                          </button>
+                        </div>
+                        
+                        {/* Animated Create Event Button */}
+                        <motion.button 
+                          className="btn-primary relative"
+                          animate={{
+                            scale: [1, 1.05, 1],
+                            boxShadow: [
+                              "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                              "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                              "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                            ]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 3
+                          }}
+                          onClick={handleGuideCreateEvent}
+                        >
+                          Create Event
+                          <motion.div
+                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                            animate={{
+                              scale: [1, 1.3, 1],
+                              opacity: [1, 0.7, 1]
+                            }}
+                            transition={{
+                              duration: 1.5,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          >
+                            <motion.div
+                              className="w-2 h-2 bg-white rounded-full"
+                              animate={{
+                                scale: [1, 1.2, 1]
+                              }}
+                              transition={{
+                                duration: 1.5,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                              }}
+                            />
+                          </motion.div>
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    {/* Animation Instructions */}
+                    <div className="text-center mt-6">
                       <motion.div
-                        className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
-                        animate={{
-                          scale: [1, 1.5, 1],
-                          opacity: [1, 0.7, 1]
-                        }}
-                        transition={{
-                          duration: 1,
-                          repeat: Infinity
-                        }}
-                      />
-                    </motion.button>
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1 }}
+                        className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg"
+                      >
+                        <HelpCircle className="w-4 h-4 mr-2" />
+                        Click the "Create Event" button to get started
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Next Steps */}
+                  <div className="bg-blue-50 rounded-xl p-6">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">What happens next?</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                          1
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">Create an Event</p>
+                          <p className="text-gray-600 text-sm">Define the event that will trigger your mission completion</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                          2
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">Create a Mission</p>
+                          <p className="text-gray-600 text-sm">Set up the mission with rewards, requirements, and duration</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                          3
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">Launch & Monitor</p>
+                          <p className="text-gray-600 text-sm">Activate your mission and track user engagement</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {guideStep === 2 && (
+                <div className="space-y-6">
+                  <div className="text-center mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 1: Create an Event</h3>
+                    <p className="text-gray-600">Let's create your first event. I'll help you fill out the form!</p>
+                  </div>
+
+                  {/* Embedded Create Event Modal */}
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <div className="bg-white rounded-lg shadow-sm">
+                      {/* Header */}
+                      <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <h2 className="text-xl font-bold text-gray-900">Create New Event</h2>
+                        <div className="w-8 h-8"></div> {/* Spacer for alignment */}
+                      </div>
+
+                      <form className="p-6 space-y-8">
+                        {/* Event Details Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Zap className="w-5 h-5 mr-2 text-blue-600" />
+                            Event Details
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'id' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'id' ? typedText : (typingProgress.id ? 'daily_checkin' : '')}
+                                </span>
+                                {currentTypingField === 'id' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.id && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'name' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'name' ? typedText : (typingProgress.name ? 'Daily Check-in' : '')}
+                                </span>
+                                {currentTypingField === 'name' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.name && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="md:col-span-2 relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Description
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 min-h-[80px] ${currentTypingField === 'description' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'description' ? typedText : (typingProgress.description ? 'Complete your daily check-in to earn rewards and maintain your streak' : '')}
+                                </span>
+                                {currentTypingField === 'description' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.description && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Category
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'category' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'category' ? typedText : (typingProgress.category ? 'Engagement' : '')}
+                                </span>
+                                {currentTypingField === 'category' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.category && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Tags
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'tags' ? 'border-blue-500' : ''}`}>
+                                <Tag className="w-4 h-4 text-gray-400 mr-2" />
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'tags' ? typedText : (typingProgress.tags ? 'daily, check-in, engagement, streak' : '')}
+                                </span>
+                                {currentTypingField === 'tags' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.tags && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Limits & Rewards Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Clock className="w-5 h-5 mr-2 text-green-600" />
+                            Limits & Rewards
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Completions</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'restrictCompletions' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'restrictCompletions' ? typedText : (typingProgress.restrictCompletions ? '1 per user' : '')}
+                                </span>
+                                {currentTypingField === 'restrictCompletions' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.restrictCompletions && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Points
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'points' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'points' ? typedText : (typingProgress.points ? '50' : '')}
+                                </span>
+                                {currentTypingField === 'points' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.points && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Credits
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'credits' ? 'border-blue-500' : ''}`}>
+                                <DollarSign className="w-4 h-4 text-gray-400 mr-2" />
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'credits' ? typedText : (typingProgress.credits ? '25' : '')}
+                                </span>
+                                {currentTypingField === 'credits' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.credits && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Achievements Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Target className="w-5 h-5 mr-2 text-purple-600" />
+                            Achievements
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Achievements
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'achievements' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'achievements' ? typedText : (typingProgress.achievements ? 'Daily Check-in Master' : '')}
+                                </span>
+                                {currentTypingField === 'achievements' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.achievements && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Number of Steps Granted
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'stepsGranted' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentTypingField === 'stepsGranted' ? typedText : (typingProgress.stepsGranted ? '1' : '')}
+                                </span>
+                                {currentTypingField === 'stepsGranted' && <BlinkingCursor />}
+                              </div>
+                              {typingProgress.stepsGranted && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                          <button
+                            type="button"
+                            onClick={() => setGuideStep(1)}
+                            className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                          >
+                            ← Back
+                          </button>
+                          <div className="flex items-center space-x-4">
+                            {/* Progress indicator */}
+                            <div className="text-sm text-gray-500">
+                              {Object.values(typingProgress).filter(Boolean).length} / {Object.keys(typingProgress).length} fields completed
+                            </div>
+                            <motion.button
+                              type="button"
+                              className={`relative ${Object.values(typingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
+                              animate={Object.values(typingProgress).every(Boolean) ? {
+                                scale: [1, 1.05, 1],
+                                boxShadow: [
+                                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                                  "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                                ]
+                              } : {}}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                repeatDelay: 2
+                              }}
+                              onClick={Object.values(typingProgress).every(Boolean) ? handleGuideEventCreated : undefined}
+                              disabled={!Object.values(typingProgress).every(Boolean)}
+                            >
+                              Create Event
+                              {Object.values(typingProgress).every(Boolean) && (
+                                <motion.div
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                  animate={{
+                                    scale: [1, 1.3, 1],
+                                    opacity: [1, 0.7, 1]
+                                  }}
+                                  transition={{
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  <motion.div
+                                    className="w-2 h-2 bg-white rounded-full"
+                                    animate={{
+                                      scale: [1, 1.2, 1]
+                                    }}
+                                    transition={{
+                                      duration: 1.5,
+                                      repeat: Infinity,
+                                      ease: "easeInOut"
+                                    }}
+                                  />
+                                </motion.div>
+                              )}
+                            </motion.button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
+              )}
 
-                {/* Animation Instructions */}
-                <div className="text-center mt-6">
+              {guideStep === 4 && (
+                <div className="text-center py-12">
                   <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center"
+                    >
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </motion.div>
+                  </motion.div>
+                  
+                  <motion.h3
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1 }}
-                    className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg"
+                    transition={{ delay: 0.3 }}
+                    className="text-2xl font-bold text-gray-900 mb-4"
                   >
-                    <HelpCircle className="w-4 h-4 mr-2" />
-                    Click the "Create Event" button to get started
-                  </motion.div>
-                </div>
-              </div>
+                    Great! You now have an event to power your mission
+                  </motion.h3>
+                  
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="text-lg text-gray-600 mb-8"
+                  >
+                    Let's create a mission together
+                  </motion.p>
 
-              {/* Next Steps */}
-              <div className="bg-blue-50 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">What happens next?</h4>
-                <div className="space-y-3">
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      1
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Create an Event</p>
-                      <p className="text-gray-600 text-sm">Define the event that will trigger your mission completion</p>
-                    </div>
+                  <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="btn-primary relative"
+                    onClick={handleGuideCreateMission}
+                  >
+                    Create Mission
+                    <motion.div
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [1, 0.7, 1]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <motion.div
+                        className="w-2 h-2 bg-white rounded-full"
+                        animate={{
+                          scale: [1, 1.2, 1]
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </motion.div>
+                  </motion.button>
+                </div>
+              )}
+
+              {guideStep === 5 && (
+                <div className="space-y-6">
+                  <div className="text-center mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 2: Create a Mission</h3>
+                    <p className="text-gray-600">Now let's create a mission that uses the event we just created!</p>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      2
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Create a Mission</p>
-                      <p className="text-gray-600 text-sm">Set up the mission with rewards, requirements, and duration</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
-                      3
-                    </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Launch & Monitor</p>
-                      <p className="text-gray-600 text-sm">Activate your mission and track user engagement</p>
+
+                  {/* Embedded Create Mission Modal */}
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <div className="bg-white rounded-lg shadow-sm">
+                      {/* Header */}
+                      <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <h2 className="text-xl font-bold text-gray-900">Create New Mission</h2>
+                        <div className="w-8 h-8"></div> {/* Spacer for alignment */}
+                      </div>
+
+                      <form className="p-6 space-y-8">
+                        {/* Mission Details Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Flag className="w-5 h-5 mr-2 text-blue-600" />
+                            Mission Details
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'id' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'id' ? missionTypedText : (missionTypingProgress.id ? 'daily_checkin_mission' : '')}
+                                </span>
+                                {currentMissionTypingField === 'id' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.id && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'name' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'name' ? missionTypedText : (missionTypingProgress.name ? 'Daily Check-in Mission' : '')}
+                                </span>
+                                {currentMissionTypingField === 'name' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.name && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="md:col-span-2 relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Description
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 min-h-[80px] ${currentMissionTypingField === 'description' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'description' ? missionTypedText : (missionTypingProgress.description ? 'Complete your daily check-in for 7 consecutive days to earn rewards and maintain your streak' : '')}
+                                </span>
+                                {currentMissionTypingField === 'description' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.description && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="md:col-span-2 relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Mission Image
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'image' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'image' ? missionTypedText : (missionTypingProgress.image ? 'https://picsum.photos/400/300?random=20' : '')}
+                                </span>
+                                {currentMissionTypingField === 'image' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.image && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Category
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'category' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'category' ? missionTypedText : (missionTypingProgress.category ? 'Engagement' : '')}
+                                </span>
+                                {currentMissionTypingField === 'category' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.category && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Tags
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'tags' ? 'border-blue-500' : ''}`}>
+                                <Tag className="w-4 h-4 text-gray-400 mr-2" />
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'tags' ? missionTypedText : (missionTypingProgress.tags ? 'daily, check-in, engagement, streak, consecutive' : '')}
+                                </span>
+                                {currentMissionTypingField === 'tags' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.tags && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Limits & Settings Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Clock className="w-5 h-5 mr-2 text-green-600" />
+                            Limits & Settings
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Completions</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'restrictCompletions' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'restrictCompletions' ? missionTypedText : (missionTypingProgress.restrictCompletions ? '1' : '')}
+                                </span>
+                                {currentMissionTypingField === 'restrictCompletions' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.restrictCompletions && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Priority
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'priority' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'priority' ? missionTypedText : (missionTypingProgress.priority ? 'High' : '')}
+                                </span>
+                                {currentMissionTypingField === 'priority' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.priority && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'startDate' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'startDate' ? missionTypedText : (missionTypingProgress.startDate ? '2024-01-01' : '')}
+                                </span>
+                                {currentMissionTypingField === 'startDate' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.startDate && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'endDate' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'endDate' ? missionTypedText : (missionTypingProgress.endDate ? '2024-12-31' : '')}
+                                </span>
+                                {currentMissionTypingField === 'endDate' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.endDate && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'refreshPeriod' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'refreshPeriod' ? missionTypedText : (missionTypingProgress.refreshPeriod ? 'Daily' : '')}
+                                </span>
+                                {currentMissionTypingField === 'refreshPeriod' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.refreshPeriod && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Objectives Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Zap className="w-5 h-5 mr-2 text-blue-600" />
+                            Objectives
+                          </h3>
+                          <div className="space-y-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Select Event
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'objectivesEvent' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'objectivesEvent' ? missionTypedText : (missionTypingProgress.objectivesEvent ? 'Product Launch' : '')}
+                                </span>
+                                {currentMissionTypingField === 'objectivesEvent' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.objectivesEvent && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Select Quiz
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'objectivesQuiz' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'objectivesQuiz' ? missionTypedText : (missionTypingProgress.objectivesQuiz ? 'Daily Check-in Quiz' : '')}
+                                </span>
+                                {currentMissionTypingField === 'objectivesQuiz' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.objectivesQuiz && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Select Survey
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'objectivesSurvey' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'objectivesSurvey' ? missionTypedText : (missionTypingProgress.objectivesSurvey ? 'User Satisfaction Survey' : '')}
+                                </span>
+                                {currentMissionTypingField === 'objectivesSurvey' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.objectivesSurvey && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Rewards Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
+                            Rewards
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Points
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'points' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'points' ? missionTypedText : (missionTypingProgress.points ? '100' : '')}
+                                </span>
+                                {currentMissionTypingField === 'points' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.points && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Credits
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'credits' ? 'border-blue-500' : ''}`}>
+                                <DollarSign className="w-4 h-4 text-gray-400 mr-2" />
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'credits' ? missionTypedText : (missionTypingProgress.credits ? '50' : '')}
+                                </span>
+                                {currentMissionTypingField === 'credits' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.credits && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Achievements
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'achievements' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'achievements' ? missionTypedText : (missionTypingProgress.achievements ? 'Daily Check-in Master, Streak Keeper' : '')}
+                                </span>
+                                {currentMissionTypingField === 'achievements' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.achievements && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Number of Steps Granted
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'stepsGranted' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'stepsGranted' ? missionTypedText : (missionTypingProgress.stepsGranted ? '7' : '')}
+                                </span>
+                                {currentMissionTypingField === 'stepsGranted' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.stepsGranted && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Requirements Section */}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                            <Target className="w-5 h-5 mr-2 text-purple-600" />
+                            Requirements
+                          </h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Category
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'requirementsCategory' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'requirementsCategory' ? missionTypedText : (missionTypingProgress.requirementsCategory ? 'Engagement' : '')}
+                                </span>
+                                {currentMissionTypingField === 'requirementsCategory' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.requirementsCategory && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Tags
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'requirementsTags' ? 'border-blue-500' : ''}`}>
+                                <Tag className="w-4 h-4 text-gray-400 mr-2" />
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'requirementsTags' ? missionTypedText : (missionTypingProgress.requirementsTags ? 'daily, check-in' : '')}
+                                </span>
+                                {currentMissionTypingField === 'requirementsTags' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.requirementsTags && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Level
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'requirementsLevel' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'requirementsLevel' ? missionTypedText : (missionTypingProgress.requirementsLevel ? '1' : '')}
+                                </span>
+                                {currentMissionTypingField === 'requirementsLevel' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.requirementsLevel && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Mission
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'requirementsMission' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'requirementsMission' ? missionTypedText : (missionTypingProgress.requirementsMission ? 'daily_checkin' : '')}
+                                </span>
+                                {currentMissionTypingField === 'requirementsMission' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.requirementsMission && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <div className="relative">
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Achievement
+                                <motion.span 
+                                  className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
+                                  animate={{
+                                    opacity: [0.4, 1, 0.4],
+                                    scale: [0.95, 1.05, 0.95],
+                                    backgroundColor: ["rgba(254, 243, 199, 0.3)", "rgba(254, 243, 199, 0.8)", "rgba(254, 243, 199, 0.3)"]
+                                  }}
+                                  transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  (Optional)
+                                </motion.span>
+                              </label>
+                              <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'requirementsAchievement' ? 'border-blue-500' : ''}`}>
+                                <span className="text-gray-900">
+                                  {currentMissionTypingField === 'requirementsAchievement' ? missionTypedText : (missionTypingProgress.requirementsAchievement ? 'First Check-in' : '')}
+                                </span>
+                                {currentMissionTypingField === 'requirementsAchievement' && <BlinkingCursor />}
+                              </div>
+                              {missionTypingProgress.requirementsAchievement && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  className="absolute right-3 top-8 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center"
+                                >
+                                  <Check className="w-3 h-3 text-white" />
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+                          <button
+                            type="button"
+                            onClick={() => setGuideStep(4)}
+                            className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                          >
+                            ← Back
+                          </button>
+                          <div className="flex items-center space-x-4">
+                            {/* Progress indicator */}
+                            <div className="text-sm text-gray-500">
+                              {Object.values(missionTypingProgress).filter(Boolean).length} / {Object.keys(missionTypingProgress).length} fields completed
+                            </div>
+                            <motion.button
+                              type="button"
+                              className={`relative ${Object.values(missionTypingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
+                              animate={Object.values(missionTypingProgress).every(Boolean) ? {
+                                scale: [1, 1.05, 1],
+                                boxShadow: [
+                                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                                  "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                                  "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                                ]
+                              } : {}}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                repeatDelay: 2
+                              }}
+                              onClick={Object.values(missionTypingProgress).every(Boolean) ? () => {
+                                setGuideModalOpen(false);
+                                // Show final success message or redirect
+                              } : undefined}
+                              disabled={!Object.values(missionTypingProgress).every(Boolean)}
+                            >
+                              Create Mission
+                              {Object.values(missionTypingProgress).every(Boolean) && (
+                                <motion.div
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                  animate={{
+                                    scale: [1, 1.3, 1],
+                                    opacity: [1, 0.7, 1]
+                                  }}
+                                  transition={{
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                  }}
+                                >
+                                  <motion.div
+                                    className="w-2 h-2 bg-white rounded-full"
+                                    animate={{
+                                      scale: [1, 1.2, 1]
+                                    }}
+                                    transition={{
+                                      duration: 1.5,
+                                      repeat: Infinity,
+                                      ease: "easeInOut"
+                                    }}
+                                  />
+                                </motion.div>
+                              )}
+                            </motion.button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </motion.div>
         </div>
