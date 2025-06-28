@@ -33,6 +33,7 @@ import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
 import AddMysteryBoxModal from './AddMysteryBoxModal';
 import AddEventModal from './AddEventModal';
+import AddMissionModal from './AddMissionModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -153,6 +154,7 @@ const Dashboard = () => {
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
   const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
   const [addEventOpen, setAddEventOpen] = useState(false);
+  const [addMissionOpen, setAddMissionOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -164,6 +166,7 @@ const Dashboard = () => {
   const [prizesList, setPrizesList] = useState(prizes);
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
+  const [missionsList, setMissionsList] = useState(missions);
   const [eventsList, setEventsList] = useState([
     { name: 'Product Launch', description: 'Launch event for new product', createdOn: '2024-02-15' },
     { name: 'Holiday Campaign', description: 'Special holiday promotion', createdOn: '2024-12-01' },
@@ -301,6 +304,11 @@ const Dashboard = () => {
   const handleEventClick = (event) => {
     setSelectedEvent(event);
     setEditEventOpen(true);
+  };
+
+  const handleAddMission = (mission) => {
+    setMissionsList((prev) => [...prev, mission]);
+    setAddMissionOpen(false);
   };
 
   // Pagination helpers
@@ -923,12 +931,12 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary">
+                    <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
                       Create Mission
                     </button>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(missions, missionsPage).map((mission, index) => (
+                    {getPageItems(missionsList, missionsPage).map((mission, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, y: 20 }}
@@ -985,7 +993,7 @@ const Dashboard = () => {
                       </motion.div>
                     ))}
                   </div>
-                  <PaginationControls currentPage={missionsPage} totalPages={getTotalPages(missions)} onPageChange={(newPage) => setMissionsPage(newPage)} />
+                  <PaginationControls currentPage={missionsPage} totalPages={getTotalPages(missionsList)} onPageChange={(newPage) => setMissionsPage(newPage)} />
                 </div>
               </div>
             )}
@@ -1216,6 +1224,7 @@ const Dashboard = () => {
       
       {/* Modals */}
       <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
+      <AddMissionModal open={addMissionOpen} onClose={() => setAddMissionOpen(false)} onSave={handleAddMission} />
       <EditEventModal 
         open={editEventOpen} 
         onClose={() => {
