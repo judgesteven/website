@@ -964,9 +964,15 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
-                      Create Mission
-                    </button>
+                    <div className="flex items-center space-x-3">
+                      <button className="flex items-center px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                        <HelpCircle className="w-4 h-4 mr-2" />
+                        Guide me
+                      </button>
+                      <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
+                        Create Mission
+                      </button>
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {getPageItems(missionsList, missionsPage).map((mission, index) => (
