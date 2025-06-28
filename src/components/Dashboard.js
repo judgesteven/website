@@ -27,7 +27,8 @@ import {
   ClipboardCheck,
   ChevronLeft,
   ChevronRight,
-  Zap as ZapIcon
+  Zap as ZapIcon,
+  X
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -169,6 +170,7 @@ const Dashboard = () => {
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
   const [editEventOpen, setEditEventOpen] = useState(false);
   const [editMissionOpen, setEditMissionOpen] = useState(false);
+  const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState(null);
   const [selectedRaffle, setSelectedRaffle] = useState(null);
   const [selectedMysteryBox, setSelectedMysteryBox] = useState(null);
@@ -341,6 +343,10 @@ const Dashboard = () => {
   const handleMissionClick = (mission) => {
     setSelectedMission(mission);
     setEditMissionOpen(true);
+  };
+
+  const handleGuideMe = () => {
+    setGuideModalOpen(true);
   };
 
   // Pagination helpers
@@ -965,7 +971,7 @@ const Dashboard = () => {
                       </button>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <button className="flex items-center px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                      <button className="flex items-center px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors" onClick={handleGuideMe}>
                         <HelpCircle className="w-4 h-4 mr-2" />
                         Guide me
                       </button>
@@ -1323,6 +1329,156 @@ const Dashboard = () => {
         onDelete={handleDeleteMission}
         mission={selectedMission}
       />
+
+      {/* Guide Modal */}
+      {guideModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">Mission Creation Guide</h2>
+              <button
+                onClick={() => setGuideModalOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              <div className="text-center mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">How to Create Your First Mission</h3>
+                <p className="text-gray-600 mb-6">Follow this step-by-step guide to create engaging missions for your users.</p>
+              </div>
+
+              {/* Animation Container */}
+              <div className="relative bg-gray-50 rounded-xl p-8 mb-8 min-h-[400px]">
+                <div className="text-center mb-6">
+                  <h4 className="text-lg font-medium text-gray-900 mb-2">Step 1: Create an Event</h4>
+                  <p className="text-gray-600">First, you'll need to create an event that will power your mission.</p>
+                </div>
+
+                {/* Simulated Dashboard Interface */}
+                <div className="bg-white rounded-lg p-6 shadow-sm max-w-2xl mx-auto">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <ZapIcon className="w-6 h-6 text-primary-600" />
+                    <h5 className="text-lg font-semibold text-gray-900">Events</h5>
+                  </div>
+                  <p className="text-gray-600 mb-4">Use events to power your missions</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search events..."
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          disabled
+                        />
+                      </div>
+                      <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm" disabled>
+                        <Filter className="w-4 h-4 mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                    
+                    {/* Animated Create Event Button */}
+                    <motion.button 
+                      className="btn-primary relative"
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        boxShadow: [
+                          "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                          "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                          "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                        ]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 3
+                      }}
+                      onClick={() => {
+                        // Simulate opening the event modal
+                        setTimeout(() => {
+                          setGuideModalOpen(false);
+                          setAddEventOpen(true);
+                        }, 500);
+                      }}
+                    >
+                      Create Event
+                      <motion.div
+                        className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
+                        animate={{
+                          scale: [1, 1.5, 1],
+                          opacity: [1, 0.7, 1]
+                        }}
+                        transition={{
+                          duration: 1,
+                          repeat: Infinity
+                        }}
+                      />
+                    </motion.button>
+                  </div>
+                </div>
+
+                {/* Animation Instructions */}
+                <div className="text-center mt-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1 }}
+                    className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg"
+                  >
+                    <HelpCircle className="w-4 h-4 mr-2" />
+                    Click the "Create Event" button to get started
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Next Steps */}
+              <div className="bg-blue-50 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">What happens next?</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                      1
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Create an Event</p>
+                      <p className="text-gray-600 text-sm">Define the event that will trigger your mission completion</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                      2
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Create a Mission</p>
+                      <p className="text-gray-600 text-sm">Set up the mission with rewards, requirements, and duration</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium mt-0.5">
+                      3
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Launch & Monitor</p>
+                      <p className="text-gray-600 text-sm">Activate your mission and track user engagement</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
