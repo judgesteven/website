@@ -887,10 +887,6 @@ const Dashboard = () => {
                         <div className="mb-4">
                           <h4 className="font-semibold text-gray-900 mb-2">{event.name}</h4>
                           <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-500">Created On:</span>
-                            <span className="font-medium">{event.createdOn}</span>
-                          </div>
                         </div>
                       </motion.div>
                     ))}
@@ -975,10 +971,6 @@ const Dashboard = () => {
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">End Date:</span>
                               <span className="font-medium">{mission.endDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Created On:</span>
-                              <span className="font-medium">{mission.createdOn}</span>
                             </div>
                           </div>
                         </div>
