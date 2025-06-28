@@ -815,10 +815,6 @@ const Dashboard = () => {
                               <span className="font-medium">{box.available}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Redeemed:</span>
-                              <span className="font-medium">{box.redeemed}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Start Date:</span>
                               <span className="font-medium">{box.startDate}</span>
                             </div>
