@@ -496,10 +496,14 @@ const Dashboard = () => {
 
   const handleGuideCreateMission = () => {
     setGuideStep(5);
-    startMissionTypingAnimation();
+    // Add a small delay to ensure the component is rendered before starting animation
+    setTimeout(() => {
+      startMissionTypingAnimation();
+    }, 100);
   };
 
   const startMissionTypingAnimation = () => {
+    console.log('Starting mission typing animation...');
     const fields = [
       { key: 'id', text: 'daily_checkin_mission' },
       { key: 'name', text: 'Daily Check-in Mission' },
@@ -529,10 +533,12 @@ const Dashboard = () => {
     let currentIndex = 0;
     const typeField = () => {
       if (currentIndex >= fields.length) {
+        console.log('Animation completed!');
         return;
       }
 
       const field = fields[currentIndex];
+      console.log(`Typing field: ${field.key}`);
       setCurrentMissionTypingField(field.key);
       setMissionTypedText('');
 
@@ -544,6 +550,7 @@ const Dashboard = () => {
           setTimeout(typeChar, 50); // 50ms delay between characters
         } else {
           // Field completed, mark as done and move to next
+          console.log(`Completed field: ${field.key}`);
           setMissionTypingProgress(prev => ({ ...prev, [field.key]: true }));
           setCurrentMissionTypingField(null);
           setMissionTypedText('');
@@ -2089,10 +2096,16 @@ const Dashboard = () => {
                               Create Event
                               {Object.values(typingProgress).every(Boolean) && (
                                 <motion.div
-                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
+                                  initial={{ scale: 0 }}
                                   animate={{
                                     scale: [1, 1.3, 1],
-                                    opacity: [1, 0.7, 1]
+                                    opacity: [1, 0.7, 1],
+                                    boxShadow: [
+                                      "0 0 0 0 rgba(239, 68, 68, 0.7)",
+                                      "0 0 0 10px rgba(239, 68, 68, 0)",
+                                      "0 0 0 0 rgba(239, 68, 68, 0.7)"
+                                    ]
                                   }}
                                   transition={{
                                     duration: 1.5,
@@ -2169,10 +2182,16 @@ const Dashboard = () => {
                   >
                     Create Mission
                     <motion.div
-                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
+                      initial={{ scale: 0 }}
                       animate={{
                         scale: [1, 1.3, 1],
-                        opacity: [1, 0.7, 1]
+                        opacity: [1, 0.7, 1],
+                        boxShadow: [
+                          "0 0 0 0 rgba(239, 68, 68, 0.7)",
+                          "0 0 0 10px rgba(239, 68, 68, 0)",
+                          "0 0 0 0 rgba(239, 68, 68, 0.7)"
+                        ]
                       }}
                       transition={{
                         duration: 1.5,
@@ -2201,6 +2220,15 @@ const Dashboard = () => {
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 2: Create a Mission</h3>
                     <p className="text-gray-600">Now let's create a mission that uses the event we just created!</p>
+                    {currentMissionTypingField && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-2 text-sm text-blue-600 font-medium"
+                      >
+                        ✨ Auto-filling form fields...
+                      </motion.div>
+                    )}
                   </div>
 
                   {/* Embedded Create Mission Modal */}
@@ -2941,6 +2969,7 @@ const Dashboard = () => {
                             <motion.button
                               type="button"
                               className={`relative ${Object.values(missionTypingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
+                              initial={Object.values(missionTypingProgress).every(Boolean) ? { scale: 0.8 } : {}}
                               animate={Object.values(missionTypingProgress).every(Boolean) ? {
                                 scale: [1, 1.05, 1],
                                 boxShadow: [
@@ -2962,10 +2991,16 @@ const Dashboard = () => {
                               Create Mission
                               {Object.values(missionTypingProgress).every(Boolean) && (
                                 <motion.div
-                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
+                                  initial={{ scale: 0 }}
                                   animate={{
                                     scale: [1, 1.3, 1],
-                                    opacity: [1, 0.7, 1]
+                                    opacity: [1, 0.7, 1],
+                                    boxShadow: [
+                                      "0 0 0 0 rgba(239, 68, 68, 0.7)",
+                                      "0 0 0 10px rgba(239, 68, 68, 0)",
+                                      "0 0 0 0 rgba(239, 68, 68, 0.7)"
+                                    ]
                                   }}
                                   transition={{
                                     duration: 1.5,
@@ -3007,7 +3042,7 @@ const Dashboard = () => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
-                      className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                      className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
                     >
                       <Check className="w-8 h-8 text-green-600" />
                     </motion.div>
@@ -3039,10 +3074,16 @@ const Dashboard = () => {
                     >
                       Close
                       <motion.div
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
+                        initial={{ scale: 0 }}
                         animate={{
                           scale: [1, 1.3, 1],
-                          opacity: [1, 0.7, 1]
+                          opacity: [1, 0.7, 1],
+                          boxShadow: [
+                            "0 0 0 0 rgba(239, 68, 68, 0.7)",
+                            "0 0 0 10px rgba(239, 68, 68, 0)",
+                            "0 0 0 0 rgba(239, 68, 68, 0.7)"
+                          ]
                         }}
                         transition={{
                           duration: 1.5,
