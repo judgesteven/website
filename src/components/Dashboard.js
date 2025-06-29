@@ -2940,49 +2940,52 @@ const Dashboard = () => {
                             </div>
                             <motion.button
                               type="button"
-                              className="btn-primary relative"
-                              animate={{
+                              className={`relative ${Object.values(missionTypingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
+                              animate={Object.values(missionTypingProgress).every(Boolean) ? {
                                 scale: [1, 1.05, 1],
                                 boxShadow: [
                                   "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                                   "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
                                   "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
                                 ]
-                              }}
+                              } : {}}
                               transition={{
                                 duration: 2,
                                 repeat: Infinity,
                                 repeatDelay: 2
                               }}
-                              onClick={() => {
+                              onClick={Object.values(missionTypingProgress).every(Boolean) ? () => {
                                 setGuideStep(6);
-                              }}
+                              } : undefined}
+                              disabled={!Object.values(missionTypingProgress).every(Boolean)}
                             >
                               Create Mission
-                              <motion.div
-                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
-                                animate={{
-                                  scale: [1, 1.3, 1],
-                                  opacity: [1, 0.7, 1]
-                                }}
-                                transition={{
-                                  duration: 1.5,
-                                  repeat: Infinity,
-                                  ease: "easeInOut"
-                                }}
-                              >
+                              {Object.values(missionTypingProgress).every(Boolean) && (
                                 <motion.div
-                                  className="w-2 h-2 bg-white rounded-full"
+                                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
                                   animate={{
-                                    scale: [1, 1.2, 1]
+                                    scale: [1, 1.3, 1],
+                                    opacity: [1, 0.7, 1]
                                   }}
                                   transition={{
                                     duration: 1.5,
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                   }}
-                                />
-                              </motion.div>
+                                >
+                                  <motion.div
+                                    className="w-2 h-2 bg-white rounded-full"
+                                    animate={{
+                                      scale: [1, 1.2, 1]
+                                    }}
+                                    transition={{
+                                      duration: 1.5,
+                                      repeat: Infinity,
+                                      ease: "easeInOut"
+                                    }}
+                                  />
+                                </motion.div>
+                              )}
                             </motion.button>
                           </div>
                         </div>
@@ -3031,10 +3034,34 @@ const Dashboard = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1.0 }}
-                      className="btn-primary"
+                      className="btn-primary relative"
                       onClick={() => setGuideModalOpen(false)}
                     >
                       Close
+                      <motion.div
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          opacity: [1, 0.7, 1]
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <motion.div
+                          className="w-2 h-2 bg-white rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1]
+                          }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      </motion.div>
                     </motion.button>
                   </motion.div>
                 </div>
