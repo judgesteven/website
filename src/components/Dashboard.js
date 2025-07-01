@@ -836,7 +836,7 @@ const Dashboard = () => {
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
-            <button className="btn-primary">
+            <button className="btn-primary rounded-2xl py-2 px-4 text-sm">
               New Campaign
             </button>
           </div>
