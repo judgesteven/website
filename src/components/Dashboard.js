@@ -1410,9 +1410,6 @@ const Dashboard = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div className="flex items-center space-x-2">
-                                  <button className="text-primary-600 hover:text-primary-900">
-                                    <Eye className="w-4 h-4" />
-                                  </button>
                                   <button 
                                     className="text-gray-600 hover:text-gray-900"
                                     onClick={() => {
@@ -1814,9 +1811,6 @@ const Dashboard = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div className="flex items-center space-x-2">
-                                  <button className="text-primary-600 hover:text-primary-900">
-                                    <Eye className="w-4 h-4" />
-                                  </button>
                                   <button 
                                     className="text-gray-600 hover:text-gray-900"
                                     onClick={() => handleStartEditMission(mission)}
