@@ -234,6 +234,7 @@ const tabs = [
   { id: 'players', name: 'Players', icon: Users },
   { id: 'teams', name: 'Teams', icon: Users2 },
   { id: 'missions', name: 'Missions', icon: Flag },
+  { id: 'streaks', name: 'Streaks', icon: Activity },
   { id: 'rewards', name: 'Rewards', icon: Trophy },
   { id: 'achievements', name: 'Achievements', icon: Medal },
   { id: 'levels', name: 'Levels', icon: Layers },
@@ -387,7 +388,7 @@ const Dashboard = () => {
     { title: 'Missions Started', value: '5,234', subtitle: '3,456 Completed', change: '+18%', icon: Flag, color: 'text-green-600' },
     { title: 'Prizes Claimed', value: '2,847', subtitle: 'Total Claims', change: '+25%', icon: Trophy, color: 'text-yellow-600' },
     { title: 'Achievements Unlocked', value: '8,456', subtitle: '6,234 Granted', change: '+15%', icon: Medal, color: 'text-purple-600' },
-    { title: 'Level-Ups', value: '1,234', subtitle: 'Total Promotions', change: '+22%', icon: Star, color: 'text-indigo-600' },
+    { title: 'Level-Ups', value: '1,234', subtitle: 'Total Promotions', change: '+22%', icon: Layers, color: 'text-indigo-600' },
     { title: 'Points Awarded', value: '2.4M', subtitle: 'Total Points', change: '+30%', icon: Zap, color: 'text-orange-600' },
     { title: 'Credits Earned', value: '1.8M', subtitle: 'Total Credits', change: '+28%', icon: DollarSign, color: 'text-emerald-600' },
     { title: 'Streaks Started', value: '3,456', subtitle: '2,123 Active', change: '+8%', icon: Activity, color: 'text-red-600' },
@@ -857,7 +858,7 @@ const Dashboard = () => {
                   <p className="text-gray-600 text-sm">{stat.title}</p>
                   <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
                   <p className="text-gray-500 text-xs">{stat.subtitle}</p>
-                  <p className="text-green-600 text-sm font-medium">{stat.change} from last month</p>
+                  <p className="text-green-600 text-sm font-medium">{stat.change} change</p>
                 </div>
                 <div className={`p-3 rounded-lg bg-gray-50 ${stat.color}`}>
                   <stat.icon className="w-6 h-6" />
