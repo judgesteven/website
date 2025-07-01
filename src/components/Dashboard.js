@@ -337,7 +337,7 @@ const Dashboard = () => {
       id: 'EVT001', 
       name: 'Product Launch', 
       description: 'Launch event for new product', 
-      image: '',
+      image: 'https://picsum.photos/400/300?random=20',
       category: 'Marketing',
       tags: ['launch', 'product', 'marketing'],
       restricted: 'unlimited',
@@ -350,7 +350,7 @@ const Dashboard = () => {
       id: 'EVT002', 
       name: 'Holiday Campaign', 
       description: 'Special holiday promotion', 
-      image: '',
+      image: 'https://picsum.photos/400/300?random=21',
       category: 'Sales',
       tags: ['holiday', 'promotion', 'sales'],
       restricted: 100,
@@ -363,7 +363,7 @@ const Dashboard = () => {
       id: 'EVT003', 
       name: 'Team Building', 
       description: 'Team building activities', 
-      image: '',
+      image: 'https://picsum.photos/400/300?random=22',
       category: 'HR',
       tags: ['team', 'building', 'hr'],
       restricted: 50,
@@ -558,6 +558,7 @@ const Dashboard = () => {
       id: event.id || '',
       name: event.name || '',
       description: event.description || '',
+      image: event.image || '',
       category: event.category || '',
       tags: event.tags || '',
       restrictCompletions: event.restrictCompletions || 'unlimited',
@@ -585,6 +586,7 @@ const Dashboard = () => {
       id: '',
       name: '',
       description: '',
+      image: '',
       category: '',
       tags: '',
       restrictCompletions: 'unlimited',
@@ -601,6 +603,7 @@ const Dashboard = () => {
       id: '',
       name: '',
       description: '',
+      image: '',
       category: '',
       tags: '',
       restrictCompletions: 'unlimited',
@@ -868,9 +871,9 @@ const Dashboard = () => {
         <div className="border-t border-gray-200 my-8"></div>
 
         {/* Main Content Area with Sidebar */}
-        <div className="flex gap-6">
+        <div className="flex gap-4 max-w-7xl mx-auto">
           {/* Left Sidebar Navigation */}
-          <div className="w-64 flex-shrink-0">
+          <div className="w-56 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <nav className="space-y-2">
                 {tabs.map((tab, index) => (
@@ -897,7 +900,7 @@ const Dashboard = () => {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             {activeTab === 'players' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -920,8 +923,8 @@ const Dashboard = () => {
                   </button>
                 </div>
 
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200">
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -1320,15 +1323,6 @@ const Dashboard = () => {
                 {/* Events Section */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <ZapIcon className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Events</h3>
-                    </div>
-                    <button className="btn-primary" onClick={() => setAddEventOpen(true)}>
-                      Create Event
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -1343,16 +1337,16 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
+                    <button className="btn-primary rounded-2xl" onClick={() => setAddEventOpen(true)}>
+                      Create Event
+                    </button>
                   </div>
-                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <table className="min-w-full divide-y divide-gray-200">
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table className="w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Event
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Description
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Created On
@@ -1368,19 +1362,43 @@ const Dashboard = () => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {getPageItems(eventsList, eventsPage).map((event, index) => (
                           <React.Fragment key={index}>
-                            <tr className="hover:bg-gray-50">
+                            <tr
+                              className="hover:bg-gray-50 cursor-pointer"
+                              onClick={() => {
+                                if (editingEventId === event.id) {
+                                  handleCancelEditEvent();
+                                } else {
+                                  handleStartEditEvent(event);
+                                }
+                              }}
+                            >
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                  <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                                    <ZapIcon className="w-4 h-4" />
-                                  </div>
+                                  {event.image ? (
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={event.image}
+                                        alt={event.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.target.style.display = 'none';
+                                          e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                      />
+                                      <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                        <ZapIcon className="w-4 h-4" />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                      <ZapIcon className="w-4 h-4" />
+                                    </div>
+                                  )}
                                   <div className="ml-4">
                                     <div className="text-sm font-medium text-gray-900">{event.name}</div>
+                                    <div className="text-sm text-gray-500">{event.description}</div>
                                   </div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {event.description}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {event.createdOn}
@@ -1397,7 +1415,13 @@ const Dashboard = () => {
                                   </button>
                                   <button 
                                     className="text-gray-600 hover:text-gray-900"
-                                    onClick={() => handleStartEditEvent(event)}
+                                    onClick={() => {
+                                      if (editingEventId === event.id) {
+                                        handleCancelEditEvent();
+                                      } else {
+                                        handleStartEditEvent(event);
+                                      }
+                                    }}
                                   >
                                     <Edit className="w-4 h-4" />
                                   </button>
@@ -1409,7 +1433,7 @@ const Dashboard = () => {
                             </tr>
                             {editingEventId === event.id && (
                               <tr>
-                                <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                                <td colSpan="4" className="px-6 py-4 bg-gray-50">
                                   <div className="space-y-6">
                                     {/* Event Details Section */}
                                     <div className="bg-white rounded-lg p-6 border border-gray-200">
@@ -1454,6 +1478,72 @@ const Dashboard = () => {
                                             className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             placeholder="Enter event description"
                                           />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Event Image
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="space-y-4">
+                                            {/* File Upload Section */}
+                                            <div className="flex items-center space-x-4">
+                                              <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                      const reader = new FileReader();
+                                                      reader.onload = (event) => {
+                                                        handleUpdateEditingEventData('image', event.target.result);
+                                                      };
+                                                      reader.readAsDataURL(file);
+                                                    }
+                                                  }}
+                                                  className="hidden"
+                                                />
+                                                <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                                <span className="text-gray-600">Browse for image</span>
+                                              </label>
+                                              {editingEventData.image && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() => handleUpdateEditingEventData('image', '')}
+                                                  className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                                >
+                                                  Remove
+                                                </button>
+                                              )}
+                                            </div>
+                                            
+                                            {/* Image Preview */}
+                                            {editingEventData.image && (
+                                              <div className="relative">
+                                                <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                  <img
+                                                    src={editingEventData.image}
+                                                    alt="Event preview"
+                                                    className="w-full h-full object-cover"
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                            
+                                            {/* URL Input (fallback) */}
+                                            <div>
+                                              <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                              <input 
+                                                name="image" 
+                                                value={editingEventData.image || ''} 
+                                                onChange={(e) => handleUpdateEditingEventData('image', e.target.value)} 
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="Enter image URL (optional if file uploaded)"
+                                              />
+                                            </div>
+                                          </div>
                                         </div>
                                         <div>
                                           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1618,17 +1708,11 @@ const Dashboard = () => {
                   <PaginationControls currentPage={eventsPage} totalPages={getTotalPages(eventsList)} onPageChange={(newPage) => setEventsPage(newPage)} />
                 </div>
 
+                {/* Divider */}
+                <div className="border-t border-gray-200 my-8"></div>
+
                 {/* Missions Section */}
-                <div className="mt-10">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <Flag className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
-                    </div>
-                    <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
-                      Create Mission
-                    </button>
-                  </div>
+                <div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
@@ -1644,20 +1728,18 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
+                    <button className="btn-primary rounded-2xl" onClick={() => setAddMissionOpen(true)}>
+                      Create Mission
+                    </button>
                   </div>
 
-                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <table className="min-w-full divide-y divide-gray-200">
+
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table className="w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Mission
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Start Date
-                          </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            End Date
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Points
@@ -1676,23 +1758,43 @@ const Dashboard = () => {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {getPageItems(missionsList, missionsPage).map((mission, index) => (
                           <React.Fragment key={index}>
-                            <tr className="hover:bg-gray-50">
+                            <tr 
+                              className="hover:bg-gray-50 cursor-pointer" 
+                              onClick={() => {
+                                if (editingMissionId === mission.id) {
+                                  handleCancelEditMission();
+                                } else {
+                                  handleStartEditMission(mission);
+                                }
+                              }}
+                            >
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                  <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                                    <Flag className="w-4 h-4" />
-                                  </div>
+                                  {mission.image ? (
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={mission.image}
+                                        alt={mission.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.target.style.display = 'none';
+                                          e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                      />
+                                      <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                        <Flag className="w-4 h-4" />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                      <Flag className="w-4 h-4" />
+                                    </div>
+                                  )}
                                   <div className="ml-4">
                                     <div className="text-sm font-medium text-gray-900">{mission.name}</div>
                                     <div className="text-sm text-gray-500">{mission.description}</div>
                                   </div>
                                 </div>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {mission.startDate || 'N/A'}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {mission.endDate || 'N/A'}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {mission.pointsAwarded || 0}
@@ -1731,7 +1833,7 @@ const Dashboard = () => {
                             {/* Expandable Edit Section */}
                             {editingMissionId === mission.id && (
                               <tr>
-                                <td colSpan="7" className="px-6 py-4 bg-gray-50">
+                                <td colSpan="5" className="px-6 py-4 bg-gray-50">
                                   <div className="space-y-6">
                                     {/* Mission Details Section */}
                                     <div className="bg-white rounded-lg p-6 border border-gray-200">

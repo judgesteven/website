@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Zap, Target } from 'lucide-react';
+import { X, Clock, Tag, DollarSign, Zap, Target, Upload } from 'lucide-react';
 
 const AddEventModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
     id: '',
     name: '',
     description: '',
+    image: '',
     category: '',
     tags: '',
     restrictCompletions: 'unlimited',
@@ -16,11 +17,42 @@ const AddEventModal = ({ open, onClose, onSave }) => {
     stepsGranted: ''
   });
 
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadedImage(file);
+      
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImagePreview(event.target.result);
+        // Also update the form image field with the base64 data
+        setForm(prev => ({
+          ...prev,
+          image: event.target.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeUploadedImage = () => {
+    setUploadedImage(null);
+    setImagePreview('');
+    setForm(prev => ({
+      ...prev,
+      image: ''
     }));
   };
 
@@ -96,6 +128,66 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                     placeholder="Enter event description"
                     rows="3"
                   />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Event Image
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <div className="space-y-4">
+                    {/* File Upload Section */}
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                        <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                        <span className="text-gray-600">Browse for image</span>
+                      </label>
+                      {uploadedImage && (
+                        <button
+                          type="button"
+                          onClick={removeUploadedImage}
+                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {imagePreview && (
+                      <div className="relative">
+                        <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                          <img
+                            src={imagePreview}
+                            alt="Event preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="mt-2 text-sm text-gray-500">
+                          {uploadedImage?.name}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* URL Input (fallback) */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                      <input 
+                        name="image" 
+                        value={form.image} 
+                        onChange={handleChange} 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter image URL (optional if file uploaded)"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
