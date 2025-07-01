@@ -33,7 +33,6 @@ import {
   Target,
   Tag,
   Check,
-  Shield,
   Upload,
   Calendar,
   RefreshCw
@@ -503,11 +502,6 @@ const Dashboard = () => {
     setSelectedEvent(null);
   };
 
-  const handleEventClick = (event) => {
-    setSelectedEvent(event);
-    setEditEventOpen(true);
-  };
-
   const handleAddMission = (mission) => {
     setMissionsList((prev) => [...prev, mission]);
     setAddMissionOpen(false);
@@ -527,11 +521,6 @@ const Dashboard = () => {
     setMissionsList((prev) => prev.filter((m) => m !== mission));
     setEditMissionOpen(false);
     setSelectedMission(null);
-  };
-
-  const handleMissionClick = (mission) => {
-    setSelectedMission(mission);
-    setEditMissionOpen(true);
   };
 
   // Inline mission editing handlers
@@ -562,42 +551,7 @@ const Dashboard = () => {
     }));
   };
 
-  const handleUpdateEditingMissionArray = (field, index, value) => {
-    setEditingMissionData((prev) => ({
-      ...prev,
-      [field]: prev[field].map((item, i) => i === index ? { ...item, ...value } : item)
-    }));
-  };
-
-  const handleAddObjective = () => {
-    setEditingMissionData((prev) => ({
-      ...prev,
-      objectives: [...prev.objectives, { type: '', description: '', required: false }]
-    }));
-  };
-
-  const handleRemoveObjective = (index) => {
-    setEditingMissionData((prev) => ({
-      ...prev,
-      objectives: prev.objectives.filter((_, i) => i !== index)
-    }));
-  };
-
-  const handleAddReward = () => {
-    setEditingMissionData((prev) => ({
-      ...prev,
-      rewards: [...prev.rewards, { type: '', amount: 0, description: '' }]
-    }));
-  };
-
-  const handleRemoveReward = (index) => {
-    setEditingMissionData((prev) => ({
-      ...prev,
-      rewards: prev.rewards.filter((_, i) => i !== index)
-    }));
-  };
-
-  // Inline event editing handlers
+  // Event editing handlers
   const handleStartEditEvent = (event) => {
     setEditingEventId(event.id);
     setEditingEventData({
@@ -658,54 +612,10 @@ const Dashboard = () => {
   };
 
   const handleUpdateEditingEventData = (field, value) => {
-    setEditingEventData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleGuideMe = () => {
-    setGuideModalOpen(true);
-    setGuideStep(1);
-    // Reset typing progress
-    setTypingProgress({
-      id: false,
-      name: false,
-      description: false,
-      category: false,
-      tags: false,
-      restrictCompletions: false,
-      points: false,
-      credits: false,
-      achievements: false,
-      stepsGranted: false
-    });
-    setMissionTypingProgress({
-      id: false,
-      name: false,
-      description: false,
-      image: false,
-      category: false,
-      tags: false,
-      restrictCompletions: false,
-      priority: false,
-      startDate: false,
-      endDate: false,
-      refreshPeriod: false,
-      objectivesEvent: false,
-      objectivesQuiz: false,
-      objectivesSurvey: false,
-      points: false,
-      credits: false,
-      achievements: false,
-      stepsGranted: false,
-      requirementsCategory: false,
-      requirementsTags: false,
-      requirementsLevel: false,
-      requirementsMission: false,
-      requirementsAchievement: false
-    });
-    setCurrentTypingField(null);
-    setCurrentMissionTypingField(null);
-    setTypedText('');
-    setMissionTypedText('');
+    setEditingEventData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleGuideCreateEvent = () => {
