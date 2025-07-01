@@ -1337,7 +1337,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary rounded-2xl" onClick={() => setAddEventOpen(true)}>
+                    <button className="btn-primary rounded-2xl py-2 px-4 text-sm" onClick={() => setAddEventOpen(true)}>
                       Create Event
                     </button>
                   </div>
@@ -1728,7 +1728,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary rounded-2xl" onClick={() => setAddMissionOpen(true)}>
+                    <button className="btn-primary rounded-2xl py-2 px-4 text-sm" onClick={() => setAddMissionOpen(true)}>
                       Create Mission
                     </button>
                   </div>
