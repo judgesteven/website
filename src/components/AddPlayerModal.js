@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Tag, DollarSign, Zap, Target, Upload } from 'lucide-react';
+import { X, User, Upload } from 'lucide-react';
 
-const AddEventModal = ({ open, onClose, onSave }) => {
+const AddPlayerModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
     id: '',
     name: '',
@@ -10,21 +10,26 @@ const AddEventModal = ({ open, onClose, onSave }) => {
     image: '',
     category: '',
     tags: '',
-    restrictCompletions: 'unlimited',
     points: '',
     credits: '',
-    achievements: '',
-    stepsGranted: ''
+    team: ''
   });
 
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
 
+  const teams = [
+    { id: 'alpha', name: 'Alpha Squad' },
+    { id: 'beta', name: 'Beta Force' },
+    { id: 'gamma', name: 'Gamma Team' },
+    { id: 'delta', name: 'Delta Unit' }
+  ];
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
   };
 
@@ -74,7 +79,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Event</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Add New Player</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -84,11 +89,11 @@ const AddEventModal = ({ open, onClose, onSave }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
-            {/* Event Details Section */}
+            {/* Player Details Section */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Zap className="w-5 h-5 mr-2 text-blue-600" />
-                Event Details
+                <User className="w-5 h-5 mr-2 text-blue-600" />
+                Player Details
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -98,7 +103,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                     value={form.id} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter event ID"
+                    placeholder="Enter player ID"
                     required 
                   />
                 </div>
@@ -109,7 +114,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                     value={form.name} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter event name"
+                    placeholder="Enter player name"
                     required 
                   />
                 </div>
@@ -125,13 +130,13 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                     value={form.description} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter event description"
+                    placeholder="Enter player description"
                     rows="3"
                   />
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Event Image
+                    Player Image
                     <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
                       (Optional)
                     </span>
@@ -162,31 +167,14 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                     
                     {/* Image Preview */}
                     {imagePreview && (
-                      <div className="relative">
-                        <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
-                          <img
-                            src={imagePreview}
-                            alt="Event preview"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="mt-2 text-sm text-gray-500">
-                          {uploadedImage?.name}
-                        </div>
+                      <div className="relative inline-block">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="w-32 h-32 object-cover rounded-xl border border-gray-200"
+                        />
                       </div>
                     )}
-                    
-                    {/* URL Input (fallback) */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
-                      <input 
-                        name="image" 
-                        value={form.image} 
-                        onChange={handleChange} 
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Enter image URL (optional if file uploaded)"
-                      />
-                    </div>
                   </div>
                 </div>
                 <div>
@@ -211,41 +199,13 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                       (Optional)
                     </span>
                   </label>
-                  <div className="relative">
-                    <input 
-                      name="tags" 
-                      value={form.tags} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter tags (comma separated)"
-                    />
-                    <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Limits & Rewards Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="w-5 h-5 mr-2 text-green-600" />
-                Limits & Rewards
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Completions</label>
-                  <select
-                    name="restrictCompletions"
-                    value={form.restrictCompletions}
-                    onChange={handleChange}
+                  <input 
+                    name="tags" 
+                    value={form.tags} 
+                    onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="unlimited">Unlimited</option>
-                    <option value="1">1 per user</option>
-                    <option value="3">3 per user</option>
-                    <option value="5">5 per user</option>
-                    <option value="10">10 per user</option>
-                  </select>
+                    placeholder="Enter tags (comma separated)"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -256,12 +216,11 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                   </label>
                   <input 
                     name="points" 
-                    type="number" 
+                    type="number"
                     value={form.points} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter points"
-                    min="0" 
                   />
                 </div>
                 <div>
@@ -271,67 +230,41 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                       (Optional)
                     </span>
                   </label>
-                  <div className="relative">
-                    <input 
-                      name="credits" 
-                      type="number" 
-                      value={form.credits} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter credits"
-                      min="0" 
-                    />
-                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Achievements Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Target className="w-5 h-5 mr-2 text-purple-600" />
-                Achievements
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Achievements
-                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
-                      (Optional)
-                    </span>
-                  </label>
-                  <input
-                    type="text"
-                    name="achievements"
-                    value={form.achievements}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter achievements"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Number of Steps Granted
-                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
-                      (Optional)
-                    </span>
-                  </label>
-                  <input
+                  <input 
+                    name="credits" 
                     type="number"
-                    name="stepsGranted"
-                    value={form.stepsGranted}
-                    onChange={handleChange}
+                    value={form.credits} 
+                    onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter steps granted"
-                    min="0"
+                    placeholder="Enter credits"
                   />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Team
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <select 
+                    name="team" 
+                    value={form.team} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select a team</option>
+                    {teams.map((team) => (
+                      <option key={team.id} value={team.id}>
+                        {team.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
               <button
                 type="button"
                 onClick={onClose}
@@ -343,7 +276,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
               >
-                Create Event
+                Add Player
               </button>
             </div>
           </form>
@@ -353,4 +286,4 @@ const AddEventModal = ({ open, onClose, onSave }) => {
   );
 };
 
-export default AddEventModal; 
+export default AddPlayerModal; 

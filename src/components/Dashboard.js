@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Users, 
+  User,
   Trophy, 
   Settings, 
   Bell,
@@ -42,6 +43,7 @@ import AddRaffleModal from './AddRaffleModal';
 import AddMysteryBoxModal from './AddMysteryBoxModal';
 import AddEventModal from './AddEventModal';
 import AddMissionModal from './AddMissionModal';
+import AddPlayerModal from './AddPlayerModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -231,7 +233,7 @@ const achievements = [
 ];
 
 const tabs = [
-  { id: 'players', name: 'Players', icon: Users },
+  { id: 'players', name: 'Players', icon: User },
   { id: 'teams', name: 'Teams', icon: Users2 },
   { id: 'missions', name: 'Missions', icon: Flag },
   { id: 'streaks', name: 'Streaks', icon: Activity },
@@ -258,6 +260,7 @@ const Dashboard = () => {
   const [addMysteryBoxOpen, setAddMysteryBoxOpen] = useState(false);
   const [addEventOpen, setAddEventOpen] = useState(false);
   const [addMissionOpen, setAddMissionOpen] = useState(false);
+  const [addPlayerOpen, setAddPlayerOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -282,6 +285,22 @@ const Dashboard = () => {
     credits: '',
     achievements: '',
     stepsGranted: ''
+  });
+  
+  // Add state for inline player editing
+  const [editingPlayerId, setEditingPlayerId] = useState(null);
+  const [editingPlayerData, setEditingPlayerData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    points: '',
+    credits: '',
+    team: '',
+    level: '',
+    status: ''
   });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
@@ -397,11 +416,11 @@ const Dashboard = () => {
   ];
 
   const topUsers = [
-    { name: 'John Doe', points: 15420, level: 15, avatar: 'JD' },
-    { name: 'Jane Smith', points: 12850, level: 12, avatar: 'JS' },
-    { name: 'Mike Johnson', points: 11230, level: 10, avatar: 'MJ' },
-    { name: 'Sarah Wilson', points: 9870, level: 8, avatar: 'SW' },
-    { name: 'Alex Brown', points: 8540, level: 7, avatar: 'AB' }
+    { id: 1, name: 'John Doe', points: 15420, level: 15, avatar: 'JD', image: 'https://picsum.photos/400/300?random=30', description: 'Senior Developer', category: 'Engineering', tags: 'developer,senior,tech', credits: 500, team: 'Alpha Squad', status: 'Active' },
+    { id: 2, name: 'Jane Smith', points: 12850, level: 12, avatar: 'JS', image: 'https://picsum.photos/400/300?random=31', description: 'Product Manager', category: 'Product', tags: 'manager,product,lead', credits: 400, team: 'Beta Force', status: 'Active' },
+    { id: 3, name: 'Mike Johnson', points: 11230, level: 10, avatar: 'MJ', image: 'https://picsum.photos/400/300?random=32', description: 'Designer', category: 'Design', tags: 'designer,ui,ux', credits: 350, team: 'Gamma Team', status: 'Active' },
+    { id: 4, name: 'Sarah Wilson', points: 9870, level: 8, avatar: 'SW', image: 'https://picsum.photos/400/300?random=33', description: 'Marketing Specialist', category: 'Marketing', tags: 'marketing,specialist', credits: 300, team: 'Delta Unit', status: 'Active' },
+    { id: 5, name: 'Alex Brown', points: 8540, level: 7, avatar: 'AB', image: 'https://picsum.photos/400/300?random=34', description: 'QA Engineer', category: 'Engineering', tags: 'qa,testing,engineer', credits: 250, team: 'Alpha Squad', status: 'Active' }
   ];
 
   const handleAddPrize = (prize) => {
@@ -506,6 +525,12 @@ const Dashboard = () => {
   const handleAddMission = (mission) => {
     setMissionsList((prev) => [...prev, mission]);
     setAddMissionOpen(false);
+  };
+
+  const handleAddPlayer = (player) => {
+    // Add player to the list (you can implement this based on your data structure)
+    console.log('Adding player:', player);
+    setAddPlayerOpen(false);
   };
 
   const handleEditMission = (mission) => {
@@ -617,6 +642,71 @@ const Dashboard = () => {
 
   const handleUpdateEditingEventData = (field, value) => {
     setEditingEventData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Player editing handlers
+  const handleStartEditPlayer = (player) => {
+    setEditingPlayerId(player.id);
+    setEditingPlayerData({
+      id: player.id || '',
+      name: player.name || '',
+      description: player.description || '',
+      image: player.image || '',
+      category: player.category || '',
+      tags: player.tags || '',
+      points: player.points || '',
+      credits: player.credits || '',
+      team: player.team || '',
+      level: player.level || '',
+      status: player.status || ''
+    });
+  };
+
+  const handleSaveEditPlayer = () => {
+    // Update the player in the list
+    const updatedUsers = topUsers.map((player) => 
+      player.id === editingPlayerId ? { ...player, ...editingPlayerData } : player
+    );
+    // You would typically update state here, but since topUsers is not in state, we'll just log for now
+    console.log('Updated players:', updatedUsers);
+    setEditingPlayerId(null);
+    setEditingPlayerData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      points: '',
+      credits: '',
+      team: '',
+      level: '',
+      status: ''
+    });
+  };
+
+  const handleCancelEditPlayer = () => {
+    setEditingPlayerId(null);
+    setEditingPlayerData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      points: '',
+      credits: '',
+      team: '',
+      level: '',
+      status: ''
+    });
+  };
+
+  const handleUpdateEditingPlayerData = (field, value) => {
+    setEditingPlayerData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -919,7 +1009,10 @@ const Dashboard = () => {
                       Filter
                     </button>
                   </div>
-                  <button className="btn-primary">
+                  <button 
+                    className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddPlayerOpen(true)}
+                  >
                     Add Player
                   </button>
                 </div>
@@ -931,61 +1024,307 @@ const Dashboard = () => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Player
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Level
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Points
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Credits
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {topUsers.map((user, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                                {user.avatar}
+                        <React.Fragment key={index}>
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer" 
+                            onClick={() => {
+                              if (editingPlayerId === user.id) {
+                                handleCancelEditPlayer();
+                              } else {
+                                handleStartEditPlayer(user);
+                              }
+                            }}
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                {user.image ? (
+                                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img 
+                                      src={user.image} 
+                                      alt={user.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                      }}
+                                    />
+                                    <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                      <User className="w-4 h-4" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                    <User className="w-4 h-4" />
+                                  </div>
+                                )}
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                  <div className="text-sm text-gray-500">{user.description || 'No description'}</div>
+                                </div>
                               </div>
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                                <div className="text-sm text-gray-500">user@example.com</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Level {user.level}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {user.points.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {user.credits ? user.credits.toLocaleString() : '0'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                              <div className="flex items-center justify-center space-x-2">
+                                <button 
+                                  className="text-gray-600 hover:text-gray-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStartEditPlayer(user);
+                                  }}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button className="text-red-600 hover:text-red-900">
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                              Level {user.level}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {user.points.toLocaleString()}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              Active
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div className="flex items-center space-x-2">
-                              <button className="text-primary-600 hover:text-primary-900">
-                                <Eye className="w-4 h-4" />
-                              </button>
-                              <button className="text-gray-600 hover:text-gray-900">
-                                <Edit className="w-4 h-4" />
-                              </button>
-                              <button className="text-red-600 hover:text-red-900">
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
+                            </td>
+                          </tr>
+                          
+                          {/* Expandable Edit Section */}
+                          {editingPlayerId === user.id && (
+                            <tr>
+                              <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Player Details Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <User className="w-5 h-5 mr-2 text-blue-600" />
+                                      Player Details
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                        <input
+                                          type="text"
+                                          value={editingPlayerData.id || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('id', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter player ID"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <input
+                                          type="text"
+                                          value={editingPlayerData.name || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('name', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter player name"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Description
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <textarea
+                                          value={editingPlayerData.description || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('description', e.target.value)}
+                                          rows={3}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter player description"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Player Image
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="space-y-4">
+                                          {/* File Upload Section */}
+                                          <div className="flex items-center space-x-4">
+                                            <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (event) => {
+                                                      handleUpdateEditingPlayerData('image', event.target.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                  }
+                                                }}
+                                                className="hidden"
+                                              />
+                                              <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                              <span className="text-gray-600">Browse for image</span>
+                                            </label>
+                                            {editingPlayerData.image && (
+                                              <button
+                                                type="button"
+                                                onClick={() => handleUpdateEditingPlayerData('image', '')}
+                                                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </div>
+                                          
+                                          {/* Image Preview */}
+                                          {editingPlayerData.image && (
+                                            <div className="relative">
+                                              <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                <img
+                                                  src={editingPlayerData.image}
+                                                  alt="Player preview"
+                                                  className="w-full h-full object-cover"
+                                                />
+                                              </div>
+                                            </div>
+                                          )}
+                                          
+                                          {/* URL Input (fallback) */}
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                            <input 
+                                              name="image" 
+                                              value={editingPlayerData.image || ''} 
+                                              onChange={(e) => handleUpdateEditingPlayerData('image', e.target.value)} 
+                                              className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              placeholder="Enter image URL (optional if file uploaded)"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingPlayerData.category || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('category', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingPlayerData.tags || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('tags', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter tags (comma separated)"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Points
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingPlayerData.points || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('points', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter points"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Credits
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingPlayerData.credits || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('credits', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter credits"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Team
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingPlayerData.team || ''}
+                                          onChange={(e) => handleUpdateEditingPlayerData('team', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select a team</option>
+                                          <option value="alpha">Alpha Squad</option>
+                                          <option value="beta">Beta Force</option>
+                                          <option value="gamma">Gamma Team</option>
+                                          <option value="delta">Delta Unit</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                    <button
+                                      onClick={handleCancelEditPlayer}
+                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl hover:bg-gray-50 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={handleSaveEditPlayer}
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       ))}
                     </tbody>
                   </table>
@@ -1349,13 +1688,13 @@ const Dashboard = () => {
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Event
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Created On
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
@@ -1401,16 +1740,16 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                 {event.createdOn}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                   Active
                                 </span>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div className="flex items-center space-x-2">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <div className="flex items-center justify-center space-x-2">
                                   <button 
                                     className="text-gray-600 hover:text-gray-900"
                                     onClick={() => {
@@ -1739,16 +2078,16 @@ const Dashboard = () => {
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Mission
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Points
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Credits
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Status
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
@@ -1794,13 +2133,13 @@ const Dashboard = () => {
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                 {mission.pointsAwarded || 0}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                 {mission.creditsEarned || 0}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                                   mission.status === 'Active' ? 'bg-green-100 text-green-800' :
                                   mission.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
@@ -1810,8 +2149,8 @@ const Dashboard = () => {
                                   {mission.status}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div className="flex items-center space-x-2">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <div className="flex items-center justify-center space-x-2">
                                   <button 
                                     className="text-gray-600 hover:text-gray-900"
                                     onClick={() => handleStartEditMission(mission)}
@@ -2568,6 +2907,7 @@ const Dashboard = () => {
       <AddMysteryBoxModal isOpen={addMysteryBoxOpen} onClose={() => setAddMysteryBoxOpen(false)} onAdd={handleAddMysteryBox} />
       <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
       <AddMissionModal open={addMissionOpen} onClose={() => setAddMissionOpen(false)} onSave={handleAddMission} />
+      <AddPlayerModal open={addPlayerOpen} onClose={() => setAddPlayerOpen(false)} onSave={handleAddPlayer} />
       
       <EditPrizeModal 
         open={editPrizeOpen} 
