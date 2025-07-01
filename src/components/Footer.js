@@ -48,8 +48,9 @@ const Footer = () => {
               <span className="text-xl font-bold">GameLayer</span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              The leading API-first gamification platform. Build engaging user experiences 
-              with powerful micro-services for engagement, rewards, and loyalty.
+              The leading API-first gamification platform for user engagement and loyalty programs. 
+              Build engaging digital experiences with powerful micro-services for engagement, rewards, 
+              retention strategies, and gamification mechanics.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (

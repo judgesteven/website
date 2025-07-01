@@ -32,7 +32,11 @@ import {
   Clock,
   Target,
   Tag,
-  Check
+  Check,
+  Shield,
+  Upload,
+  Calendar,
+  RefreshCw
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -68,6 +72,7 @@ const mysteryBoxes = [
 
 const missions = [
   { 
+    id: 1,
     name: 'Daily Check-in', 
     description: 'Complete daily check-in for 7 days', 
     image: 'https://picsum.photos/400/300?random=13',
@@ -76,9 +81,30 @@ const missions = [
     createdOn: '2024-01-01',
     status: 'Active',
     pointsAwarded: 100,
-    creditsEarned: 50
+    creditsEarned: 50,
+    // Mission Details
+    category: 'Engagement',
+    tags: ['daily', 'check-in', 'streak'],
+    priority: 'Medium',
+    // Timers & Limits
+    maxCompletions: 1,
+    refreshPeriod: 'daily',
+    // Objectives
+    objectivesEvent: '',
+    objectivesQuiz: '',
+    objectivesSurvey: '',
+    // Rewards
+    achievements: '',
+    stepsGranted: 0,
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: [],
+    requirementsLevel: '',
+    requirementsMission: '',
+    requirementsAchievement: ''
   },
   { 
+    id: 2,
     name: 'Social Share', 
     description: 'Share content on social media', 
     image: 'https://picsum.photos/400/300?random=14',
@@ -87,9 +113,30 @@ const missions = [
     createdOn: '2024-02-01',
     status: 'Active',
     pointsAwarded: 250,
-    creditsEarned: 100
+    creditsEarned: 100,
+    // Mission Details
+    category: 'Social',
+    tags: ['social', 'share', 'marketing'],
+    priority: 'High',
+    // Timers & Limits
+    maxCompletions: 3,
+    refreshPeriod: 'weekly',
+    // Objectives
+    objectivesEvent: '',
+    objectivesQuiz: '',
+    objectivesSurvey: '',
+    // Rewards
+    achievements: 'social_butterfly',
+    stepsGranted: 0,
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: [],
+    requirementsLevel: '',
+    requirementsMission: '',
+    requirementsAchievement: ''
   },
   { 
+    id: 3,
     name: 'Refer a Friend', 
     description: 'Invite 3 friends to join', 
     image: 'https://picsum.photos/400/300?random=15',
@@ -98,9 +145,30 @@ const missions = [
     createdOn: '2024-03-01',
     status: 'Upcoming',
     pointsAwarded: 500,
-    creditsEarned: 200
+    creditsEarned: 200,
+    // Mission Details
+    category: 'Referral',
+    tags: ['referral', 'friends', 'invite'],
+    priority: 'High',
+    // Timers & Limits
+    maxCompletions: 1,
+    refreshPeriod: '',
+    // Objectives
+    objectivesEvent: '',
+    objectivesQuiz: '',
+    objectivesSurvey: '',
+    // Rewards
+    achievements: 'referral_king',
+    stepsGranted: 0,
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: [],
+    requirementsLevel: '2',
+    requirementsMission: '',
+    requirementsAchievement: ''
   },
   { 
+    id: 4,
     name: 'Complete Profile', 
     description: 'Fill out your complete profile', 
     image: 'https://picsum.photos/400/300?random=16',
@@ -109,7 +177,27 @@ const missions = [
     createdOn: '2024-01-15',
     status: 'Completed',
     pointsAwarded: 150,
-    creditsEarned: 75
+    creditsEarned: 75,
+    // Mission Details
+    category: 'Profile',
+    tags: ['profile', 'setup', 'onboarding'],
+    priority: 'Low',
+    // Timers & Limits
+    maxCompletions: 1,
+    refreshPeriod: '',
+    // Objectives
+    objectivesEvent: '',
+    objectivesQuiz: '',
+    objectivesSurvey: '',
+    // Rewards
+    achievements: 'first_blood',
+    stepsGranted: 0,
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: [],
+    requirementsLevel: '1',
+    requirementsMission: '',
+    requirementsAchievement: ''
   }
 ];
 
@@ -152,6 +240,7 @@ const tabs = [
   { id: 'levels', name: 'Levels', icon: Layers },
   { id: 'leaderboards', name: 'Leaderboards', icon: Crown },
   { id: 'quizzes', name: 'Quizzes', icon: HelpCircle },
+  { id: 'surveys', name: 'Surveys', icon: ClipboardCheck },
   { id: 'settings', name: 'Settings', icon: Settings }
 ];
 
@@ -176,6 +265,24 @@ const Dashboard = () => {
   const [editMissionOpen, setEditMissionOpen] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [guideStep, setGuideStep] = useState(1);
+  // Add state for inline mission editing
+  const [editingMissionId, setEditingMissionId] = useState(null);
+  const [editingMissionData, setEditingMissionData] = useState({});
+  
+  // Add state for inline event editing
+  const [editingEventId, setEditingEventId] = useState(null);
+  const [editingEventData, setEditingEventData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    category: '',
+    tags: '',
+    restrictCompletions: 'unlimited',
+    points: '',
+    credits: '',
+    achievements: '',
+    stepsGranted: ''
+  });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
     name: false,
@@ -227,9 +334,45 @@ const Dashboard = () => {
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
   const [missionsList, setMissionsList] = useState(missions);
   const [eventsList, setEventsList] = useState([
-    { name: 'Product Launch', description: 'Launch event for new product', createdOn: '2024-02-15' },
-    { name: 'Holiday Campaign', description: 'Special holiday promotion', createdOn: '2024-12-01' },
-    { name: 'Team Building', description: 'Team building activities', createdOn: '2024-03-01' }
+    { 
+      id: 'EVT001', 
+      name: 'Product Launch', 
+      description: 'Launch event for new product', 
+      image: '',
+      category: 'Marketing',
+      tags: ['launch', 'product', 'marketing'],
+      restricted: 'unlimited',
+      points: 100,
+      credits: 50,
+      achievements: 2,
+      createdOn: '2024-02-15' 
+    },
+    { 
+      id: 'EVT002', 
+      name: 'Holiday Campaign', 
+      description: 'Special holiday promotion', 
+      image: '',
+      category: 'Sales',
+      tags: ['holiday', 'promotion', 'sales'],
+      restricted: 100,
+      points: 75,
+      credits: 25,
+      achievements: 1,
+      createdOn: '2024-12-01' 
+    },
+    { 
+      id: 'EVT003', 
+      name: 'Team Building', 
+      description: 'Team building activities', 
+      image: '',
+      category: 'HR',
+      tags: ['team', 'building', 'hr'],
+      restricted: 50,
+      points: 50,
+      credits: 20,
+      achievements: 1,
+      createdOn: '2024-03-01' 
+    }
   ]);
   
   // Pagination states
@@ -238,7 +381,7 @@ const Dashboard = () => {
   const [mysteryBoxesPage, setMysteryBoxesPage] = useState(0);
   const [eventsPage, setEventsPage] = useState(0);
   const [missionsPage, setMissionsPage] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 5;
 
   const stats = [
     { title: 'Players Registered', value: '12,847', subtitle: '8,234 Active', change: '+12%', icon: Users, color: 'text-blue-600' },
@@ -389,6 +532,133 @@ const Dashboard = () => {
   const handleMissionClick = (mission) => {
     setSelectedMission(mission);
     setEditMissionOpen(true);
+  };
+
+  // Inline mission editing handlers
+  const handleStartEditMission = (mission) => {
+    setEditingMissionId(mission.id);
+    setEditingMissionData({ ...mission });
+  };
+
+  const handleSaveEditMission = () => {
+    setMissionsList((prev) => 
+      prev.map((mission) => 
+        mission.id === editingMissionId ? { ...mission, ...editingMissionData } : mission
+      )
+    );
+    setEditingMissionId(null);
+    setEditingMissionData({});
+  };
+
+  const handleCancelEditMission = () => {
+    setEditingMissionId(null);
+    setEditingMissionData({});
+  };
+
+  const handleUpdateEditingMissionData = (field, value) => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleUpdateEditingMissionArray = (field, index, value) => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      [field]: prev[field].map((item, i) => i === index ? { ...item, ...value } : item)
+    }));
+  };
+
+  const handleAddObjective = () => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      objectives: [...prev.objectives, { type: '', description: '', required: false }]
+    }));
+  };
+
+  const handleRemoveObjective = (index) => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      objectives: prev.objectives.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleAddReward = () => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      rewards: [...prev.rewards, { type: '', amount: 0, description: '' }]
+    }));
+  };
+
+  const handleRemoveReward = (index) => {
+    setEditingMissionData((prev) => ({
+      ...prev,
+      rewards: prev.rewards.filter((_, i) => i !== index)
+    }));
+  };
+
+  // Inline event editing handlers
+  const handleStartEditEvent = (event) => {
+    setEditingEventId(event.id);
+    setEditingEventData({
+      id: event.id || '',
+      name: event.name || '',
+      description: event.description || '',
+      category: event.category || '',
+      tags: event.tags || '',
+      restrictCompletions: event.restrictCompletions || 'unlimited',
+      points: event.points || '',
+      credits: event.credits || '',
+      achievements: event.achievements || '',
+      stepsGranted: event.stepsGranted || ''
+    });
+  };
+
+  const handleSaveEditEvent = () => {
+    setEventsList((prev) => 
+      prev.map((event) => 
+        event.id === editingEventId ? { 
+          ...event, 
+          ...editingEventData,
+          points: editingEventData.points ? parseInt(editingEventData.points) : 0,
+          credits: editingEventData.credits ? parseInt(editingEventData.credits) : 0,
+          stepsGranted: editingEventData.stepsGranted ? parseInt(editingEventData.stepsGranted) : 0
+        } : event
+      )
+    );
+    setEditingEventId(null);
+    setEditingEventData({
+      id: '',
+      name: '',
+      description: '',
+      category: '',
+      tags: '',
+      restrictCompletions: 'unlimited',
+      points: '',
+      credits: '',
+      achievements: '',
+      stepsGranted: ''
+    });
+  };
+
+  const handleCancelEditEvent = () => {
+    setEditingEventId(null);
+    setEditingEventData({
+      id: '',
+      name: '',
+      description: '',
+      category: '',
+      tags: '',
+      restrictCompletions: 'unlimited',
+      points: '',
+      credits: '',
+      achievements: '',
+      stepsGranted: ''
+    });
+  };
+
+  const handleUpdateEditingEventData = (field, value) => {
+    setEditingEventData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleGuideMe = () => {
@@ -684,28 +954,40 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="flex space-x-8 px-6 overflow-x-auto">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <tab.icon className="w-4 h-4 mr-2" />
-                  {tab.name}
-                </button>
-              ))}
-            </nav>
+        {/* Divider */}
+        <div className="border-t border-gray-200 my-8"></div>
+
+        {/* Main Content Area with Sidebar */}
+        <div className="flex gap-6">
+          {/* Left Sidebar Navigation */}
+          <div className="w-64 flex-shrink-0">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+              <nav className="space-y-2">
+                {tabs.map((tab, index) => (
+                  <div key={tab.id}>
+                    <button
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`w-full flex items-center px-4 py-3 rounded-2xl text-sm font-medium transition-colors ${
+                        activeTab === tab.id
+                          ? 'bg-primary-50 text-primary-600 border border-primary-200'
+                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                      }`}
+                    >
+                      <tab.icon className="w-4 h-4 mr-3" />
+                      {tab.name}
+                    </button>
+                    {/* Add divider between Surveys and Settings */}
+                    {tab.id === 'surveys' && (
+                      <div className="border-t border-gray-200 my-2"></div>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            </div>
           </div>
 
-          <div className="p-6">
+          {/* Main Content */}
+          <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             {activeTab === 'players' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -715,7 +997,7 @@ const Dashboard = () => {
                       <input
                         type="text"
                         placeholder="Search players..."
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
                     <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -817,7 +1099,7 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="Search prizes..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
                       <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -908,7 +1190,7 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="Search raffles..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
                       <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -1005,7 +1287,7 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="Search mystery wins..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
                       <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -1126,12 +1408,16 @@ const Dashboard = () => {
             {activeTab === 'missions' && (
               <div>
                 {/* Events Section */}
-                <div className="mb-10">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <ZapIcon className="w-6 h-6 text-primary-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Events</h3>
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <ZapIcon className="w-6 h-6 text-primary-600" />
+                      <h3 className="text-lg font-semibold text-gray-900">Events</h3>
+                    </div>
+                    <button className="btn-primary" onClick={() => setAddEventOpen(true)}>
+                      Create Event
+                    </button>
                   </div>
-                  <p className="text-gray-600 mb-6">Use events to power your missions</p>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
@@ -1139,7 +1425,7 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="Search events..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
                       <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -1147,38 +1433,291 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary" onClick={() => setAddEventOpen(true)}>
-                      Create Event
-                    </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(eventsList, eventsPage).map((event, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="card p-6 hover:shadow-md transition-shadow cursor-pointer"
-                        onClick={() => handleEventClick(event)}
-                      >
-                        <div className="mb-4">
-                          <h4 className="font-semibold text-gray-900 mb-2">{event.name}</h4>
-                          <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                        </div>
-                      </motion.div>
-                    ))}
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Event
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Description
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Created On
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {getPageItems(eventsList, eventsPage).map((event, index) => (
+                          <React.Fragment key={index}>
+                            <tr className="hover:bg-gray-50">
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                                    <ZapIcon className="w-4 h-4" />
+                                  </div>
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{event.name}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {event.description}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {event.createdOn}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                  Active
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div className="flex items-center space-x-2">
+                                  <button className="text-primary-600 hover:text-primary-900">
+                                    <Eye className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={() => handleStartEditEvent(event)}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button className="text-red-600 hover:text-red-900">
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {editingEventId === event.id && (
+                              <tr>
+                                <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                                  <div className="space-y-6">
+                                    {/* Event Details Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Zap className="w-5 h-5 mr-2 text-blue-600" />
+                                        Event Details
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                          <input
+                                            type="text"
+                                            value={editingEventData.id || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('id', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter event ID"
+                                            required
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                          <input
+                                            type="text"
+                                            value={editingEventData.name || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('name', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter event name"
+                                            required
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Description
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <textarea
+                                            value={editingEventData.description || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('description', e.target.value)}
+                                            rows={3}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter event description"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingEventData.category || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('category', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              value={editingEventData.tags || ''}
+                                              onChange={(e) => handleUpdateEditingEventData('tags', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Limits & Rewards Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Clock className="w-5 h-5 mr-2 text-green-600" />
+                                        Limits & Rewards
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Completions</label>
+                                          <select
+                                            value={editingEventData.restrictCompletions || 'unlimited'}
+                                            onChange={(e) => handleUpdateEditingEventData('restrictCompletions', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          >
+                                            <option value="unlimited">Unlimited</option>
+                                            <option value="1">1 per user</option>
+                                            <option value="3">3 per user</option>
+                                            <option value="5">5 per user</option>
+                                            <option value="10">10 per user</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Points
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="number"
+                                            value={editingEventData.points || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('points', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter points"
+                                            min="0"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Credits
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="number"
+                                              value={editingEventData.credits || ''}
+                                              onChange={(e) => handleUpdateEditingEventData('credits', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter credits"
+                                              min="0"
+                                            />
+                                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Achievements Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                        Achievements
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Achievements
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingEventData.achievements || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('achievements', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter achievements"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Number of Steps Granted
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="number"
+                                            value={editingEventData.stepsGranted || ''}
+                                            onChange={(e) => handleUpdateEditingEventData('stepsGranted', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter steps granted"
+                                            min="0"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex justify-end space-x-3">
+                                      <button
+                                        onClick={handleCancelEditEvent}
+                                        className="px-4 py-2 border border-gray-300 rounded-2xl text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={handleSaveEditEvent}
+                                        className="px-4 py-2 bg-primary-600 border border-transparent rounded-2xl text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                   <PaginationControls currentPage={eventsPage} totalPages={getTotalPages(eventsList)} onPageChange={(newPage) => setEventsPage(newPage)} />
                 </div>
 
-                {/* Divider between Events and Missions */}
-                <hr className="my-10 border-t-2 border-blue-100" />
-
                 {/* Missions Section */}
-                <div>
-                  <div className="flex items-center space-x-3 mb-6">
-                    <Flag className="w-6 h-6 text-primary-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
+                <div className="mt-10">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-3">
+                      <Flag className="w-6 h-6 text-primary-600" />
+                      <h3 className="text-lg font-semibold text-gray-900">Missions</h3>
+                    </div>
+                    <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
+                      Create Mission
+                    </button>
                   </div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
@@ -1187,7 +1726,7 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="Search missions..."
-                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
                       <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
@@ -1195,78 +1734,583 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <button className="flex items-center px-4 py-2 border border-gray-300 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-colors" onClick={handleGuideMe}>
-                        <HelpCircle className="w-4 h-4 mr-2" />
-                        Guide me
-                      </button>
-                      <button className="btn-primary" onClick={() => setAddMissionOpen(true)}>
-                        Create Mission
-                      </button>
-                    </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(missionsList, missionsPage).map((mission, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                        onClick={() => handleMissionClick(mission)}
-                      >
-                        {mission.image && (
-                          <div className="w-full h-48 bg-gray-200 overflow-hidden">
-                            <img 
-                              src={mission.image} 
-                              alt={mission.name}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                              <Flag className="w-16 h-16 text-gray-400" />
-                            </div>
-                          </div>
-                        )}
-                        <div className="p-6">
-                          <div className="mb-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <h4 className="font-semibold text-gray-900">{mission.name}</h4>
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                mission.status === 'Active' ? 'bg-green-100 text-green-800' :
-                                mission.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
-                                mission.status === 'Completed' ? 'bg-gray-100 text-gray-800' :
-                                'bg-yellow-100 text-yellow-800'
-                              }`}>
-                                {mission.status}
-                              </span>
-                            </div>
-                            <p className="text-gray-600 text-sm mb-4">{mission.description}</p>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Points Awarded:</span>
-                              <span className="font-medium">{mission.pointsAwarded || 0}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Credits Earned:</span>
-                              <span className="font-medium">{mission.creditsEarned || 0}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Start Date:</span>
-                              <span className="font-medium">{mission.startDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">End Date:</span>
-                              <span className="font-medium">{mission.endDate}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Mission
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Start Date
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            End Date
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Points
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Credits
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {getPageItems(missionsList, missionsPage).map((mission, index) => (
+                          <React.Fragment key={index}>
+                            <tr className="hover:bg-gray-50">
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                                    <Flag className="w-4 h-4" />
+                                  </div>
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{mission.name}</div>
+                                    <div className="text-sm text-gray-500">{mission.description}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {mission.startDate || 'N/A'}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {mission.endDate || 'N/A'}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {mission.pointsAwarded || 0}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {mission.creditsEarned || 0}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  mission.status === 'Active' ? 'bg-green-100 text-green-800' :
+                                  mission.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
+                                  mission.status === 'Completed' ? 'bg-gray-100 text-gray-800' :
+                                  'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {mission.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div className="flex items-center space-x-2">
+                                  <button className="text-primary-600 hover:text-primary-900">
+                                    <Eye className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={() => handleStartEditMission(mission)}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button className="text-red-600 hover:text-red-900">
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            
+                            {/* Expandable Edit Section */}
+                            {editingMissionId === mission.id && (
+                              <tr>
+                                <td colSpan="7" className="px-6 py-4 bg-gray-50">
+                                  <div className="space-y-6">
+                                    {/* Mission Details Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Flag className="w-5 h-5 mr-2 text-blue-600" />
+                                        Mission Details
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                          <input
+                                            type="text"
+                                            value={editingMissionData.id || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('id', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter mission ID"
+                                            required
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                          <input
+                                            type="text"
+                                            value={editingMissionData.name || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('name', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter mission name"
+                                            required
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Description
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <textarea
+                                            value={editingMissionData.description || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('description', e.target.value)}
+                                            rows={3}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter mission description"
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Mission Image
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="space-y-4">
+                                            {/* File Upload Section */}
+                                            <div className="flex items-center space-x-4">
+                                              <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                      const reader = new FileReader();
+                                                      reader.onload = (event) => {
+                                                        handleUpdateEditingMissionData('image', event.target.result);
+                                                      };
+                                                      reader.readAsDataURL(file);
+                                                    }
+                                                  }}
+                                                  className="hidden"
+                                                />
+                                                <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                                <span className="text-gray-600">Browse for image</span>
+                                              </label>
+                                              {editingMissionData.image && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() => handleUpdateEditingMissionData('image', '')}
+                                                  className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                                >
+                                                  Remove
+                                                </button>
+                                              )}
+                                            </div>
+                                            
+                                            {/* Image Preview */}
+                                            {editingMissionData.image && (
+                                              <div className="relative">
+                                                <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                  <img
+                                                    src={editingMissionData.image}
+                                                    alt="Mission preview"
+                                                    className="w-full h-full object-cover"
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                            
+                                            {/* URL Input (fallback) */}
+                                            <div>
+                                              <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                              <input 
+                                                name="image" 
+                                                value={editingMissionData.image || ''} 
+                                                onChange={(e) => handleUpdateEditingMissionData('image', e.target.value)} 
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                                placeholder="Enter image URL (optional if file uploaded)"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingMissionData.category || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('category', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              value={editingMissionData.tags?.join(', ') || ''}
+                                              onChange={(e) => handleUpdateEditingMissionData('tags', e.target.value.split(',').map(tag => tag.trim()))}
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              placeholder="Enter tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Limits & Settings Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Clock className="w-5 h-5 mr-2 text-green-600" />
+                                        Limits & Settings
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Completions</label>
+                                          <select
+                                            value={editingMissionData.maxCompletions === -1 ? 'unlimited' : editingMissionData.maxCompletions || 'unlimited'}
+                                            onChange={(e) => handleUpdateEditingMissionData('maxCompletions', e.target.value === 'unlimited' ? -1 : parseInt(e.target.value) || 0)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="unlimited">Unlimited</option>
+                                            <option value="1">1 per user</option>
+                                            <option value="3">3 per user</option>
+                                            <option value="5">5 per user</option>
+                                            <option value="10">10 per user</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Priority
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <select
+                                            value={editingMissionData.priority || 'medium'}
+                                            onChange={(e) => handleUpdateEditingMissionData('priority', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="low">Low</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="high">High</option>
+                                            <option value="critical">Critical</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                          <div className="relative">
+                                            <input 
+                                              name="startDate" 
+                                              type="date" 
+                                              value={editingMissionData.startDate || ''} 
+                                              onChange={(e) => handleUpdateEditingMissionData('startDate', e.target.value)} 
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              required 
+                                            />
+                                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                          <div className="relative">
+                                            <input 
+                                              name="endDate" 
+                                              type="date" 
+                                              value={editingMissionData.endDate || ''} 
+                                              onChange={(e) => handleUpdateEditingMissionData('endDate', e.target.value)} 
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              required 
+                                            />
+                                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                                          <div className="relative">
+                                            <select
+                                              name="refreshPeriod"
+                                              value={editingMissionData.refreshPeriod || 'none'}
+                                              onChange={(e) => handleUpdateEditingMissionData('refreshPeriod', e.target.value)}
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            >
+                                              <option value="none">None</option>
+                                              <option value="daily">Daily</option>
+                                              <option value="weekly">Weekly</option>
+                                              <option value="monthly">Monthly</option>
+                                            </select>
+                                            <RefreshCw className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Objectives Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Zap className="w-5 h-5 mr-2 text-orange-600" />
+                                        Objectives
+                                      </h4>
+                                      <div className="grid grid-cols-1 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Select Event
+                                          </label>
+                                          <select
+                                            value={editingMissionData.objectivesEvent || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('objectivesEvent', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="">Select an event</option>
+                                            <option value="daily_checkin">Daily Check-in</option>
+                                            <option value="weekly_challenge">Weekly Challenge</option>
+                                            <option value="monthly_goal">Monthly Goal</option>
+                                            <option value="special_event">Special Event</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Select Quiz
+                                          </label>
+                                          <select
+                                            value={editingMissionData.objectivesQuiz || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('objectivesQuiz', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="">Select a quiz</option>
+                                            <option value="product_knowledge">Product Knowledge</option>
+                                            <option value="safety_training">Safety Training</option>
+                                            <option value="compliance_test">Compliance Test</option>
+                                            <option value="skill_assessment">Skill Assessment</option>
+                                          </select>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Select Survey
+                                          </label>
+                                          <select
+                                            value={editingMissionData.objectivesSurvey || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('objectivesSurvey', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="">Select a survey</option>
+                                            <option value="customer_satisfaction">Customer Satisfaction</option>
+                                            <option value="employee_feedback">Employee Feedback</option>
+                                            <option value="market_research">Market Research</option>
+                                            <option value="product_feedback">Product Feedback</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Rewards Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Star className="w-5 h-5 mr-2 text-yellow-600" />
+                                        Rewards
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Points
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            name="points" 
+                                            type="number" 
+                                            value={editingMissionData.pointsAwarded || ''} 
+                                            onChange={(e) => handleUpdateEditingMissionData('pointsAwarded', parseInt(e.target.value) || 0)} 
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter points"
+                                            min="0" 
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Credits
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input 
+                                              name="credits" 
+                                              type="number" 
+                                              value={editingMissionData.creditsEarned || ''} 
+                                              onChange={(e) => handleUpdateEditingMissionData('creditsEarned', parseInt(e.target.value) || 0)} 
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              placeholder="Enter credits"
+                                              min="0" 
+                                            />
+                                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Achievements
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="achievements"
+                                            value={editingMissionData.achievements || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('achievements', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter achievements"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Number of Steps Granted
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="number"
+                                            name="stepsGranted"
+                                            value={editingMissionData.stepsGranted || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('stepsGranted', parseInt(e.target.value) || 0)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter steps granted"
+                                            min="0"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Requirements Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                        Requirements
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="requirements.category"
+                                            value={editingMissionData.requirementsCategory || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('requirementsCategory', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter required category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              name="requirements.tags"
+                                              value={editingMissionData.requirementsTags?.join(', ') || ''}
+                                              onChange={(e) => handleUpdateEditingMissionData('requirementsTags', e.target.value.split(',').map(tag => tag.trim()))}
+                                              className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              placeholder="Enter required tags"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Level
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="number"
+                                            name="requirements.level"
+                                            value={editingMissionData.requirementsLevel || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('requirementsLevel', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter required level"
+                                            min="0"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Mission
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="requirements.mission"
+                                            value={editingMissionData.requirementsMission || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('requirementsMission', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter required mission"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Achievement
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="requirements.achievement"
+                                            value={editingMissionData.requirementsAchievement || ''}
+                                            onChange={(e) => handleUpdateEditingMissionData('requirementsAchievement', e.target.value)}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter required achievement"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
+                                      <button
+                                        onClick={handleCancelEditMission}
+                                        className="px-4 py-2 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={handleSaveEditMission}
+                                        className="px-4 py-2 bg-primary-600 text-white rounded-2xl hover:bg-primary-700"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                   <PaginationControls currentPage={missionsPage} totalPages={getTotalPages(missionsList)} onPageChange={(newPage) => setMissionsPage(newPage)} />
                 </div>
@@ -1486,6 +2530,20 @@ const Dashboard = () => {
               </div>
             )}
 
+            {activeTab === 'surveys' && (
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">Surveys</h3>
+                  <button className="btn-primary">
+                    Create Survey
+                  </button>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-lg p-8 text-center text-gray-500">
+                  Survey management coming soon.
+                </div>
+              </div>
+            )}
+
             {activeTab === 'settings' && (
               <div className="text-center py-12">
                 <Settings className="w-12 h-12 text-gray-400 mx-auto mb-4" />
@@ -1605,7 +2663,7 @@ const Dashboard = () => {
                             <input
                               type="text"
                               placeholder="Search events..."
-                              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                              className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               disabled
                             />
                           </div>

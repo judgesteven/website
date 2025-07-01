@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, Zap } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
 
 const Hero = () => {
   return (
@@ -64,10 +64,6 @@ const Hero = () => {
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-              <button className="btn-secondary text-lg px-8 py-4 flex items-center justify-center">
-                <Play className="mr-2 w-5 h-5" />
-                Watch Demo
-              </button>
             </motion.div>
           </motion.div>
         </div>

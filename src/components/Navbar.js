@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // Navigation component with updated link texts
@@ -8,9 +8,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    { name: 'Test', href: '/test' },
     { name: 'Home', href: '/' },
     { name: 'Projects', href: '/projects' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'API', href: 'https://gamelayer.co/docs' },
     { name: 'Dashboard', href: '/dashboard' },
   ];
 
@@ -24,7 +26,11 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-2"
           >
-            <Zap className="h-8 w-8 text-primary-600" />
+            <img 
+              src="/gamelayer-logo.png" 
+              alt="GameLayer Logo" 
+              className="h-6 w-auto"
+            />
             <span className="text-xl font-bold text-gray-900">GameLayer</span>
           </motion.div>
 

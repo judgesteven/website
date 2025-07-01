@@ -97,8 +97,9 @@ const Features = () => {
             Everything you need to build engaging experiences
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            GameLayer provides a complete suite of tools and services to create powerful 
-            gamification experiences that drive user engagement and loyalty.
+            GameLayer provides a complete suite of gamification tools and services to create powerful 
+            user engagement experiences that drive loyalty programs and retention strategies. Our gamification platform 
+            helps businesses build engaging digital experiences and optimize user retention through proven gamification mechanics.
           </p>
         </motion.div>
 

@@ -1,7 +1,8 @@
 {
   "short_name": "GameLayer",
-  "name": "GameLayer - Gamification Platform",
-  "description": "The leading API-first gamification platform for building engaging user experiences",
+  "name": "GameLayer - Leading Gamification Platform for User Engagement & Loyalty Programs",
+  "description": "The leading API-first gamification platform for building user engagement, loyalty programs, and retention strategies. Comprehensive gamification microservices for digital engagement and rewards.",
+  "keywords": ["gamification", "user engagement", "loyalty programs", "retention strategies", "gamification platform", "engagement API", "loyalty microservice", "user retention", "gamification mechanics", "digital engagement", "rewards platform"],
   "icons": [
     {
       "src": "favicon.ico",
@@ -12,5 +13,7 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#0ea5e9",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "en"
 } 
