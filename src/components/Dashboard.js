@@ -11,7 +11,6 @@ import {
   Eye,
   Edit,
   Trash2,
-  Users2,
   Flag,
   Layers,
   Crown,
@@ -37,8 +36,7 @@ import {
   Upload,
   Calendar,
   RefreshCw,
-  Award,
-  Image
+  Users2
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -607,10 +605,7 @@ const Dashboard = () => {
     setSelectedPrize(null);
   };
 
-  const handlePrizeClick = (prize) => {
-    setSelectedPrize(prize);
-    setEditPrizeOpen(true);
-  };
+
 
   const handleAddRaffle = (raffle) => {
     setRafflesList((prev) => [...prev, raffle]);
@@ -633,10 +628,7 @@ const Dashboard = () => {
     setSelectedRaffle(null);
   };
 
-  const handleRaffleClick = (raffle) => {
-    setSelectedRaffle(raffle);
-    setEditRaffleOpen(true);
-  };
+
 
   const handleAddMysteryBox = (box) => {
     setMysteryBoxesList((prev) => [...prev, box]);
@@ -659,10 +651,7 @@ const Dashboard = () => {
     setSelectedMysteryBox(null);
   };
 
-  const handleMysteryBoxClick = (box) => {
-    setSelectedMysteryBox(box);
-    setEditMysteryBoxOpen(true);
-  };
+
 
   const handleAddEvent = (event) => {
     setEventsList((prev) => [...prev, event]);
