@@ -44,6 +44,7 @@ import AddMysteryBoxModal from './AddMysteryBoxModal';
 import AddEventModal from './AddEventModal';
 import AddMissionModal from './AddMissionModal';
 import AddPlayerModal from './AddPlayerModal';
+import AddTeamModal from './AddTeamModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -247,10 +248,10 @@ const tabs = [
 ];
 
 const teams = [
-  { name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS' },
-  { name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF' },
-  { name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT' },
-  { name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU' }
+  { id: 'team1', name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS', description: 'Elite team of top performers' },
+  { id: 'team2', name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF', description: 'Innovation and creativity focused team' },
+  { id: 'team3', name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT', description: 'Largest and most diverse team' },
+  { id: 'team4', name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU', description: 'Specialized task force' }
 ];
 
 const Dashboard = () => {
@@ -261,6 +262,7 @@ const Dashboard = () => {
   const [addEventOpen, setAddEventOpen] = useState(false);
   const [addMissionOpen, setAddMissionOpen] = useState(false);
   const [addPlayerOpen, setAddPlayerOpen] = useState(false);
+  const [addTeamOpen, setAddTeamOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -301,6 +303,19 @@ const Dashboard = () => {
     team: '',
     level: '',
     status: ''
+  });
+  
+  // Add state for inline team editing
+  const [editingTeamId, setEditingTeamId] = useState(null);
+  const [editingTeamData, setEditingTeamData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    points: '',
+    credits: ''
   });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
@@ -533,6 +548,12 @@ const Dashboard = () => {
     setAddPlayerOpen(false);
   };
 
+  const handleAddTeam = (team) => {
+    // Add team to the list (you can implement this based on your data structure)
+    console.log('Adding team:', team);
+    setAddTeamOpen(false);
+  };
+
   const handleEditMission = (mission) => {
     setMissionsList((prev) => 
       prev.map((m, index) => 
@@ -707,6 +728,64 @@ const Dashboard = () => {
 
   const handleUpdateEditingPlayerData = (field, value) => {
     setEditingPlayerData((prev) => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleStartEditTeam = (team) => {
+    setEditingTeamId(team.id || team.name);
+    setEditingTeamData({
+      id: team.id || team.name,
+      name: team.name,
+      description: team.description || '',
+      image: team.image || '',
+      category: team.category || '',
+      tags: team.tags || '',
+      points: team.points || '',
+      credits: team.credits || ''
+    });
+  };
+
+  const handleSaveEditTeam = () => {
+    // Update the team in the teams array
+    // In a real app, you would update the state here
+    // const updatedTeams = teams.map(team => 
+    //   team.id === editingTeamId || team.name === editingTeamId 
+    //     ? { ...team, ...editingTeamData }
+    //     : team
+    // );
+    // setTeams(updatedTeams);
+    console.log('Saving team:', editingTeamData);
+    setEditingTeamId(null);
+    setEditingTeamData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      points: '',
+      credits: ''
+    });
+  };
+
+  const handleCancelEditTeam = () => {
+    setEditingTeamId(null);
+    setEditingTeamData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      points: '',
+      credits: ''
+    });
+  };
+
+  const handleUpdateEditingTeamData = (field, value) => {
+    setEditingTeamData(prev => ({
       ...prev,
       [field]: value
     }));
@@ -1615,45 +1694,287 @@ const Dashboard = () => {
             {activeTab === 'teams' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Teams</h3>
-                  <button className="btn-primary">
-                    Create Team
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search teams..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="btn-primary rounded-2xl py-2 px-4 text-sm"
+                    onClick={() => setAddTeamOpen(true)}
+                  >
+                    Add Team
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {teams.map((team, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="card p-6 hover:shadow-md transition-shadow"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                            {team.avatar}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900">{team.name}</h4>
-                            <p className="text-sm text-gray-500">{team.members} members</p>
-                          </div>
-                        </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          team.level === 'Platinum' ? 'bg-purple-100 text-purple-800' :
-                          team.level === 'Gold' ? 'bg-yellow-100 text-yellow-800' :
-                          team.level === 'Silver' ? 'bg-gray-100 text-gray-800' :
-                          'bg-orange-100 text-orange-800'
-                        }`}>
-                          {team.level}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-2xl font-bold text-gray-900">{team.points.toLocaleString()}</span>
-                        <span className="text-sm text-gray-500">points</span>
-                      </div>
-                    </motion.div>
-                  ))}
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Team
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Members
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Points
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Credits
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {teams.map((team, index) => (
+                        <React.Fragment key={index}>
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer" 
+                            onClick={() => {
+                              if (editingTeamId === team.id) {
+                                handleCancelEditTeam();
+                              } else {
+                                handleStartEditTeam(team);
+                              }
+                            }}
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                  {team.avatar}
+                                </div>
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">{team.name}</div>
+                                  <div className="text-sm text-gray-500">{team.description || 'No description'}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {team.members}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {team.points.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {team.credits?.toLocaleString?.() ?? team.credits ?? 0}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                              <div className="flex items-center justify-center space-x-2">
+                                <button 
+                                  className="text-gray-600 hover:text-gray-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStartEditTeam(team);
+                                  }}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button className="text-red-600 hover:text-red-900">
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          
+                          {/* Expandable Edit Section */}
+                          {editingTeamId === team.id && (
+                            <tr>
+                              <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Team Details Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Users2 className="w-5 h-5 mr-2 text-blue-600" />
+                                      Team Details
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                        <input
+                                          type="text"
+                                          value={editingTeamData.id || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('id', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter team ID"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <input
+                                          type="text"
+                                          value={editingTeamData.name || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('name', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter team name"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Description
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <textarea
+                                          value={editingTeamData.description || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('description', e.target.value)}
+                                          rows={3}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter team description"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Team Image
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="space-y-4">
+                                          {/* File Upload Section */}
+                                          <div className="flex items-center space-x-4">
+                                            <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (event) => {
+                                                      handleUpdateEditingTeamData('image', event.target.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                  }
+                                                }}
+                                                className="hidden"
+                                              />
+                                              <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                              <span className="text-gray-600">Browse for image</span>
+                                            </label>
+                                            {editingTeamData.image && (
+                                              <button
+                                                type="button"
+                                                onClick={() => handleUpdateEditingTeamData('image', '')}
+                                                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </div>
+                                          
+                                          {/* Image Preview */}
+                                          {editingTeamData.image && (
+                                            <div className="relative inline-block">
+                                              <img
+                                                src={editingTeamData.image}
+                                                alt="Preview"
+                                                className="w-32 h-32 object-cover rounded-xl border border-gray-200"
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingTeamData.category || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('category', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingTeamData.tags || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('tags', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter tags (comma separated)"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Points
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingTeamData.points || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('points', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter points"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Credits
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingTeamData.credits || ''}
+                                          onChange={(e) => handleUpdateEditingTeamData('credits', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter credits"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                    <button
+                                      onClick={handleCancelEditTeam}
+                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl hover:bg-gray-50 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={handleSaveEditTeam}
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
@@ -2908,6 +3229,7 @@ const Dashboard = () => {
       <AddEventModal open={addEventOpen} onClose={() => setAddEventOpen(false)} onSave={handleAddEvent} />
       <AddMissionModal open={addMissionOpen} onClose={() => setAddMissionOpen(false)} onSave={handleAddMission} />
       <AddPlayerModal open={addPlayerOpen} onClose={() => setAddPlayerOpen(false)} onSave={handleAddPlayer} />
+      <AddTeamModal open={addTeamOpen} onClose={() => setAddTeamOpen(false)} onSave={handleAddTeam} />
       
       <EditPrizeModal 
         open={editPrizeOpen} 
