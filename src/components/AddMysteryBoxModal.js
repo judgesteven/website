@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, Tag, DollarSign, Box, Target, Upload } from 'lucide-react';
+import { X, Tag, DollarSign, Box, Target, Upload } from 'lucide-react';
 
 const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
@@ -11,12 +11,6 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
     category: '',
     tags: '',
     credits: '',
-    redemptionLimit: 'unlimited',
-    selectedPrize: '',
-    units: '',
-    startDate: '',
-    endDate: '',
-    refreshPeriod: 'none',
     reqCategory: '',
     reqTags: '',
     reqLevel: '',
@@ -80,12 +74,6 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
       category: '',
       tags: '',
       credits: '',
-      redemptionLimit: 'unlimited',
-      selectedPrize: '',
-      units: '',
-      startDate: '',
-      endDate: '',
-      refreshPeriod: 'none',
       reqCategory: '',
       reqTags: '',
       reqLevel: '',
@@ -95,15 +83,6 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
     setUploadedImage(null);
     setImagePreview('');
   };
-
-  const prizes = [
-    'Gift Card $50',
-    'Company Swag',
-    'Premium Subscription',
-    'Conference Ticket',
-    'Amazon Gift Card',
-    'Tech Gadgets'
-  ];
 
   if (!isOpen) return null;
 
@@ -118,7 +97,7 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Mystery Win</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Create Mystery Reward</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
@@ -128,11 +107,11 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
-            {/* Mystery Box Details Section */}
+            {/* Mystery Reward Details Section */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Box className="w-5 h-5 mr-2 text-blue-600" />
-                Mystery Win Details
+                Mystery Reward Details
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -143,7 +122,8 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                     value={formData.id}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter box ID"
+                    placeholder="Enter reward ID"
+                    required
                   />
                 </div>
                 <div>
@@ -154,22 +134,33 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                     value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter box name"
+                    placeholder="Enter reward name"
+                    required
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Description
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                     rows="3"
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter box description"
+                    placeholder="Enter reward description"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mystery Win Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Image
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="space-y-4">
                     {/* File Upload Section */}
                     <div className="flex items-center space-x-4">
@@ -200,7 +191,7 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                         <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
                           <img
                             src={imagePreview}
-                            alt="Mystery Win preview"
+                            alt="Mystery Reward preview"
                             className="w-full h-full object-cover"
                           />
                         </div>
@@ -224,7 +215,12 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="category"
@@ -235,7 +231,12 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="relative">
                     <input
                       type="text"
@@ -258,99 +259,11 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                       onChange={handleChange}
                       className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter credits cost"
+                      min="0"
+                      required
                     />
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Limits & Timers Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="w-5 h-5 mr-2 text-green-600" />
-                Limits & Timers
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Redemption Limit</label>
-                  <select
-                    name="redemptionLimit"
-                    value={formData.redemptionLimit}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="unlimited">Unlimited</option>
-                    <option value="1">1 per user</option>
-                    <option value="3">3 per user</option>
-                    <option value="5">5 per user</option>
-                    <option value="10">10 per user</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Prize</label>
-                  <select
-                    name="selectedPrize"
-                    value={formData.selectedPrize}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select a prize</option>
-                    {prizes.map((prize, index) => (
-                      <option key={index} value={prize}>{prize}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Units</label>
-                  <input
-                    type="number"
-                    name="units"
-                    value={formData.units}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter units"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      name="startDate"
-                      value={formData.startDate}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      name="endDate"
-                      value={formData.endDate}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
-                  <select
-                    name="refreshPeriod"
-                    value={formData.refreshPeriod}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="none">None</option>
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -363,7 +276,12 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="reqCategory"
@@ -374,7 +292,12 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <div className="relative">
                     <input
                       type="text"
@@ -388,7 +311,12 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Level
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="number"
                     name="reqLevel"
@@ -396,28 +324,39 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Minimum level required"
+                    min="0"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Missions
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="reqMission"
                     value={formData.reqMission}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Required mission"
+                    placeholder="Required missions (comma separated)"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Achievements
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input
                     type="text"
                     name="reqAchievement"
                     value={formData.reqAchievement}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Required achievement"
+                    placeholder="Required achievements (comma separated)"
                   />
                 </div>
               </div>
@@ -428,15 +367,15 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
               >
-                Create Mystery Win
+                Create Mystery Reward
               </button>
             </div>
           </form>
@@ -446,5 +385,5 @@ const AddMysteryBoxModal = ({ isOpen, onClose, onAdd }) => {
   );
 };
 
-export default AddMysteryBoxModal; // Force redeploy
+export default AddMysteryBoxModal;
  

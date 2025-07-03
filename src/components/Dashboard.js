@@ -36,7 +36,9 @@ import {
   Check,
   Upload,
   Calendar,
-  RefreshCw
+  RefreshCw,
+  Award,
+  Image
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
@@ -53,24 +55,24 @@ import EditEventModal from './EditEventModal';
 import EditMissionModal from './EditMissionModal';
 
 const prizes = [
-  { name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, redeemed: 8, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
-  { name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, redeemed: 45, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=2' },
-  { name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, redeemed: 12, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=3' },
-  { name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, redeemed: 3, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
+  { id: 'prize1', name: 'Gift Card $50', description: 'Amazon gift card', value: 50, stock: 25, redeemed: 8, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=1' },
+  { id: 'prize2', name: 'Company Swag', description: 'T-shirt and water bottle', value: 15, stock: 100, redeemed: 45, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=2' },
+  { id: 'prize3', name: 'Premium Subscription', description: '1 month premium access', value: 29, stock: 50, redeemed: 12, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=3' },
+  { id: 'prize4', name: 'Conference Ticket', description: 'Annual conference pass', value: 299, stock: 10, redeemed: 3, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=4' }
 ];
 
 const raffles = [
-  { name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', credits: 1000, entries: 1247, drawDate: '2024-02-29', startDate: '2024-01-01', endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
-  { name: 'Weekly Draw', description: 'Win $100 gift card', credits: 500, entries: 567, drawDate: '2024-02-07', startDate: '2024-01-29', endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
-  { name: 'Holiday Special', description: 'Win vacation package', credits: 2000, entries: 234, drawDate: '2024-12-25', startDate: '2024-11-01', endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
-  { name: 'Tech Bundle', description: 'Win iPhone + AirPods', credits: 1500, entries: 89, drawDate: '2024-01-15', startDate: '2024-01-01', endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
+  { id: 'raffle1', name: 'Monthly Grand Prize', description: 'Win a MacBook Pro', credits: 1000, entries: 1247, drawDate: '2024-02-29', startDate: '2024-01-01', endDate: '2024-02-29', status: 'Active', image: 'https://picsum.photos/400/300?random=5' },
+  { id: 'raffle2', name: 'Weekly Draw', description: 'Win $100 gift card', credits: 500, entries: 567, drawDate: '2024-02-07', startDate: '2024-01-29', endDate: '2024-02-07', status: 'Active', image: 'https://picsum.photos/400/300?random=6' },
+  { id: 'raffle3', name: 'Holiday Special', description: 'Win vacation package', credits: 2000, entries: 234, drawDate: '2024-12-25', startDate: '2024-11-01', endDate: '2024-12-25', status: 'Upcoming', image: 'https://picsum.photos/400/300?random=7' },
+  { id: 'raffle4', name: 'Tech Bundle', description: 'Win iPhone + AirPods', credits: 1500, entries: 89, drawDate: '2024-01-15', startDate: '2024-01-01', endDate: '2024-01-15', status: 'Ended', image: 'https://picsum.photos/400/300?random=8' }
 ];
 
 const mysteryBoxes = [
-  { name: 'Common Box', description: 'Basic rewards', credits: 100, available: 1000, redeemed: 753, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
-  { name: 'Rare Box', description: 'Better rewards', credits: 250, available: 500, redeemed: 433, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
-  { name: 'Epic Box', description: 'Premium rewards', credits: 500, available: 200, redeemed: 166, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
-  { name: 'Legendary Box', description: 'Ultimate rewards', credits: 1000, available: 50, redeemed: 11, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
+  { id: 'mystery1', name: 'Common Box', description: 'Basic rewards', credits: 100, available: 1000, redeemed: 753, startDate: '2024-01-01', endDate: '2024-12-31', status: 'Active', image: 'https://picsum.photos/400/300?random=9' },
+  { id: 'mystery2', name: 'Rare Box', description: 'Better rewards', credits: 250, available: 500, redeemed: 433, startDate: '2024-02-01', endDate: '2024-11-30', status: 'Active', image: 'https://picsum.photos/400/300?random=10' },
+  { id: 'mystery3', name: 'Epic Box', description: 'Premium rewards', credits: 500, available: 200, redeemed: 166, startDate: '2024-03-01', endDate: '2024-10-31', status: 'Active', image: 'https://picsum.photos/400/300?random=11' },
+  { id: 'mystery4', name: 'Legendary Box', description: 'Ultimate rewards', credits: 1000, available: 50, redeemed: 11, startDate: '2024-01-15', endDate: '2024-06-30', status: 'Limited', image: 'https://picsum.photos/400/300?random=12' }
 ];
 
 const missions = [
@@ -402,6 +404,64 @@ const Dashboard = () => {
     credits: '',
     achievements: '',
     stepsGranted: ''
+  });
+  
+  // Add state for inline prize editing
+  const [editingPrizeId, setEditingPrizeId] = useState(null);
+  const [editingPrizeData, setEditingPrizeData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    credits: '',
+    redemptionLimit: '',
+    unlimitedRedemption: false,
+    stockLimit: '',
+    unlimitedStock: false,
+    startDate: '',
+    endDate: '',
+    refreshPeriod: '',
+    reqCategory: '',
+    reqTags: '',
+    level: '',
+    mission: '',
+    achievement: ''
+  });
+  
+  // Add state for inline raffle editing
+  const [editingRaffleId, setEditingRaffleId] = useState(null);
+  const [editingRaffleData, setEditingRaffleData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    credits: '',
+    reqCategory: '',
+    reqTags: '',
+    level: '',
+    mission: '',
+    achievement: ''
+  });
+
+  // Add state for inline mystery box editing
+  const [editingMysteryBoxId, setEditingMysteryBoxId] = useState(null);
+  const [editingMysteryBoxData, setEditingMysteryBoxData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    credits: '',
+    reqCategory: '',
+    reqTags: '',
+    reqLevel: '',
+    reqMission: '',
+    reqAchievement: ''
   });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
@@ -970,6 +1030,244 @@ const Dashboard = () => {
     }));
   };
 
+  // Prize editing handlers
+  const handleStartEditPrize = (prize) => {
+    setEditingPrizeId(prize.id);
+    setEditingPrizeData({
+      id: prize.id || '',
+      name: prize.name || '',
+      description: prize.description || '',
+      image: prize.image || '',
+      category: prize.category || '',
+      tags: prize.tags || '',
+      credits: prize.credits || '',
+      redemptionLimit: prize.redemptionLimit || '',
+      unlimitedRedemption: prize.unlimitedRedemption || false,
+      stockLimit: prize.stockLimit || '',
+      unlimitedStock: prize.unlimitedStock || false,
+      startDate: prize.startDate || '',
+      endDate: prize.endDate || '',
+      refreshPeriod: prize.refreshPeriod || '',
+      reqCategory: prize.reqCategory || '',
+      reqTags: prize.reqTags || '',
+      level: prize.level || '',
+      mission: prize.mission || '',
+      achievement: prize.achievement || ''
+    });
+  };
+
+  const handleSaveEditPrize = () => {
+    if (!editingPrizeId) return;
+    
+    const updatedPrize = {
+      ...editingPrizeData,
+      credits: editingPrizeData.credits ? parseInt(editingPrizeData.credits) : 0,
+      redemptionLimit: editingPrizeData.redemptionLimit ? parseInt(editingPrizeData.redemptionLimit) : 0,
+      stockLimit: editingPrizeData.stockLimit ? parseInt(editingPrizeData.stockLimit) : 0,
+      level: editingPrizeData.level ? parseInt(editingPrizeData.level) : 0
+    };
+
+    setPrizesList(prev => 
+      prev.map(prize => 
+        prize.id === editingPrizeId ? updatedPrize : prize
+      )
+    );
+    
+    setEditingPrizeId(null);
+    setEditingPrizeData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      redemptionLimit: '',
+      unlimitedRedemption: false,
+      stockLimit: '',
+      unlimitedStock: false,
+      startDate: '',
+      endDate: '',
+      refreshPeriod: '',
+      reqCategory: '',
+      reqTags: '',
+      level: '',
+      mission: '',
+      achievement: ''
+    });
+  };
+
+  const handleCancelEditPrize = () => {
+    setEditingPrizeId(null);
+    setEditingPrizeData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      redemptionLimit: '',
+      unlimitedRedemption: false,
+      stockLimit: '',
+      unlimitedStock: false,
+      startDate: '',
+      endDate: '',
+      refreshPeriod: '',
+      reqCategory: '',
+      reqTags: '',
+      level: '',
+      mission: '',
+      achievement: ''
+    });
+  };
+
+  const handleUpdateEditingPrizeData = (field, value) => {
+    setEditingPrizeData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Raffle editing handlers
+  const handleStartEditRaffle = (raffle) => {
+    setEditingRaffleId(raffle.id);
+    setEditingRaffleData({
+      id: raffle.id || '',
+      name: raffle.name || '',
+      description: raffle.description || '',
+      image: raffle.image || '',
+      category: raffle.category || '',
+      tags: raffle.tags || '',
+      credits: raffle.credits || '',
+      reqCategory: raffle.reqCategory || '',
+      reqTags: raffle.reqTags || '',
+      level: raffle.level || '',
+      mission: raffle.mission || '',
+      achievement: raffle.achievement || ''
+    });
+  };
+
+  const handleSaveEditRaffle = () => {
+    const updatedRaffles = rafflesList.map(raffle => 
+      raffle.id === editingRaffleId 
+        ? { ...raffle, ...editingRaffleData }
+        : raffle
+    );
+    setRafflesList(updatedRaffles);
+    setEditingRaffleId(null);
+    setEditingRaffleData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      reqCategory: '',
+      reqTags: '',
+      level: '',
+      mission: '',
+      achievement: ''
+    });
+  };
+
+  const handleCancelEditRaffle = () => {
+    setEditingRaffleId(null);
+    setEditingRaffleData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      reqCategory: '',
+      reqTags: '',
+      level: '',
+      mission: '',
+      achievement: ''
+    });
+  };
+
+  const handleUpdateEditingRaffleData = (field, value) => {
+    setEditingRaffleData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Mystery Box editing handlers
+  const handleStartEditMysteryBox = (box) => {
+    setEditingMysteryBoxId(box.id);
+    setEditingMysteryBoxData({
+      id: box.id || '',
+      name: box.name || '',
+      description: box.description || '',
+      image: box.image || '',
+      category: box.category || '',
+      tags: box.tags || '',
+      credits: box.credits || '',
+      reqCategory: box.reqCategory || '',
+      reqTags: box.reqTags || '',
+      reqLevel: box.reqLevel || '',
+      reqMission: box.reqMission || '',
+      reqAchievement: box.reqAchievement || ''
+    });
+  };
+
+  const handleSaveEditMysteryBox = () => {
+    if (!editingMysteryBoxId) return;
+
+    const updatedMysteryBoxes = mysteryBoxesList.map(box => 
+      box.id === editingMysteryBoxId 
+        ? { ...box, ...editingMysteryBoxData }
+        : box
+    );
+
+    setMysteryBoxesList(updatedMysteryBoxes);
+    setEditingMysteryBoxId(null);
+    setEditingMysteryBoxData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      reqCategory: '',
+      reqTags: '',
+      reqLevel: '',
+      reqMission: '',
+      reqAchievement: ''
+    });
+  };
+
+  const handleCancelEditMysteryBox = () => {
+    setEditingMysteryBoxId(null);
+    setEditingMysteryBoxData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      credits: '',
+      reqCategory: '',
+      reqTags: '',
+      reqLevel: '',
+      reqMission: '',
+      reqAchievement: ''
+    });
+  };
+
+  const handleUpdateEditingMysteryBoxData = (field, value) => {
+    setEditingMysteryBoxData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const handleGuideCreateEvent = () => {
     setGuideStep(2);
     // Start typing animation sequence
@@ -1185,7 +1483,7 @@ const Dashboard = () => {
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
-            <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
+            <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4">
               New Campaign
             </button>
           </div>
@@ -1268,7 +1566,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <button 
-                    className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
                     onClick={() => setAddPlayerOpen(true)}
                   >
                     Add Player
@@ -1567,13 +1865,13 @@ const Dashboard = () => {
                                   <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
                                     <button
                                       onClick={handleCancelEditPlayer}
-                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl hover:bg-gray-50 transition-colors"
+                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
                                     >
                                       Cancel
                                     </button>
                                     <button
                                       onClick={handleSaveEditPlayer}
-                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                     >
                                       Save Changes
                                     </button>
@@ -1595,15 +1893,6 @@ const Dashboard = () => {
                 {/* Prizes Section */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <Gift className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Prizes</h3>
-                    </div>
-                    <button className="btn-primary" onClick={() => setAddPrizeOpen(true)}>
-                      Add Prize
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -1618,64 +1907,430 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
+                    <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddPrizeOpen(true)}>
+                      Add Prize
+                    </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(prizesList, prizesPage).map((prize, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                        onClick={() => handlePrizeClick(prize)}
-                      >
-                        {prize.image && (
-                          <div className="w-full h-48 bg-gray-200 overflow-hidden">
-                            <img 
-                              src={prize.image} 
-                              alt={prize.name}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                              <Gift className="w-16 h-16 text-gray-400" />
-                            </div>
-                          </div>
-                        )}
-                        <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-semibold text-gray-900">{prize.name}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              prize.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                            }`}>
-                              {prize.status}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 text-sm mb-4">{prize.description}</p>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Credits:</span>
-                              <span className="font-medium">${prize.value}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Available:</span>
-                              <span className="font-medium">{prize.stock || 0}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Start Date:</span>
-                              <span className="font-medium">{prize.startDate || 'N/A'}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">End Date:</span>
-                              <span className="font-medium">{prize.endDate || 'N/A'}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table className="w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Prize
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Credits
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Available
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Redeemed
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {getPageItems(prizesList, prizesPage).map((prize, index) => (
+                          <React.Fragment key={index}>
+                            <tr 
+                              className={`hover:bg-gray-50 cursor-pointer ${editingPrizeId === prize.id ? 'bg-blue-50' : ''}`}
+                              onClick={() => editingPrizeId === prize.id ? handleCancelEditPrize() : handleStartEditPrize(prize)}
+                            >
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  {prize.image ? (
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={prize.image}
+                                        alt={prize.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.target.style.display = 'none';
+                                          e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                      />
+                                      <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                        <Gift className="w-4 h-4" />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                      <Gift className="w-4 h-4" />
+                                    </div>
+                                  )}
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{prize.name}</div>
+                                    <div className="text-sm text-gray-500">{prize.description}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                ${prize.value}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {prize.stock || 0}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {prize.redeemed || 0}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  prize.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {prize.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <div className="flex items-center justify-center space-x-2">
+                                  <button 
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (editingPrizeId === prize.id) {
+                                        handleCancelEditPrize();
+                                      } else {
+                                        handleStartEditPrize(prize);
+                                      }
+                                    }}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="text-red-600 hover:text-red-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeletePrize(prize);
+                                    }}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {editingPrizeId === prize.id && (
+                              <tr>
+                                <td colSpan="6" className="px-6 py-4 bg-gray-50">
+                                  <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-8">
+                                    {/* Prize Details Section */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Trophy className="w-5 h-5 mr-2 text-blue-600" />
+                                        Prize Details
+                                      </h3>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                          <input 
+                                            value={editingPrizeData.id} 
+                                            onChange={(e) => handleUpdateEditingPrizeData('id', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter prize ID"
+                                            required 
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                          <input 
+                                            value={editingPrizeData.name} 
+                                            onChange={(e) => handleUpdateEditingPrizeData('name', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter prize name"
+                                            required 
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Description <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <textarea 
+                                            value={editingPrizeData.description} 
+                                            onChange={(e) => handleUpdateEditingPrizeData('description', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter prize description"
+                                            rows="3"
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Prize Image <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <div className="space-y-4">
+                                            {/* File Upload Section */}
+                                            <div className="flex items-center space-x-4">
+                                              <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                      const reader = new FileReader();
+                                                      reader.onload = (event) => {
+                                                        handleUpdateEditingPrizeData('image', event.target.result);
+                                                      };
+                                                      reader.readAsDataURL(file);
+                                                    }
+                                                  }}
+                                                  className="hidden"
+                                                />
+                                                <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                                <span className="text-gray-600">Browse for image</span>
+                                              </label>
+                                              {editingPrizeData.image && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() => handleUpdateEditingPrizeData('image', '')}
+                                                  className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                                >
+                                                  Remove
+                                                </button>
+                                              )}
+                                            </div>
+                                            
+                                            {/* Image Preview */}
+                                            {editingPrizeData.image && (
+                                              <div className="relative">
+                                                <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                  <img
+                                                    src={editingPrizeData.image}
+                                                    alt="Prize preview"
+                                                    className="w-full h-full object-cover"
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                            
+                                            {/* URL Input (fallback) */}
+                                            <div>
+                                              <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                              <input 
+                                                value={editingPrizeData.image} 
+                                                onChange={(e) => handleUpdateEditingPrizeData('image', e.target.value)} 
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="Enter image URL (optional if file uploaded)"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <input 
+                                            value={editingPrizeData.category} 
+                                            onChange={(e) => handleUpdateEditingPrizeData('category', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <div className="relative">
+                                            <input 
+                                              value={editingPrizeData.tags} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('tags', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                                          <div className="relative">
+                                            <input 
+                                              type="number" 
+                                              value={editingPrizeData.credits} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('credits', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter credits cost"
+                                              min="0" 
+                                            />
+                                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Limits & Dates Section */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Clock className="w-5 h-5 mr-2 text-green-600" />
+                                        Limits & Dates
+                                      </h3>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Redemption Limit</label>
+                                          <div className="flex items-center space-x-2">
+                                            <input 
+                                              type="number" 
+                                              value={editingPrizeData.unlimitedRedemption ? '' : editingPrizeData.redemptionLimit} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('redemptionLimit', e.target.value)} 
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter limit"
+                                              min="0" 
+                                              disabled={editingPrizeData.unlimitedRedemption} 
+                                            />
+                                            <label className="flex items-center text-sm">
+                                              <input 
+                                                type="checkbox" 
+                                                checked={editingPrizeData.unlimitedRedemption} 
+                                                onChange={(e) => handleUpdateEditingPrizeData('unlimitedRedemption', e.target.checked)} 
+                                                className="mr-1" 
+                                              />
+                                              Unlimited
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Stock Limit</label>
+                                          <div className="flex items-center space-x-2">
+                                            <input 
+                                              type="number" 
+                                              value={editingPrizeData.unlimitedStock ? '' : editingPrizeData.stockLimit} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('stockLimit', e.target.value)} 
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter stock limit"
+                                              min="0" 
+                                              disabled={editingPrizeData.unlimitedStock} 
+                                            />
+                                            <label className="flex items-center text-sm">
+                                              <input 
+                                                type="checkbox" 
+                                                checked={editingPrizeData.unlimitedStock} 
+                                                onChange={(e) => handleUpdateEditingPrizeData('unlimitedStock', e.target.checked)} 
+                                                className="mr-1" 
+                                              />
+                                              Unlimited
+                                            </label>
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                          <div className="relative">
+                                            <input 
+                                              type="date" 
+                                              value={editingPrizeData.startDate} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('startDate', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            />
+                                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                          <div className="relative">
+                                            <input 
+                                              type="date" 
+                                              value={editingPrizeData.endDate} 
+                                              onChange={(e) => handleUpdateEditingPrizeData('endDate', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            />
+                                            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                                          <select
+                                            value={editingPrizeData.refreshPeriod}
+                                            onChange={(e) => handleUpdateEditingPrizeData('refreshPeriod', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          >
+                                            <option value="">None</option>
+                                            <option value="daily">Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Requirements Section */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                        Requirements
+                                      </h3>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <input
+                                            type="text"
+                                            value={editingPrizeData.reqCategory}
+                                            onChange={(e) => handleUpdateEditingPrizeData('reqCategory', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              value={editingPrizeData.reqTags}
+                                              onChange={(e) => handleUpdateEditingPrizeData('reqTags', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Required tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Level <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <input
+                                            type="number"
+                                            value={editingPrizeData.level}
+                                            onChange={(e) => handleUpdateEditingPrizeData('level', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Minimum level required"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Mission <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <input
+                                            type="text"
+                                            value={editingPrizeData.mission}
+                                            onChange={(e) => handleUpdateEditingPrizeData('mission', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required mission"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Achievement <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
+                                          <input
+                                            type="text"
+                                            value={editingPrizeData.achievement}
+                                            onChange={(e) => handleUpdateEditingPrizeData('achievement', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required achievement"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                                      <button
+                                        onClick={handleCancelEditPrize}
+                                        className="px-6 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={handleSaveEditPrize}
+                                        className="px-6 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                   <PaginationControls currentPage={prizesPage} totalPages={getTotalPages(prizesList)} onPageChange={(newPage) => setPrizesPage(newPage)} />
                 </div>
@@ -1685,15 +2340,6 @@ const Dashboard = () => {
 
                 {/* Raffles Section */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <Ticket className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Raffles</h3>
-                    </div>
-                    <button className="btn-primary" onClick={() => setAddRaffleOpen(true)}>
-                      Create Raffle
-                    </button>
-                  </div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
@@ -1709,95 +2355,409 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
+                    <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddRaffleOpen(true)}>
+                      Create Raffle
+                    </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(rafflesList, rafflesPage).map((raffle, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                        onClick={() => handleRaffleClick(raffle)}
-                      >
-                        {raffle.image && (
-                          <div className="w-full h-48 bg-gray-200 overflow-hidden">
-                            <img 
-                              src={raffle.image} 
-                              alt={raffle.name}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                              <Ticket className="w-16 h-16 text-gray-400" />
-                            </div>
-                          </div>
-                        )}
-                        <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-semibold text-gray-900">{raffle.name}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              raffle.status === 'Active' ? 'bg-green-100 text-green-800' :
-                              raffle.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
-                              {raffle.status}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 text-sm mb-4">{raffle.description}</p>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Credits:</span>
-                              <span className="font-medium">{raffle.credits}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Entries:</span>
-                              <span className="font-medium">{raffle.entries}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Draw Date:</span>
-                              <span className="font-medium">{raffle.drawDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Start Date:</span>
-                              <span className="font-medium">{raffle.startDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">End Date:</span>
-                              <span className="font-medium">{raffle.endDate}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table className="w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Raffle
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Credits
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Entries
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Draw Date
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {getPageItems(rafflesList, rafflesPage).map((raffle, index) => (
+                          <React.Fragment key={index}>
+                            <tr 
+                              className={`hover:bg-gray-50 cursor-pointer ${editingRaffleId === raffle.id ? 'bg-blue-50' : ''}`}
+                              onClick={() => editingRaffleId === raffle.id ? handleCancelEditRaffle() : handleStartEditRaffle(raffle)}
+                            >
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  {raffle.image ? (
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={raffle.image}
+                                        alt={raffle.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.target.style.display = 'none';
+                                          e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                      />
+                                      <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                        <Ticket className="w-4 h-4" />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                      <Ticket className="w-4 h-4" />
+                                    </div>
+                                  )}
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{raffle.name}</div>
+                                    <div className="text-sm text-gray-500">{raffle.description}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {raffle.credits}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {raffle.entries}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {raffle.drawDate}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  raffle.status === 'Active' ? 'bg-green-100 text-green-800' :
+                                  raffle.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
+                                  'bg-gray-100 text-gray-800'
+                                }`}>
+                                  {raffle.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <div className="flex items-center justify-center space-x-2">
+                                  <button 
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (editingRaffleId === raffle.id) {
+                                        handleCancelEditRaffle();
+                                      } else {
+                                        handleStartEditRaffle(raffle);
+                                      }
+                                    }}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="text-red-600 hover:text-red-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteRaffle(raffle);
+                                    }}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            
+                            {/* Expandable Edit Section */}
+                            {editingRaffleId === raffle.id && (
+                              <tr>
+                                <td colSpan="6" className="px-6 py-4 bg-gray-50">
+                                  <div className="space-y-6">
+                                    {/* Raffle Details Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Ticket className="w-5 h-5 mr-2 text-blue-600" />
+                                        Raffle Details
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.id || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('id', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter raffle ID"
+                                            required
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.name || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('name', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter raffle name"
+                                            required
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Description
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <textarea
+                                            value={editingRaffleData.description || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('description', e.target.value)}
+                                            rows="3"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter raffle description"
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Raffle Image
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="space-y-4">
+                                            {/* File Upload Section */}
+                                            <div className="flex items-center space-x-4">
+                                              <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                                <input
+                                                  type="file"
+                                                  accept="image/*"
+                                                  onChange={(e) => {
+                                                    const file = e.target.files[0];
+                                                    if (file) {
+                                                      const reader = new FileReader();
+                                                      reader.onload = (event) => {
+                                                        handleUpdateEditingRaffleData('image', event.target.result);
+                                                      };
+                                                      reader.readAsDataURL(file);
+                                                    }
+                                                  }}
+                                                  className="hidden"
+                                                />
+                                                <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                                <span className="text-gray-600">Browse for image</span>
+                                              </label>
+                                              {editingRaffleData.image && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() => handleUpdateEditingRaffleData('image', '')}
+                                                  className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                                >
+                                                  Remove
+                                                </button>
+                                              )}
+                                            </div>
+                                            
+                                            {/* Image Preview */}
+                                            {editingRaffleData.image && (
+                                              <div className="relative">
+                                                <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                  <img
+                                                    src={editingRaffleData.image}
+                                                    alt="Raffle preview"
+                                                    className="w-full h-full object-cover"
+                                                  />
+                                                </div>
+                                              </div>
+                                            )}
+                                            
+                                            {/* URL Input (fallback) */}
+                                            <div>
+                                              <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                              <input 
+                                                value={editingRaffleData.image || ''} 
+                                                onChange={(e) => handleUpdateEditingRaffleData('image', e.target.value)} 
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="Enter image URL (optional if file uploaded)"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.category || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('category', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              value={editingRaffleData.tags || ''}
+                                              onChange={(e) => handleUpdateEditingRaffleData('tags', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                                          <div className="relative">
+                                            <input
+                                              type="number"
+                                              value={editingRaffleData.credits || ''}
+                                              onChange={(e) => handleUpdateEditingRaffleData('credits', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter credits cost"
+                                              min="0"
+                                              required
+                                            />
+                                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Requirements Section */}
+                                    <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                        Requirements
+                                      </h4>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.reqCategory || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('reqCategory', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              type="text"
+                                              value={editingRaffleData.reqTags || ''}
+                                              onChange={(e) => handleUpdateEditingRaffleData('reqTags', e.target.value)}
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Required tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Level
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="number"
+                                            value={editingRaffleData.level || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('level', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Minimum level required"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Mission
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.mission || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('mission', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required mission"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Achievement
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={editingRaffleData.achievement || ''}
+                                            onChange={(e) => handleUpdateEditingRaffleData('achievement', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required achievement"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                                      <button
+                                        type="button"
+                                        onClick={handleCancelEditRaffle}
+                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={handleSaveEditRaffle}
+                                        className="px-6 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                   <PaginationControls currentPage={rafflesPage} totalPages={getTotalPages(rafflesList)} onPageChange={(newPage) => setRafflesPage(newPage)} />
                 </div>
 
-                {/* Divider between Raffles and Mystery Wins */}
+                {/* Divider between Raffles and Mystery Rewards */}
                 <hr className="my-10 border-t-2 border-blue-100" />
 
-                {/* Mystery Wins Section */}
+                {/* Mystery Rewards Section */}
                 <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <Box className="w-6 h-6 text-primary-600" />
-                      <h3 className="text-lg font-semibold text-gray-900">Mystery Wins</h3>
-                    </div>
-                    <button className="btn-primary" onClick={() => setAddMysteryBoxOpen(true)}>
-                      Create Mystery Win
-                    </button>
-                  </div>
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center space-x-4">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                         <input
                           type="text"
-                          placeholder="Search mystery wins..."
+                          placeholder="Search mystery rewards..."
                           className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                         />
                       </div>
@@ -1806,64 +2766,329 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
+                    <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddMysteryBoxOpen(true)}>
+                      Create Mystery Reward
+                    </button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {getPageItems(mysteryBoxesList, mysteryBoxesPage).map((box, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="card p-0 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
-                        onClick={() => handleMysteryBoxClick(box)}
-                      >
-                        {box.image && (
-                          <div className="w-full h-48 bg-gray-200 overflow-hidden">
-                            <img 
-                              src={box.image} 
-                              alt={box.name}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                              <Box className="w-16 h-16 text-gray-400" />
-                            </div>
-                          </div>
-                        )}
-                        <div className="p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-semibold text-gray-900">{box.name}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              box.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                            }`}>
-                              {box.status}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 text-sm mb-4">{box.description}</p>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Credits:</span>
-                              <span className="font-medium">{box.credits}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Available:</span>
-                              <span className="font-medium">{box.available}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Start Date:</span>
-                              <span className="font-medium">{box.startDate}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">End Date:</span>
-                              <span className="font-medium">{box.endDate}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
+                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                    <table className="w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Mystery Reward
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Credits
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Available
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Redeemed
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {getPageItems(mysteryBoxesList, mysteryBoxesPage).map((box, index) => (
+                          <React.Fragment key={index}>
+                            <tr 
+                              className={`hover:bg-gray-50 cursor-pointer ${editingMysteryBoxId === box.id ? 'bg-blue-50' : ''}`}
+                              onClick={() => editingMysteryBoxId === box.id ? handleCancelEditMysteryBox() : handleStartEditMysteryBox(box)}
+                            >
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  {box.image ? (
+                                    <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                      <img
+                                        src={box.image}
+                                        alt={box.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          e.target.style.display = 'none';
+                                          e.target.nextSibling.style.display = 'flex';
+                                        }}
+                                      />
+                                      <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                        <Box className="w-4 h-4" />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                      <Box className="w-4 h-4" />
+                                    </div>
+                                  )}
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{box.name}</div>
+                                    <div className="text-sm text-gray-500">{box.description}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {box.credits}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {box.available}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                {box.redeemed}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-center">
+                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  box.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                                }`}>
+                                  {box.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <div className="flex items-center justify-center space-x-2">
+                                  <button 
+                                    className="text-gray-600 hover:text-gray-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (editingMysteryBoxId === box.id) {
+                                        handleCancelEditMysteryBox();
+                                      } else {
+                                        handleStartEditMysteryBox(box);
+                                      }
+                                    }}
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="text-red-600 hover:text-red-900"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteMysteryBox(box);
+                                    }}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                            {editingMysteryBoxId === box.id && (
+                              <tr>
+                                <td colSpan="6" className="px-6 py-4 bg-gray-50">
+                                  <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-8">
+                                    {/* Mystery Reward Details Section */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Box className="w-5 h-5 mr-2 text-blue-600" />
+                                        Mystery Reward Details
+                                      </h3>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                          <input 
+                                            value={editingMysteryBoxData.id} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('id', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter reward ID"
+                                            required 
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                          <input 
+                                            value={editingMysteryBoxData.name} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('name', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter reward name"
+                                            required 
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Description
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <textarea 
+                                            value={editingMysteryBoxData.description} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('description', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter reward description"
+                                            rows="3"
+                                          />
+                                        </div>
+                                        <div className="md:col-span-2">
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Image
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            value={editingMysteryBoxData.image} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('image', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter image URL"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            value={editingMysteryBoxData.category} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('category', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input 
+                                              value={editingMysteryBoxData.tags} 
+                                              onChange={(e) => handleUpdateEditingMysteryBoxData('tags', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                                          <div className="relative">
+                                            <input 
+                                              type="number" 
+                                              value={editingMysteryBoxData.credits} 
+                                              onChange={(e) => handleUpdateEditingMysteryBoxData('credits', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter credits cost"
+                                              min="0" 
+                                              required
+                                            />
+                                            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Requirements Section */}
+                                    <div>
+                                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                        <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                        Requirements
+                                      </h3>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Category
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            value={editingMysteryBoxData.reqCategory} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('reqCategory', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required category"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Tags
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <div className="relative">
+                                            <input 
+                                              value={editingMysteryBoxData.reqTags} 
+                                              onChange={(e) => handleUpdateEditingMysteryBoxData('reqTags', e.target.value)} 
+                                              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Required tags (comma separated)"
+                                            />
+                                            <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Level
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            type="number" 
+                                            value={editingMysteryBoxData.reqLevel} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('reqLevel', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Minimum level required"
+                                            min="0"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Missions
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            value={editingMysteryBoxData.reqMission} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('reqMission', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required missions (comma separated)"
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Achievements
+                                            <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                              (Optional)
+                                            </span>
+                                          </label>
+                                          <input 
+                                            value={editingMysteryBoxData.reqAchievement} 
+                                            onChange={(e) => handleUpdateEditingMysteryBoxData('reqAchievement', e.target.value)} 
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Required achievements (comma separated)"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                      <button
+                                        onClick={handleCancelEditMysteryBox}
+                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={handleSaveEditMysteryBox}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                   <PaginationControls currentPage={mysteryBoxesPage} totalPages={getTotalPages(mysteryBoxesList)} onPageChange={(newPage) => setMysteryBoxesPage(newPage)} />
                 </div>
@@ -1888,7 +3113,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <button 
-                    className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4"
+                    className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4"
                     onClick={() => setAddTeamOpen(true)}
                   >
                     Add Team
@@ -2135,13 +3360,13 @@ const Dashboard = () => {
                                   <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
                                     <button
                                       onClick={handleCancelEditTeam}
-                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl hover:bg-gray-50 transition-colors"
+                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
                                     >
                                       Cancel
                                     </button>
                                     <button
                                       onClick={handleSaveEditTeam}
-                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                     >
                                       Save Changes
                                     </button>
@@ -2175,7 +3400,7 @@ const Dashboard = () => {
                       Filter
                     </button>
                   </div>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium" onClick={() => setAddStreakOpen(true)}>
+                  <button className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium" onClick={() => setAddStreakOpen(true)}>
                     Create Streak
                   </button>
                 </div>
@@ -2625,13 +3850,13 @@ const Dashboard = () => {
                                   <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
                                     <button
                                       onClick={handleCancelEditStreak}
-                                      className="px-4 py-2 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50"
+                                      className="px-4 py-2 border border-gray-300 rounded-3xl text-gray-700 hover:bg-gray-50"
                                     >
                                       Cancel
                                     </button>
                                     <button
                                       onClick={handleSaveEditStreak}
-                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                     >
                                       Save Changes
                                     </button>
@@ -2668,7 +3893,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4" onClick={() => setAddEventOpen(true)}>
+                    <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddEventOpen(true)}>
                       Create Event
                     </button>
                   </div>
@@ -3013,13 +4238,13 @@ const Dashboard = () => {
                                     <div className="flex justify-end space-x-3">
                                       <button
                                         onClick={handleCancelEditEvent}
-                                        className="px-4 py-2 border border-gray-300 rounded-2xl text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                        className="px-4 py-2 border border-gray-300 rounded-3xl text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                                       >
                                         Cancel
                                       </button>
                                       <button
                                         onClick={handleSaveEditEvent}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                       >
                                         Save Changes
                                       </button>
@@ -3056,7 +4281,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4" onClick={() => setAddMissionOpen(true)}>
+                    <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddMissionOpen(true)}>
                       Create Mission
                     </button>
                   </div>
@@ -3629,13 +4854,13 @@ const Dashboard = () => {
                                     <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
                                       <button
                                         onClick={handleCancelEditMission}
-                                        className="px-4 py-2 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50"
+                                        className="px-4 py-2 border border-gray-300 rounded-3xl text-gray-700 hover:bg-gray-50"
                                       >
                                         Cancel
                                       </button>
                                       <button
                                         onClick={handleSaveEditMission}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                       >
                                         Save Changes
                                       </button>
@@ -3658,7 +4883,7 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Levels</h3>
-                  <button className="btn-primary">
+                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
                     Add Level
                   </button>
                 </div>
@@ -3715,7 +4940,7 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Leaderboards</h3>
-                  <button className="btn-primary">
+                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
                     Create Leaderboard
                   </button>
                 </div>
@@ -3763,7 +4988,7 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Quizzes</h3>
-                  <button className="btn-primary">
+                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
                     Create Quiz
                   </button>
                 </div>
@@ -3820,7 +5045,7 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Achievements</h3>
-                  <button className="btn-primary">
+                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
                     Create Achievement
                   </button>
                 </div>
@@ -3871,7 +5096,7 @@ const Dashboard = () => {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-900">Surveys</h3>
-                  <button className="btn-primary">
+                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
                     Create Survey
                   </button>
                 </div>
@@ -4015,7 +5240,7 @@ const Dashboard = () => {
                         
                         {/* Animated Create Event Button */}
                         <motion.button 
-                          className="btn-primary relative"
+                          className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4 relative"
                           animate={{
                             scale: [1, 1.05, 1],
                             boxShadow: [
@@ -4474,7 +5699,7 @@ const Dashboard = () => {
                             </div>
                             <motion.button
                               type="button"
-                              className={`relative ${Object.values(typingProgress).every(Boolean) ? 'btn-primary' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-xl'}`}
+                              className={`relative ${Object.values(typingProgress).every(Boolean) ? 'bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-3xl'}`}
                               animate={Object.values(typingProgress).every(Boolean) ? {
                                 scale: [1, 1.05, 1],
                                 boxShadow: [

@@ -131,7 +131,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <textarea 
                     name="description" 
                     value={form.description} 
@@ -139,11 +139,10 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter prize description"
                     rows="3"
-                    required 
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Prize Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Prize Image <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="space-y-4">
                     {/* File Upload Section */}
                     <div className="flex items-center space-x-4">
@@ -198,7 +197,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input 
                     name="category" 
                     value={form.category} 
@@ -208,7 +207,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="relative">
                     <input 
                       name="tags" 
@@ -333,7 +332,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="reqCategory"
@@ -344,7 +343,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="relative">
                     <input
                       type="text"
@@ -358,7 +357,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Level <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="number"
                     name="level"
@@ -369,7 +368,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="mission"
@@ -380,7 +379,7 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="achievement"
@@ -398,13 +397,13 @@ const AddPrizeModal = ({ open, onClose, onSave }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
               >
                 Create Prize
               </button>

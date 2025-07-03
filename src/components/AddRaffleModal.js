@@ -1,21 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, Tag, DollarSign, Ticket, Target, Upload } from 'lucide-react';
-
-const refreshOptions = [
-  { value: '', label: 'None' },
-  { value: 'daily', label: 'Daily' },
-  { value: 'weekly', label: 'Weekly' },
-  { value: 'monthly', label: 'Monthly' },
-];
-
-const prizeOptions = [
-  { value: 'gift-card-50', label: 'Gift Card $50', units: 1 },
-  { value: 'company-swag', label: 'Company Swag', units: 5 },
-  { value: 'premium-subscription', label: 'Premium Subscription', units: 1 },
-  { value: 'conference-ticket', label: 'Conference Ticket', units: 1 },
-  { value: 'tech-bundle', label: 'Tech Bundle', units: 1 },
-];
+import { X, Tag, DollarSign, Ticket, Target, Upload } from 'lucide-react';
 
 const AddRaffleModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
@@ -26,14 +11,6 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
     category: '',
     tags: '',
     credits: '',
-    redemptionLimit: '',
-    unlimitedRedemption: false,
-    selectedPrize: '',
-    prizeUnits: 1,
-    startDate: '',
-    endDate: '',
-    drawDate: '',
-    refreshPeriod: '',
     reqCategory: '',
     reqTags: '',
     level: '',
@@ -45,11 +22,10 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
   const [imagePreview, setImagePreview] = useState('');
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-      ...(name === 'unlimitedRedemption' && checked ? { redemptionLimit: '' } : {}),
+      [name]: value,
     }));
   };
 
@@ -139,7 +115,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <textarea 
                     name="description" 
                     value={form.description} 
@@ -147,11 +123,10 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter raffle description"
                     rows="3"
-                    required 
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Raffle Image</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Raffle Image <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="space-y-4">
                     {/* File Upload Section */}
                     <div className="flex items-center space-x-4">
@@ -206,7 +181,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input 
                     name="category" 
                     value={form.category} 
@@ -216,7 +191,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="relative">
                     <input 
                       name="tags" 
@@ -239,116 +214,10 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                       className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       placeholder="Enter credits cost"
                       min="0" 
+                      required
                     />
                     <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Limits & Timers Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <Clock className="w-5 h-5 mr-2 text-green-600" />
-                Limits & Timers
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Redemption Limit</label>
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      name="redemptionLimit" 
-                      type="number" 
-                      value={form.unlimitedRedemption ? '' : form.redemptionLimit} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter limit"
-                      min="0" 
-                      disabled={form.unlimitedRedemption} 
-                    />
-                    <label className="flex items-center text-sm">
-                      <input type="checkbox" name="unlimitedRedemption" checked={form.unlimitedRedemption} onChange={handleChange} className="mr-1" />
-                      Unlimited
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Select Prize</label>
-                  <select
-                    name="selectedPrize"
-                    value={form.selectedPrize}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select Prize</option>
-                    {prizeOptions.map((prize) => (
-                      <option key={prize.value} value={prize.value}>{prize.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Prize Units</label>
-                  <input 
-                    name="prizeUnits" 
-                    type="number" 
-                    value={form.prizeUnits} 
-                    onChange={handleChange} 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter units"
-                    min="1" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-                  <div className="relative">
-                    <input 
-                      name="startDate" 
-                      type="date" 
-                      value={form.startDate} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-                  <div className="relative">
-                    <input 
-                      name="endDate" 
-                      type="date" 
-                      value={form.endDate} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Draw Date</label>
-                  <div className="relative">
-                    <input 
-                      name="drawDate" 
-                      type="date" 
-                      value={form.drawDate} 
-                      onChange={handleChange} 
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
-                  <select
-                    name="refreshPeriod"
-                    value={form.refreshPeriod}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    {refreshOptions.map((option) => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
                 </div>
               </div>
             </div>
@@ -361,7 +230,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="reqCategory"
@@ -372,7 +241,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Tags <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <div className="relative">
                     <input
                       type="text"
@@ -386,7 +255,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Level <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="number"
                     name="level"
@@ -397,7 +266,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Mission <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="mission"
@@ -408,7 +277,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievement</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Achievements <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">(Optional)</span></label>
                   <input
                     type="text"
                     name="achievement"
@@ -426,13 +295,13 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
               >
                 Create Raffle
               </button>
