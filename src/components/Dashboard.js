@@ -319,6 +319,7 @@ const streaks = [
 ];
 
 const Dashboard = () => {
+  // Force rebuild - updated timestamp
   const [activeTab, setActiveTab] = useState('players');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
   const [addRaffleOpen, setAddRaffleOpen] = useState(false);
