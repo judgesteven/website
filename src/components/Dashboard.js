@@ -2326,7 +2326,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Divider between Prizes and Raffles */}
-                <hr className="my-10 border-t-2 border-blue-100" />
+                <div className="border-t border-gray-200 my-8"></div>
 
                 {/* Raffles Section */}
                 <div>
@@ -2737,7 +2737,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Divider between Raffles and Mystery Rewards */}
-                <hr className="my-10 border-t-2 border-blue-100" />
+                <div className="border-t border-gray-200 my-8"></div>
 
                 {/* Mystery Rewards Section */}
                 <div>
