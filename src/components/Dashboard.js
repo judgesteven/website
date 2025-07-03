@@ -45,6 +45,7 @@ import AddEventModal from './AddEventModal';
 import AddMissionModal from './AddMissionModal';
 import AddPlayerModal from './AddPlayerModal';
 import AddTeamModal from './AddTeamModal';
+import AddStreakModal from './AddStreakModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -254,6 +255,69 @@ const teams = [
   { id: 'team4', name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU', description: 'Specialized task force' }
 ];
 
+const streaks = [
+  { 
+    id: 'daily_checkin', 
+    name: 'Daily Check-in Streak', 
+    description: 'Complete daily check-ins for consecutive days', 
+    image: 'https://picsum.photos/400/300?random=40',
+    category: 'Engagement',
+    tags: ['daily', 'check-in', 'streak'],
+    currentStreak: 7,
+    longestStreak: 15,
+    targetStreak: 30,
+    points: 100,
+    credits: 50,
+    status: 'Active',
+    createdOn: '2024-01-01'
+  },
+  { 
+    id: 'workout_streak', 
+    name: 'Workout Streak', 
+    description: 'Complete daily workouts for consecutive days', 
+    image: 'https://picsum.photos/400/300?random=41',
+    category: 'Health',
+    tags: ['workout', 'fitness', 'health'],
+    currentStreak: 12,
+    longestStreak: 12,
+    targetStreak: 21,
+    points: 200,
+    credits: 100,
+    status: 'Active',
+    createdOn: '2024-01-15'
+  },
+  { 
+    id: 'reading_streak', 
+    name: 'Reading Streak', 
+    description: 'Read for 30 minutes daily for consecutive days', 
+    image: 'https://picsum.photos/400/300?random=42',
+    category: 'Learning',
+    tags: ['reading', 'learning', 'education'],
+    currentStreak: 5,
+    longestStreak: 8,
+    targetStreak: 14,
+    points: 150,
+    credits: 75,
+    status: 'Active',
+    createdOn: '2024-02-01'
+  },
+  { 
+    id: 'meditation_streak', 
+    name: 'Meditation Streak', 
+    description: 'Practice meditation daily for consecutive days', 
+    image: 'https://picsum.photos/400/300?random=43',
+    category: 'Wellness',
+    tags: ['meditation', 'wellness', 'mindfulness'],
+    currentStreak: 3,
+    longestStreak: 10,
+    targetStreak: 7,
+    points: 75,
+    credits: 25,
+    status: 'Active',
+    createdOn: '2024-02-10'
+  }
+];
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('players');
   const [addPrizeOpen, setAddPrizeOpen] = useState(false);
@@ -263,6 +327,7 @@ const Dashboard = () => {
   const [addMissionOpen, setAddMissionOpen] = useState(false);
   const [addPlayerOpen, setAddPlayerOpen] = useState(false);
   const [addTeamOpen, setAddTeamOpen] = useState(false);
+  const [addStreakOpen, setAddStreakOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -317,6 +382,27 @@ const Dashboard = () => {
     points: '',
     credits: ''
   });
+  
+  // Add state for inline streak editing
+  const [editingStreakId, setEditingStreakId] = useState(null);
+  const [editingStreakData, setEditingStreakData] = useState({
+    id: '',
+    name: '',
+    description: '',
+    image: '',
+    category: '',
+    tags: '',
+    restrictStreak: 'unlimited',
+    priority: 'Medium',
+    startDate: '',
+    endDate: '',
+    refreshPeriod: 'Daily',
+    selectedMission: '',
+    points: '',
+    credits: '',
+    achievements: '',
+    stepsGranted: ''
+  });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
     name: false,
@@ -367,6 +453,7 @@ const Dashboard = () => {
   const [rafflesList, setRafflesList] = useState(raffles);
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
   const [missionsList, setMissionsList] = useState(missions);
+  const [streaksList, setStreaksList] = useState(streaks);
   const [eventsList, setEventsList] = useState([
     { 
       id: 'EVT001', 
@@ -415,6 +502,7 @@ const Dashboard = () => {
   const [mysteryBoxesPage, setMysteryBoxesPage] = useState(0);
   const [eventsPage, setEventsPage] = useState(0);
   const [missionsPage, setMissionsPage] = useState(0);
+  const [streaksPage, setStreaksPage] = useState(0);
   const itemsPerPage = 5;
 
   const stats = [
@@ -552,6 +640,11 @@ const Dashboard = () => {
     // Add team to the list (you can implement this based on your data structure)
     console.log('Adding team:', team);
     setAddTeamOpen(false);
+  };
+
+  const handleAddStreak = (streak) => {
+    setStreaksList(prev => [...prev, streak]);
+    setAddStreakOpen(false);
   };
 
   const handleEditMission = (mission) => {
@@ -791,6 +884,92 @@ const Dashboard = () => {
     }));
   };
 
+  const handleStartEditStreak = (streak) => {
+    setEditingStreakId(streak.id);
+    setEditingStreakData({
+      id: streak.id || '',
+      name: streak.name || '',
+      description: streak.description || '',
+      image: streak.image || '',
+      category: streak.category || '',
+      tags: streak.tags ? streak.tags.join(', ') : '',
+      restrictStreak: streak.restrictStreak || 'unlimited',
+      priority: streak.priority || 'Medium',
+      startDate: streak.startDate || '',
+      endDate: streak.endDate || '',
+      refreshPeriod: streak.refreshPeriod || 'Daily',
+      selectedMission: streak.selectedMission || '',
+      points: streak.points || '',
+      credits: streak.credits || '',
+      achievements: streak.achievements || '',
+      stepsGranted: streak.stepsGranted || ''
+    });
+  };
+
+  const handleSaveEditStreak = () => {
+    if (!editingStreakId) return;
+
+    const updatedStreak = {
+      ...editingStreakData,
+      tags: editingStreakData.tags ? editingStreakData.tags.split(',').map(tag => tag.trim()) : []
+    };
+
+    setStreaksList(prev => 
+      prev.map(streak => 
+        streak.id === editingStreakId ? updatedStreak : streak
+      )
+    );
+
+    setEditingStreakId(null);
+    setEditingStreakData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      restrictStreak: 'unlimited',
+      priority: 'Medium',
+      startDate: '',
+      endDate: '',
+      refreshPeriod: 'Daily',
+      selectedMission: '',
+      points: '',
+      credits: '',
+      achievements: '',
+      stepsGranted: ''
+    });
+  };
+
+  const handleCancelEditStreak = () => {
+    setEditingStreakId(null);
+    setEditingStreakData({
+      id: '',
+      name: '',
+      description: '',
+      image: '',
+      category: '',
+      tags: '',
+      restrictStreak: 'unlimited',
+      priority: 'Medium',
+      startDate: '',
+      endDate: '',
+      refreshPeriod: 'Daily',
+      selectedMission: '',
+      points: '',
+      credits: '',
+      achievements: '',
+      stepsGranted: ''
+    });
+  };
+
+  const handleUpdateEditingStreakData = (field, value) => {
+    setEditingStreakData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const handleGuideCreateEvent = () => {
     setGuideStep(2);
     // Start typing animation sequence
@@ -1006,7 +1185,7 @@ const Dashboard = () => {
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
             </button>
-            <button className="btn-primary rounded-2xl py-2 px-4 text-sm">
+            <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
               New Campaign
             </button>
           </div>
@@ -1709,7 +1888,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <button 
-                    className="btn-primary rounded-2xl py-2 px-4 text-sm"
+                    className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4"
                     onClick={() => setAddTeamOpen(true)}
                   >
                     Add Team
@@ -1979,6 +2158,497 @@ const Dashboard = () => {
               </div>
             )}
 
+            {activeTab === 'streaks' && (
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search streaks..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium" onClick={() => setAddStreakOpen(true)}>
+                    Create Streak
+                  </button>
+                </div>
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Streak
+                        </th>
+
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Target
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Points
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Credits
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {getPageItems(streaksList, streaksPage).map((streak, index) => (
+                        <React.Fragment key={index}>
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer"
+                            onClick={() => {
+                              if (editingStreakId === streak.id) {
+                                handleCancelEditStreak();
+                              } else {
+                                handleStartEditStreak(streak);
+                              }
+                            }}
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                {streak.image ? (
+                                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img
+                                      src={streak.image}
+                                      alt={streak.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                      }}
+                                    />
+                                    <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                      <Activity className="w-4 h-4" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                    <Activity className="w-4 h-4" />
+                                  </div>
+                                )}
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">{streak.name}</div>
+                                  <div className="text-sm text-gray-500">{streak.description}</div>
+                                </div>
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {streak.targetStreak} days
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {streak.points}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {streak.credits}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                streak.status === 'Active' ? 'bg-green-100 text-green-800' :
+                                streak.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
+                                streak.status === 'Broken' ? 'bg-red-100 text-red-800' :
+                                'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {streak.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                              <div className="flex items-center justify-center space-x-2">
+                                <button 
+                                  className="text-gray-600 hover:text-gray-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (editingStreakId === streak.id) {
+                                      handleCancelEditStreak();
+                                    } else {
+                                      handleStartEditStreak(streak);
+                                    }
+                                  }}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button className="text-red-600 hover:text-red-900">
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          
+                          {/* Inline Edit Row */}
+                          {editingStreakId === streak.id && (
+                            <tr>
+                              <td colSpan="6" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Streak Details Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Activity className="w-5 h-5 mr-2 text-blue-600" />
+                                      Streak Details
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                        <input 
+                                          value={editingStreakData.id} 
+                                          onChange={(e) => handleUpdateEditingStreakData('id', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter streak ID"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <input 
+                                          value={editingStreakData.name} 
+                                          onChange={(e) => handleUpdateEditingStreakData('name', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter streak name"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Description
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <textarea 
+                                          value={editingStreakData.description} 
+                                          onChange={(e) => handleUpdateEditingStreakData('description', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter streak description"
+                                          rows="3"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Streak Image
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="space-y-4">
+                                          {/* File Upload Section */}
+                                          <div className="flex items-center space-x-4">
+                                            <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (event) => {
+                                                      handleUpdateEditingStreakData('image', event.target.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                  }
+                                                }}
+                                                className="hidden"
+                                              />
+                                              <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                              <span className="text-gray-600">Browse for image</span>
+                                            </label>
+                                            {editingStreakData.image && (
+                                              <button
+                                                type="button"
+                                                onClick={() => handleUpdateEditingStreakData('image', '')}
+                                                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </div>
+                                          
+                                          {/* Image Preview */}
+                                          {editingStreakData.image && (
+                                            <div className="relative">
+                                              <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                <img
+                                                  src={editingStreakData.image}
+                                                  alt="Streak preview"
+                                                  className="w-full h-full object-cover"
+                                                />
+                                              </div>
+                                            </div>
+                                          )}
+                                          
+                                          {/* URL Input (fallback) */}
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                            <input 
+                                              name="image" 
+                                              value={editingStreakData.image || ''} 
+                                              onChange={(e) => handleUpdateEditingStreakData('image', e.target.value)} 
+                                              className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                              placeholder="Enter image URL (optional if file uploaded)"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input 
+                                          value={editingStreakData.category} 
+                                          onChange={(e) => handleUpdateEditingStreakData('category', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="relative">
+                                          <input 
+                                            value={editingStreakData.tags} 
+                                            onChange={(e) => handleUpdateEditingStreakData('tags', e.target.value)}
+                                            className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter tags (comma separated)"
+                                          />
+                                          <Tag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Limits & Settings Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Clock className="w-5 h-5 mr-2 text-green-600" />
+                                      Limits & Settings
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Restrict Streak</label>
+                                        <select
+                                          value={editingStreakData.restrictStreak}
+                                          onChange={(e) => handleUpdateEditingStreakData('restrictStreak', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        >
+                                          <option value="unlimited">Unlimited</option>
+                                          <option value="1">1</option>
+                                          <option value="5">5</option>
+                                          <option value="10">10</option>
+                                          <option value="25">25</option>
+                                          <option value="50">50</option>
+                                          <option value="100">100</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Priority
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingStreakData.priority}
+                                          onChange={(e) => handleUpdateEditingStreakData('priority', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        >
+                                          <option value="Low">Low</option>
+                                          <option value="Medium">Medium</option>
+                                          <option value="High">High</option>
+                                          <option value="Critical">Critical</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                        <div className="relative">
+                                          <input
+                                            type="date"
+                                            value={editingStreakData.startDate}
+                                            onChange={(e) => handleUpdateEditingStreakData('startDate', e.target.value)}
+                                            className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            required
+                                          />
+                                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                        <div className="relative">
+                                          <input
+                                            type="date"
+                                            value={editingStreakData.endDate}
+                                            onChange={(e) => handleUpdateEditingStreakData('endDate', e.target.value)}
+                                            className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            required
+                                          />
+                                          <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                                        <div className="relative">
+                                          <select
+                                            value={editingStreakData.refreshPeriod}
+                                            onChange={(e) => handleUpdateEditingStreakData('refreshPeriod', e.target.value)}
+                                            className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          >
+                                            <option value="None">None</option>
+                                            <option value="Daily">Daily</option>
+                                            <option value="Weekly">Weekly</option>
+                                            <option value="Monthly">Monthly</option>
+                                          </select>
+                                          <RefreshCw className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Objectives Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Zap className="w-5 h-5 mr-2 text-orange-600" />
+                                      Objectives
+                                    </h4>
+                                    <div className="grid grid-cols-1 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Mission</label>
+                                        <select
+                                          value={editingStreakData.selectedMission}
+                                          onChange={(e) => handleUpdateEditingStreakData('selectedMission', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select a mission</option>
+                                          <option value="daily_checkin">Daily Check-in</option>
+                                          <option value="social_share">Social Share</option>
+                                          <option value="refer_friend">Refer a Friend</option>
+                                          <option value="complete_profile">Complete Profile</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Rewards Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Star className="w-5 h-5 mr-2 text-yellow-600" />
+                                      Rewards
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Points
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingStreakData.points}
+                                          onChange={(e) => handleUpdateEditingStreakData('points', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter points"
+                                          min="0"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Credits
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="relative">
+                                          <input
+                                            type="number"
+                                            value={editingStreakData.credits}
+                                            onChange={(e) => handleUpdateEditingStreakData('credits', e.target.value)}
+                                            className="w-full px-3 py-2 pl-10 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            placeholder="Enter credits"
+                                            min="0"
+                                          />
+                                          <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Achievements
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingStreakData.achievements}
+                                          onChange={(e) => handleUpdateEditingStreakData('achievements', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter achievements"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Number of Steps Granted
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingStreakData.stepsGranted}
+                                          onChange={(e) => handleUpdateEditingStreakData('stepsGranted', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter steps granted"
+                                          min="0"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
+                                    <button
+                                      onClick={handleCancelEditStreak}
+                                      className="px-4 py-2 border border-gray-300 rounded-2xl text-gray-700 hover:bg-gray-50"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={handleSaveEditStreak}
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <PaginationControls currentPage={streaksPage} totalPages={getTotalPages(streaks)} onPageChange={(newPage) => setStreaksPage(newPage)} />
+              </div>
+            )}
+
             {activeTab === 'missions' && (
               <div>
                 {/* Events Section */}
@@ -1998,7 +2668,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary rounded-2xl py-2 px-4 text-sm" onClick={() => setAddEventOpen(true)}>
+                    <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4" onClick={() => setAddEventOpen(true)}>
                       Create Event
                     </button>
                   </div>
@@ -2349,7 +3019,7 @@ const Dashboard = () => {
                                       </button>
                                       <button
                                         onClick={handleSaveEditEvent}
-                                        className="px-4 py-2 bg-primary-600 border border-transparent rounded-2xl text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
                                       >
                                         Save Changes
                                       </button>
@@ -2386,7 +3056,7 @@ const Dashboard = () => {
                         Filter
                       </button>
                     </div>
-                    <button className="btn-primary rounded-2xl py-2 px-4 text-sm" onClick={() => setAddMissionOpen(true)}>
+                    <button className="bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4" onClick={() => setAddMissionOpen(true)}>
                       Create Mission
                     </button>
                   </div>
@@ -2965,7 +3635,7 @@ const Dashboard = () => {
                                       </button>
                                       <button
                                         onClick={handleSaveEditMission}
-                                        className="px-4 py-2 bg-primary-600 text-white rounded-2xl hover:bg-primary-700"
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-colors"
                                       >
                                         Save Changes
                                       </button>
@@ -3230,6 +3900,7 @@ const Dashboard = () => {
       <AddMissionModal open={addMissionOpen} onClose={() => setAddMissionOpen(false)} onSave={handleAddMission} />
       <AddPlayerModal open={addPlayerOpen} onClose={() => setAddPlayerOpen(false)} onSave={handleAddPlayer} />
       <AddTeamModal open={addTeamOpen} onClose={() => setAddTeamOpen(false)} onSave={handleAddTeam} />
+      <AddStreakModal open={addStreakOpen} onClose={() => setAddStreakOpen(false)} onSave={handleAddStreak} />
       
       <EditPrizeModal 
         open={editPrizeOpen} 
