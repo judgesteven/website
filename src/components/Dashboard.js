@@ -5739,7 +5739,22 @@ const Dashboard = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {leaderboardsList.map((leaderboard, index) => (
                         <React.Fragment key={leaderboard.id || index}>
-                          <tr className="hover:bg-gray-50">
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer" 
+                            onClick={(e) => {
+                              // Prevent row click if clicking on a button, input, or select
+                              if (
+                                e.target.closest('button') ||
+                                e.target.closest('input') ||
+                                e.target.closest('select')
+                              ) return;
+                              if (editingLeaderboardId === leaderboard.id) {
+                                handleCancelEditLeaderboard();
+                              } else {
+                                handleStartEditLeaderboard(leaderboard);
+                              }
+                            }}
+                          >
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
                                 <div className="flex-shrink-0 h-10 w-10">
@@ -5751,95 +5766,41 @@ const Dashboard = () => {
                                 </div>
                                 <div className="ml-4">
                                   <div className="text-sm font-medium text-gray-900">
-                                    {editingLeaderboardId === leaderboard.id ? (
-                                      <input
-                                        type="text"
-                                        value={editingLeaderboardData.name || ''}
-                                        onChange={(e) => handleUpdateEditingLeaderboardData('name', e.target.value)}
-                                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                      />
-                                    ) : (
-                                      leaderboard.name
-                                    )}
+                                    {leaderboard.name}
                                   </div>
                                   <div className="text-sm text-gray-500">
-                                    {editingLeaderboardId === leaderboard.id ? (
-                                      <input
-                                        type="text"
-                                        value={editingLeaderboardData.description || ''}
-                                        onChange={(e) => handleUpdateEditingLeaderboardData('description', e.target.value)}
-                                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Description"
-                                      />
-                                    ) : (
-                                      leaderboard.description || 'No description'
-                                    )}
+                                    {leaderboard.description || 'No description'}
                                   </div>
                                 </div>
                               </div>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                              {editingLeaderboardId === leaderboard.id ? (
-                                <select
-                                  value={editingLeaderboardData.period || ''}
-                                  onChange={(e) => handleUpdateEditingLeaderboardData('period', e.target.value)}
-                                  className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                  <option value="daily">Daily</option>
-                                  <option value="weekly">Weekly</option>
-                                  <option value="monthly">Monthly</option>
-                                  <option value="quarterly">Quarterly</option>
-                                  <option value="yearly">Yearly</option>
-                                  <option value="all-time">All Time</option>
-                                </select>
-                              ) : (
-                                leaderboard.period
-                              )}
+                              {leaderboard.period}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                              {editingLeaderboardId === leaderboard.id ? (
-                                <input
-                                  type="number"
-                                  value={editingLeaderboardData.participants || ''}
-                                  onChange={(e) => handleUpdateEditingLeaderboardData('participants', e.target.value)}
-                                  className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                              ) : (
-                                leaderboard.participants.toLocaleString()
-                              )}
+                              {leaderboard.participants?.toLocaleString?.() ?? leaderboard.participants ?? 0}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-center">
-                              {editingLeaderboardId === leaderboard.id ? (
-                                <div className="flex items-center justify-center space-x-2">
-                                  <button
-                                    onClick={handleSaveEditLeaderboard}
-                                    className="text-green-600 hover:text-green-900"
-                                  >
-                                    <Check className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    onClick={handleCancelEditLeaderboard}
-                                    className="text-gray-600 hover:text-gray-900"
-                                  >
-                                    <X className="w-4 h-4" />
-                                  </button>
-                                </div>
-                              ) : (
-                                <div className="flex items-center justify-center space-x-2">
-                                  <button
-                                    onClick={() => handleStartEditLeaderboard(leaderboard)}
-                                    className="text-blue-600 hover:text-blue-900"
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDeleteLeaderboard(leaderboard)}
-                                    className="text-red-600 hover:text-red-900"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </button>
-                                </div>
-                              )}
+                              <div className="flex items-center justify-center space-x-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStartEditLeaderboard(leaderboard);
+                                  }}
+                                  className="text-blue-600 hover:text-blue-900"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteLeaderboard(leaderboard);
+                                  }}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                           
@@ -6049,13 +6010,19 @@ const Dashboard = () => {
                                   {/* Action Buttons */}
                                   <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
                                     <button
-                                      onClick={handleCancelEditLeaderboard}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCancelEditLeaderboard();
+                                      }}
                                       className="px-4 py-2 text-gray-600 border border-gray-300 rounded-3xl hover:bg-gray-50 transition-colors"
                                     >
                                       Cancel
                                     </button>
                                     <button
-                                      onClick={handleSaveEditLeaderboard}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleSaveEditLeaderboard();
+                                      }}
                                       className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
                                     >
                                       Save Changes
