@@ -10,6 +10,7 @@ import Projects from './components/Projects';
 import Pricing from './components/Pricing';
 import Test from './components/Test';
 import ChatPage from './components/ChatPage';
+import ApiPage from './components/ApiPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/api" element={<ApiPage />} />
         </Routes>
         <Footer />
       </div>

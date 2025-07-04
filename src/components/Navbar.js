@@ -12,7 +12,7 @@ const Navbar = () => {
     { name: 'Home', href: '/' },
     { name: 'Projects', href: '/projects' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'API', href: 'https://gamelayer.co/docs' },
+    { name: 'API', href: '/api' },
     { name: 'Dashboard', href: '/dashboard' },
   ];
 
