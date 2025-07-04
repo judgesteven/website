@@ -46,6 +46,7 @@ import AddMissionModal from './AddMissionModal';
 import AddPlayerModal from './AddPlayerModal';
 import AddTeamModal from './AddTeamModal';
 import AddStreakModal from './AddStreakModal';
+import AddAchievementModal from './AddAchievementModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -329,6 +330,7 @@ const Dashboard = () => {
   const [addPlayerOpen, setAddPlayerOpen] = useState(false);
   const [addTeamOpen, setAddTeamOpen] = useState(false);
   const [addStreakOpen, setAddStreakOpen] = useState(false);
+  const [addAchievementOpen, setAddAchievementOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -462,6 +464,17 @@ const Dashboard = () => {
     reqMission: '',
     reqAchievement: ''
   });
+
+  // Add state for inline achievement editing
+  const [editingAchievementId, setEditingAchievementId] = useState(null);
+  const [editingAchievementData, setEditingAchievementData] = useState({
+    name: '',
+    description: '',
+    icon: '',
+    rarity: '',
+    points: '',
+    earned: ''
+  });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
     name: false,
@@ -513,6 +526,7 @@ const Dashboard = () => {
   const [mysteryBoxesList, setMysteryBoxesList] = useState(mysteryBoxes);
   const [missionsList, setMissionsList] = useState(missions);
   const [streaksList, setStreaksList] = useState(streaks);
+  const [achievementsList, setAchievementsList] = useState(achievements);
   const [eventsList, setEventsList] = useState([
     { 
       id: 'EVT001', 
@@ -695,6 +709,11 @@ const Dashboard = () => {
   const handleAddStreak = (streak) => {
     setStreaksList(prev => [...prev, streak]);
     setAddStreakOpen(false);
+  };
+
+  const handleAddAchievement = (achievement) => {
+    setAchievementsList(prev => [...prev, achievement]);
+    setAddAchievementOpen(false);
   };
 
   const handleEditMission = (mission) => {
@@ -1253,6 +1272,61 @@ const Dashboard = () => {
 
   const handleUpdateEditingMysteryBoxData = (field, value) => {
     setEditingMysteryBoxData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Achievement editing handlers
+  const handleStartEditAchievement = (achievement) => {
+    setEditingAchievementId(achievement.name);
+    setEditingAchievementData({
+      name: achievement.name || '',
+      description: achievement.description || '',
+      icon: achievement.icon || '',
+      rarity: achievement.rarity || '',
+      points: achievement.points || '',
+      earned: achievement.earned || ''
+    });
+  };
+
+  const handleSaveEditAchievement = () => {
+    // Update the achievement in the list
+    const updatedAchievements = achievements.map((achievement) => 
+      achievement.name === editingAchievementId ? { 
+        ...achievement, 
+        ...editingAchievementData,
+        points: editingAchievementData.points ? parseInt(editingAchievementData.points) : 0,
+        earned: editingAchievementData.earned ? parseInt(editingAchievementData.earned) : 0
+      } : achievement
+    );
+    // You would typically update state here, but since achievements is not in state, we'll just log for now
+    console.log('Updated achievements:', updatedAchievements);
+    setEditingAchievementId(null);
+    setEditingAchievementData({
+      name: '',
+      description: '',
+      icon: '',
+      rarity: '',
+      points: '',
+      earned: ''
+    });
+  };
+
+  const handleCancelEditAchievement = () => {
+    setEditingAchievementId(null);
+    setEditingAchievementData({
+      name: '',
+      description: '',
+      icon: '',
+      rarity: '',
+      points: '',
+      earned: ''
+    });
+  };
+
+  const handleUpdateEditingAchievementData = (field, value) => {
+    setEditingAchievementData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -5034,50 +5108,219 @@ const Dashboard = () => {
             {activeTab === 'achievements' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Achievements</h3>
-                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
-                    Create Achievement
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search achievements..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddAchievementOpen(true)}
+                  >
+                    Add Achievement
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {achievements.map((achievement, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="card p-6"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <span className="text-2xl">{achievement.icon}</span>
-                          <div>
-                            <h4 className="font-semibold text-gray-900">{achievement.name}</h4>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              achievement.rarity === 'Common' ? 'bg-gray-100 text-gray-800' :
-                              achievement.rarity === 'Rare' ? 'bg-blue-100 text-blue-800' :
-                              achievement.rarity === 'Epic' ? 'bg-purple-100 text-purple-800' :
-                              achievement.rarity === 'Legendary' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {achievement.rarity}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-gray-600 text-sm mb-4">{achievement.description}</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Points:</span>
-                          <span className="font-medium">{achievement.points}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Earned:</span>
-                          <span className="font-medium">{achievement.earned} players</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Achievement
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Rarity
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Points
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Earned
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {achievementsList.map((achievement, index) => (
+                        <React.Fragment key={index}>
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer" 
+                            onClick={() => {
+                              if (editingAchievementId === achievement.name) {
+                                handleCancelEditAchievement();
+                              } else {
+                                handleStartEditAchievement(achievement);
+                              }
+                            }}
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="flex-shrink-0 h-10 w-10">
+                                  <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                    <span className="text-lg">{achievement.icon}</span>
+                                  </div>
+                                </div>
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">{achievement.name}</div>
+                                  <div className="text-sm text-gray-500">{achievement.description}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                achievement.rarity === 'Common' ? 'bg-gray-100 text-gray-800' :
+                                achievement.rarity === 'Rare' ? 'bg-blue-100 text-blue-800' :
+                                achievement.rarity === 'Epic' ? 'bg-purple-100 text-purple-800' :
+                                achievement.rarity === 'Legendary' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-red-100 text-red-800'
+                              }`}>
+                                {achievement.rarity}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {achievement.points.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {achievement.earned.toLocaleString()} players
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                              <div className="flex items-center justify-center space-x-2">
+                                <button 
+                                  className="text-gray-600 hover:text-gray-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStartEditAchievement(achievement);
+                                  }}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button className="text-red-600 hover:text-red-900">
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          
+                          {/* Expandable Edit Section */}
+                          {editingAchievementId === achievement.name && (
+                            <tr>
+                              <td colSpan="5" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Achievement Details Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Medal className="w-5 h-5 mr-2 text-blue-600" />
+                                      Achievement Details
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.name || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('name', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter achievement name"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.icon || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('icon', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter emoji icon"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                        <textarea
+                                          value={editingAchievementData.description || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('description', e.target.value)}
+                                          rows={3}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter achievement description"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Rarity</label>
+                                        <select
+                                          value={editingAchievementData.rarity || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('rarity', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          required
+                                        >
+                                          <option value="">Select rarity</option>
+                                          <option value="Common">Common</option>
+                                          <option value="Rare">Rare</option>
+                                          <option value="Epic">Epic</option>
+                                          <option value="Legendary">Legendary</option>
+                                          <option value="Mythic">Mythic</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Points</label>
+                                        <input
+                                          type="number"
+                                          value={editingAchievementData.points || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('points', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter points"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Earned Count</label>
+                                        <input
+                                          type="number"
+                                          value={editingAchievementData.earned || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('earned', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter earned count"
+                                          required
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                    <button
+                                      onClick={handleCancelEditAchievement}
+                                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={handleSaveEditAchievement}
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
@@ -5116,6 +5359,7 @@ const Dashboard = () => {
       <AddPlayerModal open={addPlayerOpen} onClose={() => setAddPlayerOpen(false)} onSave={handleAddPlayer} />
       <AddTeamModal open={addTeamOpen} onClose={() => setAddTeamOpen(false)} onSave={handleAddTeam} />
       <AddStreakModal open={addStreakOpen} onClose={() => setAddStreakOpen(false)} onSave={handleAddStreak} />
+      <AddAchievementModal open={addAchievementOpen} onClose={() => setAddAchievementOpen(false)} onSave={handleAddAchievement} />
       
       <EditPrizeModal 
         open={editPrizeOpen} 
@@ -5212,21 +5456,21 @@ const Dashboard = () => {
                       <p className="text-gray-600 mb-4">Use events to power your missions</p>
                       
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                            <input
-                              type="text"
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
                               placeholder="Search events..."
-                              className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                               disabled
-                            />
-                          </div>
+                      />
+                    </div>
                           <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm" disabled>
-                            <Filter className="w-4 h-4 mr-2" />
-                            Filter
-                          </button>
-                        </div>
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
                         
                         {/* Animated Create Event Button */}
                         <motion.button 
@@ -5273,7 +5517,7 @@ const Dashboard = () => {
                           </motion.div>
                         </motion.button>
                       </div>
-                    </div>
+                </div>
 
                     {/* Animation Instructions */}
                     <div className="text-center mt-6">
@@ -5521,7 +5765,7 @@ const Dashboard = () => {
                             </div>
                             <div className="relative">
                               <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Points
+                          Points
                                 <motion.span 
                                   className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md"
                                   animate={{
@@ -5543,7 +5787,7 @@ const Dashboard = () => {
                                   {currentTypingField === 'points' ? typedText : (typingProgress.points ? '50' : '')}
                                 </span>
                                 {currentTypingField === 'points' && <BlinkingCursor />}
-                              </div>
+                                  </div>
                               {typingProgress.points && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -5553,7 +5797,7 @@ const Dashboard = () => {
                                   <Check className="w-3 h-3 text-white" />
                                 </motion.div>
                               )}
-                            </div>
+                                </div>
                             <div className="relative">
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Credits
@@ -5579,7 +5823,7 @@ const Dashboard = () => {
                                   {currentTypingField === 'credits' ? typedText : (typingProgress.credits ? '25' : '')}
                                 </span>
                                 {currentTypingField === 'credits' && <BlinkingCursor />}
-                              </div>
+                                </div>
                               {typingProgress.credits && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -5589,7 +5833,7 @@ const Dashboard = () => {
                                   <Check className="w-3 h-3 text-white" />
                                 </motion.div>
                               )}
-                            </div>
+                              </div>
                           </div>
                         </div>
 
@@ -5622,7 +5866,7 @@ const Dashboard = () => {
                               <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentTypingField === 'achievements' ? 'border-blue-500' : ''}`}>
                                 <span className="text-gray-900">
                                   {currentTypingField === 'achievements' ? typedText : (typingProgress.achievements ? 'Daily Check-in Master' : '')}
-                                </span>
+                              </span>
                                 {currentTypingField === 'achievements' && <BlinkingCursor />}
                               </div>
                               {typingProgress.achievements && (
@@ -5681,12 +5925,12 @@ const Dashboard = () => {
                             className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                           >
                             ← Back
-                          </button>
+                                </button>
                           <div className="flex items-center space-x-4">
                             {/* Progress indicator */}
                             <div className="text-sm text-gray-500">
                               {Object.values(typingProgress).filter(Boolean).length} / {Object.keys(typingProgress).length} fields completed
-                            </div>
+                              </div>
                             <motion.button
                               type="button"
                               className={`relative ${Object.values(typingProgress).every(Boolean) ? 'bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4' : 'bg-gray-300 text-gray-500 cursor-not-allowed px-6 py-2 rounded-3xl'}`}
@@ -5829,7 +6073,7 @@ const Dashboard = () => {
               )}
 
               {guideStep === 5 && (
-                <div className="space-y-6">
+                                <div className="space-y-6">
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 2: Create a Mission</h3>
                     <p className="text-gray-600">Now let's create a mission that uses the event we just created!</p>
@@ -5860,7 +6104,7 @@ const Dashboard = () => {
                             <Flag className="w-5 h-5 mr-2 text-blue-600" />
                             Mission Details
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="relative">
                               <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
                               <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'id' ? 'border-blue-500' : ''}`}>
@@ -5880,13 +6124,13 @@ const Dashboard = () => {
                               )}
                             </div>
                             <div className="relative">
-                              <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                               <div className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 flex items-center ${currentMissionTypingField === 'name' ? 'border-blue-500' : ''}`}>
                                 <span className="text-gray-900">
                                   {currentMissionTypingField === 'name' ? missionTypedText : (missionTypingProgress.name ? 'Daily Check-in Mission' : '')}
                                 </span>
                                 {currentMissionTypingField === 'name' && <BlinkingCursor />}
-                              </div>
+                                      </div>
                               {missionTypingProgress.name && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -6042,7 +6286,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Limits & Settings Section */}
-                        <div>
+                                      <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                             <Clock className="w-5 h-5 mr-2 text-green-600" />
                             Limits & Settings
@@ -6055,7 +6299,7 @@ const Dashboard = () => {
                                   {currentMissionTypingField === 'restrictCompletions' ? missionTypedText : (missionTypingProgress.restrictCompletions ? '1' : '')}
                                 </span>
                                 {currentMissionTypingField === 'restrictCompletions' && <BlinkingCursor />}
-                              </div>
+                                      </div>
                               {missionTypingProgress.restrictCompletions && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -6065,7 +6309,7 @@ const Dashboard = () => {
                                   <Check className="w-3 h-3 text-white" />
                                 </motion.div>
                               )}
-                            </div>
+                                      </div>
                             <div className="relative">
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Priority
@@ -6159,7 +6403,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Objectives Section */}
-                        <div>
+                                      <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                             <Zap className="w-5 h-5 mr-2 text-blue-600" />
                             Objectives
@@ -6184,7 +6428,7 @@ const Dashboard = () => {
                                   <Check className="w-3 h-3 text-white" />
                                 </motion.div>
                               )}
-                            </div>
+                                      </div>
                             <div className="relative">
                               <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Quiz
@@ -6229,7 +6473,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Rewards Section */}
-                        <div>
+                                      <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                             <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
                             Rewards
@@ -6259,7 +6503,7 @@ const Dashboard = () => {
                                   {currentMissionTypingField === 'points' ? missionTypedText : (missionTypingProgress.points ? '100' : '')}
                                 </span>
                                 {currentMissionTypingField === 'points' && <BlinkingCursor />}
-                              </div>
+                                      </div>
                               {missionTypingProgress.points && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -6380,7 +6624,7 @@ const Dashboard = () => {
                         </div>
 
                         {/* Requirements Section */}
-                        <div>
+                                      <div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                             <Target className="w-5 h-5 mr-2 text-purple-600" />
                             Requirements
@@ -6410,7 +6654,7 @@ const Dashboard = () => {
                                   {currentMissionTypingField === 'requirementsCategory' ? missionTypedText : (missionTypingProgress.requirementsCategory ? 'Engagement' : '')}
                                 </span>
                                 {currentMissionTypingField === 'requirementsCategory' && <BlinkingCursor />}
-                              </div>
+                                      </div>
                               {missionTypingProgress.requirementsCategory && (
                                 <motion.div
                                   initial={{ scale: 0 }}
@@ -6562,18 +6806,18 @@ const Dashboard = () => {
                                 </motion.div>
                               )}
                             </div>
-                          </div>
-                        </div>
+                                    </div>
+                                  </div>
 
-                        {/* Action Buttons */}
+                                  {/* Action Buttons */}
                         <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-                          <button
+                                    <button
                             type="button"
                             onClick={() => setGuideStep(4)}
                             className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                          >
+                                    >
                             ← Back
-                          </button>
+                                    </button>
                           <div className="flex items-center space-x-4">
                             {/* Progress indicator */}
                             <div className="text-sm text-gray-500">
@@ -6635,8 +6879,8 @@ const Dashboard = () => {
                                 </motion.div>
                               )}
                             </motion.button>
-                          </div>
-                        </div>
+                                  </div>
+                                </div>
                       </form>
                     </div>
                   </div>
