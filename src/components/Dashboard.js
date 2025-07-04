@@ -209,11 +209,11 @@ const missions = [
 ];
 
 const levels = [
-  { level: 1, name: 'Beginner', pointsRequired: 0, users: 1247, rewards: 'Welcome Badge' },
-  { level: 2, name: 'Explorer', pointsRequired: 100, users: 892, rewards: 'Bronze Medal' },
-  { level: 3, name: 'Adventurer', pointsRequired: 500, users: 567, rewards: 'Silver Medal' },
-  { level: 4, name: 'Champion', pointsRequired: 1000, users: 234, rewards: 'Gold Medal' },
-  { level: 5, name: 'Master', pointsRequired: 2500, users: 89, rewards: 'Diamond Crown' }
+  { level: 1, name: 'Beginner', description: 'Starting level for all new users', pointsRequired: 0, users: 1247, rewards: 'Welcome Badge', image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop&crop=center' },
+  { level: 2, name: 'Explorer', description: 'Begin exploring the platform features', pointsRequired: 100, users: 892, rewards: 'Bronze Medal', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop&crop=center' },
+  { level: 3, name: 'Adventurer', description: 'Experienced user with active participation', pointsRequired: 500, users: 567, rewards: 'Silver Medal', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop&crop=center' },
+  { level: 4, name: 'Champion', description: 'Top performer with significant contributions', pointsRequired: 1000, users: 234, rewards: 'Gold Medal', image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center' },
+  { level: 5, name: 'Master', description: 'Elite level for the most dedicated users', pointsRequired: 2500, users: 89, rewards: 'Diamond Crown', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center' }
 ];
 
 const leaderboards = [
@@ -5253,22 +5253,13 @@ const Dashboard = () => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Level
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Name
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Ordinal
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Description
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Points Required
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Rewards
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -5277,35 +5268,46 @@ const Dashboard = () => {
                       {levelsList.map((level, index) => (
                         <tr key={level.level || index} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
-                              Level {level.level || index + 1}
-                            </span>
+                            <div className="flex items-center">
+                              {level.image ? (
+                                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                  <img
+                                    src={level.image}
+                                    alt={level.name}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      e.target.style.display = 'none';
+                                      e.target.nextSibling.style.display = 'flex';
+                                    }}
+                                  />
+                                  <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                    <Layers className="w-4 h-4" />
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                  <Layers className="w-4 h-4" />
+                                </div>
+                              )}
+                              <div className="ml-4">
+                                <div className="text-sm font-medium text-gray-900">{level.name}</div>
+                                <div className="text-sm text-gray-500">{level.description}</div>
+                              </div>
+                            </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
                             {editingLevelId === level.id ? (
                               <input
-                                type="text"
-                                value={editingLevelData.name || ''}
-                                onChange={(e) => handleUpdateEditingLevelData('name', e.target.value)}
+                                type="number"
+                                value={editingLevelData.level || ''}
+                                onChange={(e) => handleUpdateEditingLevelData('level', e.target.value)}
                                 className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                               />
                             ) : (
-                              level.name
+                              level.level || index + 1
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLevelId === level.id ? (
-                              <input
-                                type="text"
-                                value={editingLevelData.description || ''}
-                                onChange={(e) => handleUpdateEditingLevelData('description', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              level.description
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                             {editingLevelId === level.id ? (
                               <input
                                 type="number"
@@ -5317,39 +5319,10 @@ const Dashboard = () => {
                               (level.requiredPoints || level.pointsRequired || 0).toLocaleString()
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                             {editingLevelId === level.id ? (
-                              <input
-                                type="text"
-                                value={editingLevelData.rewards || ''}
-                                onChange={(e) => handleUpdateEditingLevelData('rewards', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              level.rewards
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLevelId === level.id ? (
-                              <select
-                                value={editingLevelData.status || 'active'}
-                                onChange={(e) => handleUpdateEditingLevelData('status', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              >
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                              </select>
-                            ) : (
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                level.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                              }`}>
-                                {level.status || 'Active'}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLevelId === level.id ? (
-                              <div className="flex items-center space-x-2">
+                              <div className="flex items-center justify-center space-x-2">
                                 <button
                                   onClick={handleSaveEditLevel}
                                   className="text-green-600 hover:text-green-900"
@@ -5364,7 +5337,7 @@ const Dashboard = () => {
                                 </button>
                               </div>
                             ) : (
-                              <div className="flex items-center space-x-2">
+                              <div className="flex items-center justify-center space-x-2">
                                 <button
                                   onClick={() => handleStartEditLevel(level)}
                                   className="text-blue-600 hover:text-blue-900"
@@ -6490,7 +6463,7 @@ const Dashboard = () => {
       <AddTeamModal open={addTeamOpen} onClose={() => setAddTeamOpen(false)} onSave={handleAddTeam} />
       <AddStreakModal open={addStreakOpen} onClose={() => setAddStreakOpen(false)} onSave={handleAddStreak} />
       <AddAchievementModal open={addAchievementOpen} onClose={() => setAddAchievementOpen(false)} onSave={handleAddAchievement} />
-      <AddLevelModal isOpen={addLevelOpen} onClose={() => setAddLevelOpen(false)} onAdd={handleAddLevel} />
+                      <AddLevelModal open={addLevelOpen} onClose={() => setAddLevelOpen(false)} onSave={handleAddLevel} />
       <AddLeaderboardModal isOpen={addLeaderboardOpen} onClose={() => setAddLeaderboardOpen(false)} onAdd={handleAddLeaderboard} />
       <AddQuizModal isOpen={addQuizOpen} onClose={() => setAddQuizOpen(false)} onAdd={handleAddQuiz} />
       <AddSurveyModal isOpen={addSurveyOpen} onClose={() => setAddSurveyOpen(false)} onAdd={handleAddSurvey} />
