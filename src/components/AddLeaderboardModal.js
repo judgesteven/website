@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Upload, Calendar, Target, Settings, Trophy, Users, Tag, Image as ImageIcon } from 'lucide-react';
+import { X, Upload, Calendar, Target, Settings, Trophy, Image as ImageIcon } from 'lucide-react';
 
 const AddLeaderboardModal = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
