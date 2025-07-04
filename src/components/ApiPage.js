@@ -17,7 +17,7 @@ const ApiPage = () => {
   }, []);
 
   return (
-    <div className="bg-white pt-16">
+    <div className="bg-white pt-16" style={{ height: 'auto', overflow: 'visible' }}>
       {/* RapiDoc component with extensive configuration options */}
       <rapi-doc
         spec-url="https://glapidocs.blob.core.windows.net/apidocs/gamelayer.yaml"
@@ -40,7 +40,8 @@ const ApiPage = () => {
         regular-font="montserrat"
         nav-item-spacing="relaxed"
         nav-bg-color="#f5f5f5" 
-        primary-color="#4A90E2"           
+        primary-color="#4A90E2"
+        style={{ height: 'auto', overflow: 'visible' }}
       ></rapi-doc>
     </div>
   );
