@@ -35,7 +35,8 @@ import {
   Upload,
   Calendar,
   RefreshCw,
-  Users2
+  Users2,
+  Image as ImageIcon
 } from 'lucide-react';
 import AddPrizeModal from './AddPrizeModal';
 import AddRaffleModal from './AddRaffleModal';
