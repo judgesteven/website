@@ -5,14 +5,10 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    height: auto;
-    overflow-y: auto;
   }
   
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    height: auto;
-    overflow-y: auto;
   }
 }
 

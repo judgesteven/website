@@ -3686,12 +3686,14 @@ const Dashboard = () => {
                                           
                                           {/* Image Preview */}
                                           {editingTeamData.image && (
-                                            <div className="relative inline-block">
-                                              <img
-                                                src={editingTeamData.image}
-                                                alt="Preview"
-                                                className="w-32 h-32 object-cover rounded-xl border border-gray-200"
-                                              />
+                                            <div className="relative">
+                                              <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                <img
+                                                  src={editingTeamData.image}
+                                                  alt="Team preview"
+                                                  className="w-full h-full object-cover"
+                                                />
+                                              </div>
                                             </div>
                                           )}
                                         </div>
