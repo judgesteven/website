@@ -303,7 +303,7 @@ const AddRaffleModal = ({ open, onClose, onSave }) => {
                 type="submit"
                 className="px-6 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
               >
-                Create Raffle
+                Add Raffle
               </button>
             </div>
           </form>

@@ -343,7 +343,7 @@ const AddEventModal = ({ open, onClose, onSave }) => {
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
               >
-                Create Event
+                Add Event
               </button>
             </div>
           </form>

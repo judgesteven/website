@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Medal } from 'lucide-react';
+import { X, Medal, Upload, Target, Gift } from 'lucide-react';
 
 const AddAchievementModal = ({ open, onClose, onSave }) => {
   const [form, setForm] = useState({
+    id: '',
     name: '',
     description: '',
-    icon: '',
-    rarity: '',
+    image: '',
+    category: '',
+    tags: '',
+    stepsRequired: '',
+    // Rewards
     points: '',
-    earned: ''
+    credits: '',
+    achievements: '',
+    stepsGranted: '',
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: '',
+    requirementsLevel: '',
+    requirementsMission: '',
+    requirementsAchievement: ''
   });
 
   const handleChange = (e) => {
@@ -20,20 +32,46 @@ const AddAchievementModal = ({ open, onClose, onSave }) => {
     }));
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setForm(prev => ({
+          ...prev,
+          image: event.target.result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({
       ...form,
       points: parseInt(form.points) || 0,
-      earned: parseInt(form.earned) || 0
+      credits: parseInt(form.credits) || 0,
+      stepsRequired: parseInt(form.stepsRequired) || 0,
+      stepsGranted: parseInt(form.stepsGranted) || 0
     });
     setForm({
+      id: '',
       name: '',
       description: '',
-      icon: '',
-      rarity: '',
+      image: '',
+      category: '',
+      tags: '',
+      stepsRequired: '',
       points: '',
-      earned: ''
+      credits: '',
+      achievements: '',
+      stepsGranted: '',
+      requirementsCategory: '',
+      requirementsTags: '',
+      requirementsLevel: '',
+      requirementsMission: '',
+      requirementsAchievement: ''
     });
   };
 
@@ -68,6 +106,17 @@ const AddAchievementModal = ({ open, onClose, onSave }) => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                  <input 
+                    name="id" 
+                    value={form.id} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter achievement ID"
+                    required 
+                  />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                   <input 
                     name="name" 
@@ -78,19 +127,13 @@ const AddAchievementModal = ({ open, onClose, onSave }) => {
                     required 
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
-                  <input 
-                    name="icon" 
-                    value={form.icon} 
-                    onChange={handleChange} 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter emoji icon (e.g., 🏆)"
-                    required 
-                  />
-                </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Description
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <textarea 
                     name="description" 
                     value={form.description} 
@@ -98,28 +141,125 @@ const AddAchievementModal = ({ open, onClose, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter achievement description"
                     rows="3"
-                    required 
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Image
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <div className="space-y-4">
+                    {/* File Upload Section */}
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                        <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                        <span className="text-gray-600">Browse for image</span>
+                      </label>
+                      {form.image && (
+                        <button
+                          type="button"
+                          onClick={() => setForm(prev => ({ ...prev, image: '' }))}
+                          className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Image Preview */}
+                    {form.image && (
+                      <div className="relative">
+                        <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                          <img
+                            src={form.image}
+                            alt="Achievement preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* URL Input (fallback) */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                      <input 
+                        name="image" 
+                        value={form.image} 
+                        onChange={handleChange} 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Enter image URL (optional if file uploaded)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input 
+                    name="category" 
+                    value={form.category} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter category"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Rarity</label>
-                  <select 
-                    name="rarity" 
-                    value={form.rarity} 
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input 
+                    name="tags" 
+                    value={form.tags} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
-                  >
-                    <option value="">Select rarity</option>
-                    <option value="Common">Common</option>
-                    <option value="Rare">Rare</option>
-                    <option value="Epic">Epic</option>
-                    <option value="Legendary">Legendary</option>
-                    <option value="Mythic">Mythic</option>
-                  </select>
+                    placeholder="Enter tags (comma separated)"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Points</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Steps Required</label>
+                  <input 
+                    name="stepsRequired" 
+                    type="number"
+                    value={form.stepsRequired} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter steps required"
+                    min="1"
+                    required 
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Rewards Section */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Gift className="w-5 h-5 mr-2 text-green-600" />
+                Rewards
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Points
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input 
                     name="points" 
                     type="number"
@@ -128,21 +268,157 @@ const AddAchievementModal = ({ open, onClose, onSave }) => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter points"
                     min="0"
-                    required 
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Earned Count</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Credits
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
                   <input 
-                    name="earned" 
+                    name="credits" 
                     type="number"
-                    value={form.earned} 
+                    value={form.credits} 
                     onChange={handleChange} 
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter earned count"
+                    placeholder="Enter credits"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Achievements
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input 
+                    name="achievements" 
+                    value={form.achievements} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter achievements"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Steps Granted</label>
+                  <input 
+                    name="stepsGranted" 
+                    type="number"
+                    value={form.stepsGranted} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter steps granted"
                     min="0"
                     required 
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Requirements Section */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Target className="w-5 h-5 mr-2 text-purple-600" />
+                Requirements
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input 
+                    name="requirementsCategory" 
+                    value={form.requirementsCategory} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter required category"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tags
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <input 
+                    name="requirementsTags" 
+                    value={form.requirementsTags} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter required tags (comma separated)"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Level
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <select 
+                    name="requirementsLevel" 
+                    value={form.requirementsLevel} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select level</option>
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                    <option value="3">Level 3</option>
+                    <option value="4">Level 4</option>
+                    <option value="5">Level 5</option>
+                    <option value="10">Level 10</option>
+                    <option value="25">Level 25</option>
+                    <option value="50">Level 50</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Mission
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <select 
+                    name="requirementsMission" 
+                    value={form.requirementsMission} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select mission</option>
+                    <option value="daily_checkin">Daily Check-in</option>
+                    <option value="social_share">Social Share</option>
+                    <option value="refer_friend">Refer a Friend</option>
+                    <option value="complete_profile">Complete Profile</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Achievement
+                    <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                      (Optional)
+                    </span>
+                  </label>
+                  <select 
+                    name="requirementsAchievement" 
+                    value={form.requirementsAchievement} 
+                    onChange={handleChange} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Select achievement</option>
+                    <option value="first_blood">First Blood</option>
+                    <option value="social_butterfly">Social Butterfly</option>
+                    <option value="team_player">Team Player</option>
+                    <option value="quiz_master">Quiz Master</option>
+                    <option value="level_50">Level 50</option>
+                  </select>
                 </div>
               </div>
             </div>

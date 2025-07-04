@@ -239,11 +239,11 @@ const surveys = [
 ];
 
 const achievements = [
-  { name: 'First Blood', description: 'Complete your first mission', icon: '🩸', rarity: 'Common', earned: 1247, points: 50 },
-  { name: 'Social Butterfly', description: 'Share 10 posts on social media', icon: '🦋', rarity: 'Rare', earned: 567, points: 100 },
-  { name: 'Team Player', description: 'Join 5 different teams', icon: '👥', rarity: 'Epic', earned: 234, points: 200 },
-  { name: 'Quiz Master', description: 'Score 100% on 5 quizzes', icon: '🧠', rarity: 'Legendary', earned: 89, points: 500 },
-  { name: 'Level 50', description: 'Reach level 50', icon: '⭐', rarity: 'Mythic', earned: 12, points: 1000 }
+  { id: 'achievement1', name: 'First Blood', description: 'Complete your first mission', icon: '🩸', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=center', earned: 1247, points: 50, credits: 25 },
+  { id: 'achievement2', name: 'Social Butterfly', description: 'Share 10 posts on social media', icon: '🦋', image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center', earned: 567, points: 100, credits: 50 },
+  { id: 'achievement3', name: 'Team Player', description: 'Join 5 different teams', icon: '👥', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop&crop=center', earned: 234, points: 200, credits: 100 },
+  { id: 'achievement4', name: 'Quiz Master', description: 'Score 100% on 5 quizzes', icon: '🧠', image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop&crop=center', earned: 89, points: 500, credits: 250 },
+  { id: 'achievement5', name: 'Level 50', description: 'Reach level 50', icon: '⭐', image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop&crop=center', earned: 12, points: 1000, credits: 500 }
 ];
 
 const tabs = [
@@ -261,10 +261,10 @@ const tabs = [
 ];
 
 const teams = [
-  { id: 'team1', name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS', description: 'Elite team of top performers' },
-  { id: 'team2', name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF', description: 'Innovation and creativity focused team' },
-  { id: 'team3', name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT', description: 'Largest and most diverse team' },
-  { id: 'team4', name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU', description: 'Specialized task force' }
+  { id: 'team1', name: 'Alpha Squad', members: 12, points: 45600, level: 'Gold', avatar: 'AS', image: 'https://picsum.photos/400/300?random=50', description: 'Elite team of top performers' },
+  { id: 'team2', name: 'Beta Force', members: 8, points: 38900, level: 'Silver', avatar: 'BF', image: 'https://picsum.photos/400/300?random=51', description: 'Innovation and creativity focused team' },
+  { id: 'team3', name: 'Gamma Team', members: 15, points: 52300, level: 'Platinum', avatar: 'GT', image: 'https://picsum.photos/400/300?random=52', description: 'Largest and most diverse team' },
+  { id: 'team4', name: 'Delta Unit', members: 6, points: 28700, level: 'Bronze', avatar: 'DU', image: 'https://picsum.photos/400/300?random=53', description: 'Specialized task force' }
 ];
 
 const streaks = [
@@ -480,12 +480,24 @@ const Dashboard = () => {
   // Add state for inline achievement editing
   const [editingAchievementId, setEditingAchievementId] = useState(null);
   const [editingAchievementData, setEditingAchievementData] = useState({
+    id: '',
     name: '',
     description: '',
-    icon: '',
-    rarity: '',
+    image: '',
+    category: '',
+    tags: '',
+    stepsRequired: '',
+    // Rewards
     points: '',
-    earned: ''
+    credits: '',
+    achievements: '',
+    stepsGranted: '',
+    // Requirements
+    requirementsCategory: '',
+    requirementsTags: '',
+    requirementsLevel: '',
+    requirementsMission: '',
+    requirementsAchievement: ''
   });
   const [typingProgress, setTypingProgress] = useState({
     id: false,
@@ -1344,12 +1356,24 @@ const Dashboard = () => {
   const handleStartEditAchievement = (achievement) => {
     setEditingAchievementId(achievement.name);
     setEditingAchievementData({
+      id: achievement.id || '',
       name: achievement.name || '',
       description: achievement.description || '',
-      icon: achievement.icon || '',
-      rarity: achievement.rarity || '',
+      image: achievement.image || '',
+      category: achievement.category || '',
+      tags: achievement.tags || '',
+      stepsRequired: achievement.stepsRequired || '',
+      // Rewards
       points: achievement.points || '',
-      earned: achievement.earned || ''
+      credits: achievement.credits || '',
+      achievements: achievement.achievements || '',
+      stepsGranted: achievement.stepsGranted || '',
+      // Requirements
+      requirementsCategory: achievement.requirementsCategory || '',
+      requirementsTags: achievement.requirementsTags || '',
+      requirementsLevel: achievement.requirementsLevel || '',
+      requirementsMission: achievement.requirementsMission || '',
+      requirementsAchievement: achievement.requirementsAchievement || ''
     });
   };
 
@@ -1360,31 +1384,53 @@ const Dashboard = () => {
         ...achievement, 
         ...editingAchievementData,
         points: editingAchievementData.points ? parseInt(editingAchievementData.points) : 0,
-        earned: editingAchievementData.earned ? parseInt(editingAchievementData.earned) : 0
+        credits: editingAchievementData.credits ? parseInt(editingAchievementData.credits) : 0,
+        stepsRequired: editingAchievementData.stepsRequired ? parseInt(editingAchievementData.stepsRequired) : 0,
+        stepsGranted: editingAchievementData.stepsGranted ? parseInt(editingAchievementData.stepsGranted) : 0
       } : achievement
     );
     // You would typically update state here, but since achievements is not in state, we'll just log for now
     console.log('Updated achievements:', updatedAchievements);
     setEditingAchievementId(null);
     setEditingAchievementData({
+      id: '',
       name: '',
       description: '',
-      icon: '',
-      rarity: '',
+      image: '',
+      category: '',
+      tags: '',
+      stepsRequired: '',
       points: '',
-      earned: ''
+      credits: '',
+      achievements: '',
+      stepsGranted: '',
+      requirementsCategory: '',
+      requirementsTags: '',
+      requirementsLevel: '',
+      requirementsMission: '',
+      requirementsAchievement: ''
     });
   };
 
   const handleCancelEditAchievement = () => {
     setEditingAchievementId(null);
     setEditingAchievementData({
+      id: '',
       name: '',
       description: '',
-      icon: '',
-      rarity: '',
+      image: '',
+      category: '',
+      tags: '',
+      stepsRequired: '',
       points: '',
-      earned: ''
+      credits: '',
+      achievements: '',
+      stepsGranted: '',
+      requirementsCategory: '',
+      requirementsTags: '',
+      requirementsLevel: '',
+      requirementsMission: '',
+      requirementsAchievement: ''
     });
   };
 
@@ -2648,7 +2694,7 @@ const Dashboard = () => {
                       </button>
                     </div>
                     <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddRaffleOpen(true)}>
-                      Create Raffle
+                      Add Raffle
                     </button>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
@@ -3059,7 +3105,7 @@ const Dashboard = () => {
                       </button>
                     </div>
                     <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddMysteryBoxOpen(true)}>
-                      Create Mystery Reward
+                      Add Mystery Win
                     </button>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
@@ -3448,8 +3494,12 @@ const Dashboard = () => {
                           >
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
-                                  {team.avatar}
+                                <div className="w-12 h-12 rounded-lg overflow-hidden">
+                                  <img
+                                    src={team.image}
+                                    alt={team.name}
+                                    className="w-full h-full object-cover"
+                                  />
                                 </div>
                                 <div className="ml-4">
                                   <div className="text-sm font-medium text-gray-900">{team.name}</div>
@@ -3693,7 +3743,7 @@ const Dashboard = () => {
                     </button>
                   </div>
                   <button className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium" onClick={() => setAddStreakOpen(true)}>
-                    Create Streak
+                    Add Streak
                   </button>
                 </div>
 
@@ -4186,7 +4236,7 @@ const Dashboard = () => {
                       </button>
                     </div>
                     <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddEventOpen(true)}>
-                      Create Event
+                      Add Event
                     </button>
                   </div>
                   <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
@@ -4574,7 +4624,7 @@ const Dashboard = () => {
                       </button>
                     </div>
                     <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-3 px-4" onClick={() => setAddMissionOpen(true)}>
-                      Create Mission
+                      Add Mission
                     </button>
                   </div>
 
@@ -5766,13 +5816,13 @@ const Dashboard = () => {
                           Achievement
                         </th>
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Rarity
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Points
                         </th>
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Earned
+                          Credits
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Granted
                         </th>
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
@@ -5794,30 +5844,37 @@ const Dashboard = () => {
                           >
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                <div className="flex-shrink-0 h-10 w-10">
-                                  <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
-                                    <span className="text-lg">{achievement.icon}</span>
+                                {achievement.image ? (
+                                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img 
+                                      src={achievement.image} 
+                                      alt={achievement.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                      }}
+                                    />
+                                    <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                      <Medal className="w-4 h-4" />
+                                    </div>
                                   </div>
-                                </div>
+                                ) : (
+                                  <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
+                                    <Medal className="w-4 h-4" />
+                                  </div>
+                                )}
                                 <div className="ml-4">
                                   <div className="text-sm font-medium text-gray-900">{achievement.name}</div>
                                   <div className="text-sm text-gray-500">{achievement.description}</div>
                                 </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-center">
-                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                achievement.rarity === 'Common' ? 'bg-gray-100 text-gray-800' :
-                                achievement.rarity === 'Rare' ? 'bg-blue-100 text-blue-800' :
-                                achievement.rarity === 'Epic' ? 'bg-purple-100 text-purple-800' :
-                                achievement.rarity === 'Legendary' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                              }`}>
-                                {achievement.rarity}
-                              </span>
-                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                               {achievement.points.toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {achievement.credits ? achievement.credits.toLocaleString() : '0'}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                               {achievement.earned.toLocaleString()} players
@@ -5853,75 +5910,320 @@ const Dashboard = () => {
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                       <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.id || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('id', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter achievement ID"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                                         <input
                                           type="text"
                                           value={editingAchievementData.name || ''}
                                           onChange={(e) => handleUpdateEditingAchievementData('name', e.target.value)}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                           placeholder="Enter achievement name"
                                           required
                                         />
                                       </div>
-                                      <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
-                                        <input
-                                          type="text"
-                                          value={editingAchievementData.icon || ''}
-                                          onChange={(e) => handleUpdateEditingAchievementData('icon', e.target.value)}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                          placeholder="Enter emoji icon"
-                                          required
-                                        />
-                                      </div>
                                       <div className="md:col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Description
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
                                         <textarea
                                           value={editingAchievementData.description || ''}
                                           onChange={(e) => handleUpdateEditingAchievementData('description', e.target.value)}
                                           rows={3}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                           placeholder="Enter achievement description"
-                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Image
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="space-y-4">
+                                          {/* File Upload Section */}
+                                          <div className="flex items-center space-x-4">
+                                            <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (event) => {
+                                                      handleUpdateEditingAchievementData('image', event.target.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                  }
+                                                }}
+                                                className="hidden"
+                                              />
+                                              <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                              <span className="text-gray-600">Browse for image</span>
+                                            </label>
+                                            {editingAchievementData.image && (
+                                              <button
+                                                type="button"
+                                                onClick={() => handleUpdateEditingAchievementData('image', '')}
+                                                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </div>
+                                          
+                                          {/* Image Preview */}
+                                          {editingAchievementData.image && (
+                                            <div className="relative">
+                                              <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                <img
+                                                  src={editingAchievementData.image}
+                                                  alt="Achievement preview"
+                                                  className="w-full h-full object-cover"
+                                                />
+                                              </div>
+                                            </div>
+                                          )}
+                                          
+                                          {/* URL Input (fallback) */}
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                            <input 
+                                              name="image" 
+                                              value={editingAchievementData.image || ''} 
+                                              onChange={(e) => handleUpdateEditingAchievementData('image', e.target.value)} 
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter image URL (optional if file uploaded)"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.category || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('category', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter category"
                                         />
                                       </div>
                                       <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Rarity</label>
-                                        <select
-                                          value={editingAchievementData.rarity || ''}
-                                          onChange={(e) => handleUpdateEditingAchievementData('rarity', e.target.value)}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                          required
-                                        >
-                                          <option value="">Select rarity</option>
-                                          <option value="Common">Common</option>
-                                          <option value="Rare">Rare</option>
-                                          <option value="Epic">Epic</option>
-                                          <option value="Legendary">Legendary</option>
-                                          <option value="Mythic">Mythic</option>
-                                        </select>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.tags || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('tags', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter tags (comma separated)"
+                                        />
                                       </div>
                                       <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Points</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Steps Required</label>
+                                        <input
+                                          type="number"
+                                          value={editingAchievementData.stepsRequired || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('stepsRequired', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter steps required"
+                                          min="1"
+                                          required
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Rewards Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Gift className="w-5 h-5 mr-2 text-green-600" />
+                                      Rewards
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Points
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
                                         <input
                                           type="number"
                                           value={editingAchievementData.points || ''}
                                           onChange={(e) => handleUpdateEditingAchievementData('points', e.target.value)}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                           placeholder="Enter points"
-                                          required
+                                          min="0"
                                         />
                                       </div>
                                       <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Earned Count</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Credits
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
                                         <input
                                           type="number"
-                                          value={editingAchievementData.earned || ''}
-                                          onChange={(e) => handleUpdateEditingAchievementData('earned', e.target.value)}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                                          placeholder="Enter earned count"
+                                          value={editingAchievementData.credits || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('credits', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter credits"
+                                          min="0"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Achievements
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.achievements || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('achievements', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter achievements"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Steps Granted</label>
+                                        <input
+                                          type="number"
+                                          value={editingAchievementData.stepsGranted || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('stepsGranted', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter steps granted"
+                                          min="0"
                                           required
                                         />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Requirements Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Target className="w-5 h-5 mr-2 text-purple-600" />
+                                      Requirements
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.requirementsCategory || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('requirementsCategory', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter required category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingAchievementData.requirementsTags || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('requirementsTags', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter required tags (comma separated)"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Select Level
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingAchievementData.requirementsLevel || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('requirementsLevel', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select level</option>
+                                          <option value="1">Level 1</option>
+                                          <option value="2">Level 2</option>
+                                          <option value="3">Level 3</option>
+                                          <option value="4">Level 4</option>
+                                          <option value="5">Level 5</option>
+                                          <option value="10">Level 10</option>
+                                          <option value="25">Level 25</option>
+                                          <option value="50">Level 50</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Select Mission
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingAchievementData.requirementsMission || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('requirementsMission', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select mission</option>
+                                          <option value="daily_checkin">Daily Check-in</option>
+                                          <option value="social_share">Social Share</option>
+                                          <option value="refer_friend">Refer a Friend</option>
+                                          <option value="complete_profile">Complete Profile</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Select Achievement
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingAchievementData.requirementsAchievement || ''}
+                                          onChange={(e) => handleUpdateEditingAchievementData('requirementsAchievement', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select achievement</option>
+                                          <option value="first_blood">First Blood</option>
+                                          <option value="social_butterfly">Social Butterfly</option>
+                                          <option value="team_player">Team Player</option>
+                                          <option value="quiz_master">Quiz Master</option>
+                                          <option value="level_50">Level 50</option>
+                                        </select>
                                       </div>
                                     </div>
                                   </div>
@@ -6322,7 +6624,7 @@ const Dashboard = () => {
                           }}
                           onClick={handleGuideCreateEvent}
                         >
-                          Create Event
+                          Add Event
                           <motion.div
                             className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center"
                             animate={{
@@ -6360,7 +6662,7 @@ const Dashboard = () => {
                         className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-lg"
                       >
                         <HelpCircle className="w-4 h-4 mr-2" />
-                        Click the "Create Event" button to get started
+                        Click the "Add Event" button to get started
                       </motion.div>
                     </div>
                   </div>
@@ -6374,7 +6676,7 @@ const Dashboard = () => {
                           1
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">Create an Event</p>
+                          <p className="font-medium text-gray-900">Add an Event</p>
                           <p className="text-gray-600 text-sm">Define the event that will trigger your mission completion</p>
                         </div>
                       </div>
@@ -6383,7 +6685,7 @@ const Dashboard = () => {
                           2
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">Create a Mission</p>
+                          <p className="font-medium text-gray-900">Add a Mission</p>
                           <p className="text-gray-600 text-sm">Set up the mission with rewards, requirements, and duration</p>
                         </div>
                       </div>
@@ -6404,7 +6706,7 @@ const Dashboard = () => {
               {guideStep === 2 && (
                 <div className="space-y-6">
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 1: Create an Event</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 1: Add an Event</h3>
                     <p className="text-gray-600">Let's create your first event. I'll help you fill out the form!</p>
                   </div>
 
@@ -6413,7 +6715,7 @@ const Dashboard = () => {
                     <div className="bg-white rounded-lg shadow-sm">
                       {/* Header */}
                       <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 className="text-xl font-bold text-gray-900">Create New Event</h2>
+                        <h2 className="text-xl font-bold text-gray-900">Add New Event</h2>
                         <div className="w-8 h-8"></div> {/* Spacer for alignment */}
                       </div>
 
@@ -6869,7 +7171,7 @@ const Dashboard = () => {
                     className="btn-primary relative"
                     onClick={handleGuideCreateMission}
                   >
-                    Create Mission
+                    Add Mission
                     <motion.div
                       className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
                       initial={{ scale: 0 }}
@@ -6907,7 +7209,7 @@ const Dashboard = () => {
               {guideStep === 5 && (
                                 <div className="space-y-6">
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 2: Create a Mission</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Step 2: Add a Mission</h3>
                     <p className="text-gray-600">Now let's create a mission that uses the event we just created!</p>
                     {currentMissionTypingField && (
                       <motion.div
@@ -6925,7 +7227,7 @@ const Dashboard = () => {
                     <div className="bg-white rounded-lg shadow-sm">
                       {/* Header */}
                       <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                        <h2 className="text-xl font-bold text-gray-900">Create New Mission</h2>
+                        <h2 className="text-xl font-bold text-gray-900">Add New Mission</h2>
                         <div className="w-8 h-8"></div> {/* Spacer for alignment */}
                       </div>
 
