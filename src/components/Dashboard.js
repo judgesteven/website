@@ -47,6 +47,10 @@ import AddPlayerModal from './AddPlayerModal';
 import AddTeamModal from './AddTeamModal';
 import AddStreakModal from './AddStreakModal';
 import AddAchievementModal from './AddAchievementModal';
+import AddLevelModal from './AddLevelModal';
+import AddLeaderboardModal from './AddLeaderboardModal';
+import AddQuizModal from './AddQuizModal';
+import AddSurveyModal from './AddSurveyModal';
 import EditPrizeModal from './EditPrizeModal';
 import EditRaffleModal from './EditRaffleModal';
 import EditMysteryBoxModal from './EditMysteryBoxModal';
@@ -227,6 +231,14 @@ const quizzes = [
   { name: 'Customer Service', questions: 12, participants: 89, avgScore: 81, status: 'Draft' }
 ];
 
+const surveys = [
+  { id: '1', name: 'Employee Satisfaction Survey', description: 'Annual employee satisfaction and engagement survey', questions: 25, participants: 450, completionRate: 78, status: 'active', category: 'HR', type: 'satisfaction', duration: 15, rewards: '50 points + recognition badge' },
+  { id: '2', name: 'Product Feedback Survey', description: 'Gather feedback on new product features and user experience', questions: 12, participants: 200, completionRate: 85, status: 'active', category: 'Product', type: 'feedback', duration: 8, rewards: '25 points' },
+  { id: '3', name: 'Onboarding Experience Survey', description: 'Evaluate new employee onboarding process effectiveness', questions: 18, participants: 120, completionRate: 92, status: 'completed', category: 'HR', type: 'onboarding', duration: 10, rewards: '30 points' },
+  { id: '4', name: 'Customer Service Pulse Check', description: 'Quick pulse check on customer service satisfaction', questions: 8, participants: 300, completionRate: 65, status: 'active', category: 'Customer', type: 'pulse', duration: 5, rewards: '15 points' },
+  { id: '5', name: 'Exit Interview Survey', description: 'Comprehensive exit interview for departing employees', questions: 20, participants: 45, completionRate: 88, status: 'active', category: 'HR', type: 'exit', duration: 20, rewards: '100 points' }
+];
+
 const achievements = [
   { name: 'First Blood', description: 'Complete your first mission', icon: '🩸', rarity: 'Common', earned: 1247, points: 50 },
   { name: 'Social Butterfly', description: 'Share 10 posts on social media', icon: '🦋', rarity: 'Rare', earned: 567, points: 100 },
@@ -331,6 +343,7 @@ const Dashboard = () => {
   const [addTeamOpen, setAddTeamOpen] = useState(false);
   const [addStreakOpen, setAddStreakOpen] = useState(false);
   const [addAchievementOpen, setAddAchievementOpen] = useState(false);
+  const [addSurveyOpen, setAddSurveyOpen] = useState(false);
   const [editPrizeOpen, setEditPrizeOpen] = useState(false);
   const [editRaffleOpen, setEditRaffleOpen] = useState(false);
   const [editMysteryBoxOpen, setEditMysteryBoxOpen] = useState(false);
@@ -527,6 +540,57 @@ const Dashboard = () => {
   const [missionsList, setMissionsList] = useState(missions);
   const [streaksList, setStreaksList] = useState(streaks);
   const [achievementsList, setAchievementsList] = useState(achievements);
+  // Add state for levels list and inline editing
+  const [levelsList, setLevelsList] = useState(levels);
+  const [editingLevelId, setEditingLevelId] = useState(null);
+  const [editingLevelData, setEditingLevelData] = useState({
+    level: '',
+    name: '',
+    pointsRequired: '',
+    users: '',
+    rewards: ''
+  });
+  const [addLevelOpen, setAddLevelOpen] = useState(false);
+  const [addLeaderboardOpen, setAddLeaderboardOpen] = useState(false);
+  const [addQuizOpen, setAddQuizOpen] = useState(false);
+  // Add state for leaderboards list and inline editing
+  const [leaderboardsList, setLeaderboardsList] = useState(leaderboards);
+  // Add state for quizzes list and inline editing
+  const [quizzesList, setQuizzesList] = useState(quizzes);
+  const [surveysList, setSurveysList] = useState(surveys);
+  const [editingQuizId, setEditingQuizId] = useState(null);
+  const [editingQuizData, setEditingQuizData] = useState({
+    name: '',
+    description: '',
+    questions: '',
+    participants: '',
+    status: '',
+    category: '',
+    timeLimit: '',
+    passingScore: ''
+  });
+
+  // Add state for surveys inline editing
+  const [editingSurveyId, setEditingSurveyId] = useState(null);
+  const [editingSurveyData, setEditingSurveyData] = useState({
+    name: '',
+    description: '',
+    participants: '',
+    status: '',
+    category: '',
+    duration: '',
+    rewards: ''
+  });
+  const [editingLeaderboardId, setEditingLeaderboardId] = useState(null);
+  const [editingLeaderboardData, setEditingLeaderboardData] = useState({
+    name: '',
+    description: '',
+    period: '',
+    participants: '',
+    topUser: '',
+    topScore: '',
+    status: ''
+  });
   const [eventsList, setEventsList] = useState([
     { 
       id: 'EVT001', 
@@ -1330,6 +1394,171 @@ const Dashboard = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  // Level editing handlers
+  const handleStartEditLevel = (level) => {
+    setEditingLevelId(level.level);
+    setEditingLevelData({
+      level: level.level || '',
+      name: level.name || '',
+      description: level.description || '',
+      requiredPoints: level.requiredPoints || level.pointsRequired || 0,
+      rewards: level.rewards || '',
+      status: level.status || 'active'
+    });
+  };
+
+  const handleSaveEditLevel = () => {
+    setLevelsList((prev) =>
+      prev.map((level) =>
+        level.level === editingLevelId ? { ...level, ...editingLevelData, requiredPoints: parseInt(editingLevelData.requiredPoints) || 0 } : level
+      )
+    );
+    setEditingLevelId(null);
+    setEditingLevelData({ level: '', name: '', description: '', requiredPoints: '', rewards: '', status: 'active' });
+  };
+
+  const handleCancelEditLevel = () => {
+    setEditingLevelId(null);
+    setEditingLevelData({ level: '', name: '', description: '', requiredPoints: '', rewards: '', status: 'active' });
+  };
+
+  const handleUpdateEditingLevelData = (field, value) => {
+    setEditingLevelData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddLevel = (level) => {
+    setLevelsList((prev) => [...prev, { ...level, pointsRequired: parseInt(level.pointsRequired) || 0, users: parseInt(level.users) || 0 }]);
+    setAddLevelOpen(false);
+  };
+
+  const handleDeleteLevel = (level) => {
+    setLevelsList((prev) => prev.filter(l => l.level !== level.level));
+  };
+
+  const handleAddLeaderboard = (leaderboard) => {
+    setLeaderboardsList((prev) => [...prev, leaderboard]);
+    setAddLeaderboardOpen(false);
+  };
+
+  const handleDeleteLeaderboard = (leaderboard) => {
+    setLeaderboardsList((prev) => prev.filter(l => l.id !== leaderboard.id));
+  };
+
+  const handleStartEditLeaderboard = (leaderboard) => {
+    setEditingLeaderboardId(leaderboard.id);
+    setEditingLeaderboardData({
+      name: leaderboard.name || '',
+      description: leaderboard.description || '',
+      period: leaderboard.period || '',
+      participants: leaderboard.participants || '',
+      topUser: leaderboard.topUser || '',
+      topScore: leaderboard.topScore || '',
+      status: leaderboard.status || 'active'
+    });
+  };
+
+  const handleSaveEditLeaderboard = () => {
+    setLeaderboardsList((prev) =>
+      prev.map((leaderboard) =>
+        leaderboard.id === editingLeaderboardId ? { ...leaderboard, ...editingLeaderboardData } : leaderboard
+      )
+    );
+    setEditingLeaderboardId(null);
+    setEditingLeaderboardData({ name: '', description: '', period: '', participants: '', topUser: '', topScore: '', status: '' });
+  };
+
+  const handleCancelEditLeaderboard = () => {
+    setEditingLeaderboardId(null);
+    setEditingLeaderboardData({ name: '', description: '', period: '', participants: '', topUser: '', topScore: '', status: '' });
+  };
+
+  const handleUpdateEditingLeaderboardData = (field, value) => {
+    setEditingLeaderboardData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddQuiz = (quiz) => {
+    setQuizzesList((prev) => [...prev, quiz]);
+    setAddQuizOpen(false);
+  };
+
+  const handleDeleteQuiz = (quiz) => {
+    setQuizzesList((prev) => prev.filter(q => q.id !== quiz.id));
+  };
+
+  const handleStartEditQuiz = (quiz) => {
+    setEditingQuizId(quiz.id);
+    setEditingQuizData({
+      name: quiz.name || '',
+      description: quiz.description || '',
+      questions: quiz.questions || '',
+      participants: quiz.participants || '',
+      status: quiz.status || 'active',
+      category: quiz.category || '',
+      timeLimit: quiz.timeLimit || '',
+      passingScore: quiz.passingScore || ''
+    });
+  };
+
+  const handleSaveEditQuiz = () => {
+    setQuizzesList((prev) =>
+      prev.map((quiz) =>
+        quiz.id === editingQuizId ? { ...quiz, ...editingQuizData } : quiz
+      )
+    );
+    setEditingQuizId(null);
+    setEditingQuizData({ name: '', description: '', questions: '', participants: '', status: '', category: '', timeLimit: '', passingScore: '' });
+  };
+
+  const handleCancelEditQuiz = () => {
+    setEditingQuizId(null);
+    setEditingQuizData({ name: '', description: '', questions: '', participants: '', status: '', category: '', timeLimit: '', passingScore: '' });
+  };
+
+  const handleUpdateEditingQuizData = (field, value) => {
+    setEditingQuizData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddSurvey = (survey) => {
+    setSurveysList((prev) => [...prev, survey]);
+    setAddSurveyOpen(false);
+  };
+
+  const handleDeleteSurvey = (survey) => {
+    setSurveysList((prev) => prev.filter(s => s.id !== survey.id));
+  };
+
+  const handleStartEditSurvey = (survey) => {
+    setEditingSurveyId(survey.id);
+    setEditingSurveyData({
+      name: survey.name || '',
+      description: survey.description || '',
+      participants: survey.participants || '',
+      status: survey.status || 'active',
+      category: survey.category || '',
+      duration: survey.duration || '',
+      rewards: survey.rewards || ''
+    });
+  };
+
+  const handleSaveEditSurvey = () => {
+    setSurveysList((prev) =>
+      prev.map((survey) =>
+        survey.id === editingSurveyId ? { ...survey, ...editingSurveyData } : survey
+      )
+    );
+    setEditingSurveyId(null);
+    setEditingSurveyData({ name: '', description: '', participants: '', status: '', category: '', duration: '', rewards: '' });
+  };
+
+  const handleCancelEditSurvey = () => {
+    setEditingSurveyId(null);
+    setEditingSurveyData({ name: '', description: '', participants: '', status: '', category: '', duration: '', rewards: '' });
+  };
+
+  const handleUpdateEditingSurveyData = (field, value) => {
+    setEditingSurveyData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleGuideCreateEvent = () => {
@@ -4030,7 +4259,7 @@ const Dashboard = () => {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                 <div className="flex items-center justify-center space-x-2">
-                                  <button 
+                                  <button
                                     className="text-gray-600 hover:text-gray-900"
                                     onClick={() => {
                                       if (editingEventId === event.id) {
@@ -4946,13 +5175,30 @@ const Dashboard = () => {
             {activeTab === 'levels' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Levels</h3>
-                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search levels..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddLevelOpen(true)}
+                  >
                     Add Level
                   </button>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200">
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -4962,35 +5208,128 @@ const Dashboard = () => {
                           Name
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Points Required
+                          Description
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Users
+                          Points Required
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Rewards
                         </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {levels.map((level, index) => (
-                        <tr key={index} className="hover:bg-gray-50">
+                      {levelsList.map((level, index) => (
+                        <tr key={level.level || index} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
-                              Level {level.level}
+                              Level {level.level || index + 1}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {level.name}
+                            {editingLevelId === level.id ? (
+                              <input
+                                type="text"
+                                value={editingLevelData.name || ''}
+                                onChange={(e) => handleUpdateEditingLevelData('name', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              level.name
+                            )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {level.pointsRequired.toLocaleString()}
+                            {editingLevelId === level.id ? (
+                              <input
+                                type="text"
+                                value={editingLevelData.description || ''}
+                                onChange={(e) => handleUpdateEditingLevelData('description', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              level.description
+                            )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {level.users.toLocaleString()}
+                            {editingLevelId === level.id ? (
+                              <input
+                                type="number"
+                                value={editingLevelData.requiredPoints || ''}
+                                onChange={(e) => handleUpdateEditingLevelData('requiredPoints', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              (level.requiredPoints || level.pointsRequired || 0).toLocaleString()
+                            )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {level.rewards}
+                            {editingLevelId === level.id ? (
+                              <input
+                                type="text"
+                                value={editingLevelData.rewards || ''}
+                                onChange={(e) => handleUpdateEditingLevelData('rewards', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              level.rewards
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLevelId === level.id ? (
+                              <select
+                                value={editingLevelData.status || 'active'}
+                                onChange={(e) => handleUpdateEditingLevelData('status', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                              </select>
+                            ) : (
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                level.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                              }`}>
+                                {level.status || 'Active'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLevelId === level.id ? (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={handleSaveEditLevel}
+                                  className="text-green-600 hover:text-green-900"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={handleCancelEditLevel}
+                                  className="text-gray-600 hover:text-gray-900"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={() => handleStartEditLevel(level)}
+                                  className="text-blue-600 hover:text-blue-900"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteLevel(level)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -5003,47 +5342,206 @@ const Dashboard = () => {
             {activeTab === 'leaderboards' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Leaderboards</h3>
-                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search leaderboards..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddLeaderboardOpen(true)}
+                  >
                     Create Leaderboard
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {leaderboards.map((leaderboard, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="card p-6"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h4 className="font-semibold text-gray-900">{leaderboard.name}</h4>
-                          <p className="text-sm text-gray-500">{leaderboard.period}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm text-gray-500">{leaderboard.participants} participants</p>
-                        </div>
-                      </div>
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
-                              🏆
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Leaderboard
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Period
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Participants
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Top User
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Top Score
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {leaderboardsList.map((leaderboard, index) => (
+                        <tr key={leaderboard.id || index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="flex-shrink-0 h-10 w-10">
+                                <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                  <span className="text-lg">🏆</span>
+                                </div>
+                              </div>
+                              <div className="ml-4">
+                                <div className="text-sm font-medium text-gray-900">
+                                  {editingLeaderboardId === leaderboard.id ? (
+                                    <input
+                                      type="text"
+                                      value={editingLeaderboardData.name || ''}
+                                      onChange={(e) => handleUpdateEditingLeaderboardData('name', e.target.value)}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                  ) : (
+                                    leaderboard.name
+                                  )}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {editingLeaderboardId === leaderboard.id ? (
+                                    <input
+                                      type="text"
+                                      value={editingLeaderboardData.description || ''}
+                                      onChange={(e) => handleUpdateEditingLeaderboardData('description', e.target.value)}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      placeholder="Description"
+                                    />
+                                  ) : (
+                                    leaderboard.description || 'No description'
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-medium text-gray-900">{leaderboard.topUser}</p>
-                              <p className="text-sm text-gray-500">Top Score</p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-xl font-bold text-gray-900">{leaderboard.topScore.toLocaleString()}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <select
+                                value={editingLeaderboardData.period || ''}
+                                onChange={(e) => handleUpdateEditingLeaderboardData('period', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="yearly">Yearly</option>
+                                <option value="all-time">All Time</option>
+                              </select>
+                            ) : (
+                              leaderboard.period
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <input
+                                type="number"
+                                value={editingLeaderboardData.participants || ''}
+                                onChange={(e) => handleUpdateEditingLeaderboardData('participants', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              leaderboard.participants.toLocaleString()
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <input
+                                type="text"
+                                value={editingLeaderboardData.topUser || ''}
+                                onChange={(e) => handleUpdateEditingLeaderboardData('topUser', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              leaderboard.topUser
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <input
+                                type="number"
+                                value={editingLeaderboardData.topScore || ''}
+                                onChange={(e) => handleUpdateEditingLeaderboardData('topScore', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              leaderboard.topScore.toLocaleString()
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <select
+                                value={editingLeaderboardData.status || 'active'}
+                                onChange={(e) => handleUpdateEditingLeaderboardData('status', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="draft">Draft</option>
+                              </select>
+                            ) : (
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                leaderboard.status === 'active' ? 'bg-green-100 text-green-800' : 
+                                leaderboard.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
+                                'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {leaderboard.status || 'Active'}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingLeaderboardId === leaderboard.id ? (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={handleSaveEditLeaderboard}
+                                  className="text-green-600 hover:text-green-900"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={handleCancelEditLeaderboard}
+                                  className="text-gray-600 hover:text-gray-900"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={() => handleStartEditLeaderboard(leaderboard)}
+                                  className="text-blue-600 hover:text-blue-900"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteLeaderboard(leaderboard)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
@@ -5051,56 +5549,187 @@ const Dashboard = () => {
             {activeTab === 'quizzes' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Quizzes</h3>
-                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search quizzes..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddQuizOpen(true)}
+                  >
                     Create Quiz
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {quizzes.map((quiz, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="card p-6"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-semibold text-gray-900">{quiz.name}</h4>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          quiz.status === 'Active' ? 'bg-green-100 text-green-800' :
-                          quiz.status === 'Completed' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {quiz.status}
-                        </span>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Questions:</span>
-                          <span className="font-medium">{quiz.questions}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Participants:</span>
-                          <span className="font-medium">{quiz.participants}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Avg Score:</span>
-                          <span className="font-medium">{quiz.avgScore}%</span>
-                        </div>
-                      </div>
-                      <div className="mt-4 flex items-center space-x-2">
-                        <button className="text-primary-600 hover:text-primary-900 text-sm">
-                          <Eye className="w-4 h-4 mr-1" />
-                          View
-                        </button>
-                        <button className="text-gray-600 hover:text-gray-900 text-sm">
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </button>
-                      </div>
-                    </motion.div>
-                  ))}
+
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-full">
+                  <table className="w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Quiz
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Category
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Questions
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Participants
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {quizzesList.map((quiz, index) => (
+                        <tr key={quiz.id || index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="flex-shrink-0 h-10 w-10">
+                                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                  <span className="text-lg">🧠</span>
+                                </div>
+                              </div>
+                              <div className="ml-4">
+                                <div className="text-sm font-medium text-gray-900">
+                                  {editingQuizId === quiz.id ? (
+                                    <input
+                                      type="text"
+                                      value={editingQuizData.name || ''}
+                                      onChange={(e) => handleUpdateEditingQuizData('name', e.target.value)}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                  ) : (
+                                    quiz.name
+                                  )}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {editingQuizId === quiz.id ? (
+                                    <input
+                                      type="text"
+                                      value={editingQuizData.description || ''}
+                                      onChange={(e) => handleUpdateEditingQuizData('description', e.target.value)}
+                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      placeholder="Description"
+                                    />
+                                  ) : (
+                                    quiz.description || 'No description'
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingQuizId === quiz.id ? (
+                              <input
+                                type="text"
+                                value={editingQuizData.category || ''}
+                                onChange={(e) => handleUpdateEditingQuizData('category', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              quiz.category || 'General'
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingQuizId === quiz.id ? (
+                              <input
+                                type="number"
+                                value={editingQuizData.questions || ''}
+                                onChange={(e) => handleUpdateEditingQuizData('questions', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              quiz.questions
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingQuizId === quiz.id ? (
+                              <input
+                                type="number"
+                                value={editingQuizData.participants || ''}
+                                onChange={(e) => handleUpdateEditingQuizData('participants', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            ) : (
+                              quiz.participants.toLocaleString()
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingQuizId === quiz.id ? (
+                              <select
+                                value={editingQuizData.status || 'active'}
+                                onChange={(e) => handleUpdateEditingQuizData('status', e.target.value)}
+                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="draft">Draft</option>
+                                <option value="completed">Completed</option>
+                              </select>
+                            ) : (
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                quiz.status === 'Active' || quiz.status === 'active' ? 'bg-green-100 text-green-800' :
+                                quiz.status === 'Completed' || quiz.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                                quiz.status === 'Draft' || quiz.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {quiz.status}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {editingQuizId === quiz.id ? (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={handleSaveEditQuiz}
+                                  className="text-green-600 hover:text-green-900"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={handleCancelEditQuiz}
+                                  className="text-gray-600 hover:text-gray-900"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={() => handleStartEditQuiz(quiz)}
+                                  className="text-blue-600 hover:text-blue-900"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteQuiz(quiz)}
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             )}
@@ -5328,13 +5957,213 @@ const Dashboard = () => {
             {activeTab === 'surveys' && (
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900">Surveys</h3>
-                  <button className="bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium py-2 px-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <input
+                        type="text"
+                        placeholder="Search surveys..."
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+                    <button className="flex items-center px-3 py-2 border border-gray-300 rounded-xl text-sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </button>
+                  </div>
+                  <button 
+                    className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
+                    onClick={() => setAddSurveyOpen(true)}
+                  >
                     Create Survey
                   </button>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-8 text-center text-gray-500">
-                  Survey management coming soon.
+
+                {/* Surveys Table */}
+                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Survey
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Category
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Participants
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {surveysList.map((survey) => (
+                          <React.Fragment key={survey.id}>
+                            {editingSurveyId === survey.id ? (
+                              <tr className="bg-blue-50">
+                                <td colSpan="8" className="px-6 py-4">
+                                  <div className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                      <div className="md:col-span-2 lg:col-span-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Survey Name</label>
+                                        <input
+                                          type="text"
+                                          value={editingSurveyData.name || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('name', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter survey name"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                        <input
+                                          type="text"
+                                          value={editingSurveyData.category || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('category', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Participants</label>
+                                        <input
+                                          type="number"
+                                          value={editingSurveyData.participants || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('participants', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter participants"
+                                          min="0"
+                                        />
+                                      </div>
+
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes)</label>
+                                        <input
+                                          type="number"
+                                          value={editingSurveyData.duration || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('duration', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter duration"
+                                          min="1"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                        <select
+                                          value={editingSurveyData.status || 'active'}
+                                          onChange={(e) => handleUpdateEditingSurveyData('status', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        >
+                                          <option value="active">Active</option>
+                                          <option value="inactive">Inactive</option>
+                                          <option value="draft">Draft</option>
+                                          <option value="completed">Completed</option>
+                                        </select>
+                                      </div>
+                                      <div className="md:col-span-2 lg:col-span-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                        <textarea
+                                          value={editingSurveyData.description || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('description', e.target.value)}
+                                          rows="3"
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter survey description"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2 lg:col-span-3">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Rewards</label>
+                                        <input
+                                          type="text"
+                                          value={editingSurveyData.rewards || ''}
+                                          onChange={(e) => handleUpdateEditingSurveyData('rewards', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                          placeholder="Enter rewards description"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+                                      <button
+                                        onClick={handleCancelEditSurvey}
+                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-3xl hover:bg-gray-50 transition-colors"
+                                      >
+                                        Cancel
+                                      </button>
+                                      <button
+                                        onClick={handleSaveEditSurvey}
+                                        className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                      >
+                                        Save Changes
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            ) : (
+                              <tr className="hover:bg-gray-50">
+                                <td className="px-6 py-4 whitespace-nowrap max-w-xs">
+                                  <div className="flex items-center">
+                                    <div className="flex-shrink-0 h-10 w-10">
+                                      <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                        <span className="text-lg">📊</span>
+                                      </div>
+                                    </div>
+                                    <div className="ml-4 min-w-0 flex-1">
+                                      <div className="text-sm font-medium text-gray-900 truncate">{survey.name}</div>
+                                      <div className="text-sm text-gray-500 truncate">{survey.description}</div>
+                                    </div>
+                                  </div>
+                                </td>
+                                                                 <td className="px-6 py-4 whitespace-nowrap">
+                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                     {survey.category}
+                                   </span>
+                                 </td>
+                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                   {survey.participants}
+                                 </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    survey.status === 'active' ? 'bg-green-100 text-green-800' :
+                                    survey.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                                    survey.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-gray-100 text-gray-800'
+                                  }`}>
+                                    {survey.status}
+                                  </span>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                  <div className="flex items-center space-x-2">
+                                    <button
+                                      onClick={() => handleStartEditSurvey(survey)}
+                                      className="text-blue-600 hover:text-blue-900"
+                                    >
+                                      <Edit className="w-4 h-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteSurvey(survey)}
+                                      className="text-red-600 hover:text-red-900"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
@@ -5360,6 +6189,10 @@ const Dashboard = () => {
       <AddTeamModal open={addTeamOpen} onClose={() => setAddTeamOpen(false)} onSave={handleAddTeam} />
       <AddStreakModal open={addStreakOpen} onClose={() => setAddStreakOpen(false)} onSave={handleAddStreak} />
       <AddAchievementModal open={addAchievementOpen} onClose={() => setAddAchievementOpen(false)} onSave={handleAddAchievement} />
+      <AddLevelModal isOpen={addLevelOpen} onClose={() => setAddLevelOpen(false)} onAdd={handleAddLevel} />
+      <AddLeaderboardModal isOpen={addLeaderboardOpen} onClose={() => setAddLeaderboardOpen(false)} onAdd={handleAddLeaderboard} />
+      <AddQuizModal isOpen={addQuizOpen} onClose={() => setAddQuizOpen(false)} onAdd={handleAddQuiz} />
+      <AddSurveyModal isOpen={addSurveyOpen} onClose={() => setAddSurveyOpen(false)} onAdd={handleAddSurvey} />
       
       <EditPrizeModal 
         open={editPrizeOpen} 
