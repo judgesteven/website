@@ -1445,28 +1445,54 @@ const Dashboard = () => {
   const handleStartEditLevel = (level) => {
     setEditingLevelId(level.level);
     setEditingLevelData({
+      id: level.id || '',
       level: level.level || '',
       name: level.name || '',
       description: level.description || '',
-      requiredPoints: level.requiredPoints || level.pointsRequired || 0,
-      rewards: level.rewards || '',
-      status: level.status || 'active'
+      image: level.image || '',
+      category: level.category || '',
+      tags: level.tags || '',
+      ordinal: level.level || '',
+      // Objectives
+      points: level.pointsRequired || level.points || 0,
+      credits: level.credits || 0,
+      selectAchievement: level.selectAchievement || '',
+      // Rewards
+      rewardPoints: level.rewardPoints || 0,
+      rewardCredits: level.rewardCredits || 0,
+      rewardAchievements: level.rewardAchievements || '',
+      stepsGranted: level.stepsGranted || 0
     });
   };
 
   const handleSaveEditLevel = () => {
     setLevelsList((prev) =>
       prev.map((level) =>
-        level.level === editingLevelId ? { ...level, ...editingLevelData, requiredPoints: parseInt(editingLevelData.requiredPoints) || 0 } : level
+        level.level === editingLevelId ? { 
+          ...level, 
+          ...editingLevelData, 
+          level: parseInt(editingLevelData.ordinal) || level.level,
+          pointsRequired: parseInt(editingLevelData.points) || 0,
+          credits: parseInt(editingLevelData.credits) || 0,
+          rewardPoints: parseInt(editingLevelData.rewardPoints) || 0,
+          rewardCredits: parseInt(editingLevelData.rewardCredits) || 0,
+          stepsGranted: parseInt(editingLevelData.stepsGranted) || 0
+        } : level
       )
     );
     setEditingLevelId(null);
-    setEditingLevelData({ level: '', name: '', description: '', requiredPoints: '', rewards: '', status: 'active' });
+    setEditingLevelData({ 
+      id: '', level: '', name: '', description: '', image: '', category: '', tags: '', ordinal: '',
+      points: '', credits: '', selectAchievement: '', rewardPoints: '', rewardCredits: '', rewardAchievements: '', stepsGranted: ''
+    });
   };
 
   const handleCancelEditLevel = () => {
     setEditingLevelId(null);
-    setEditingLevelData({ level: '', name: '', description: '', requiredPoints: '', rewards: '', status: 'active' });
+    setEditingLevelData({ 
+      id: '', level: '', name: '', description: '', image: '', category: '', tags: '', ordinal: '',
+      points: '', credits: '', selectAchievement: '', rewardPoints: '', rewardCredits: '', rewardAchievements: '', stepsGranted: ''
+    });
   };
 
   const handleUpdateEditingLevelData = (field, value) => {
@@ -5266,94 +5292,379 @@ const Dashboard = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {levelsList.map((level, index) => (
-                        <tr key={level.level || index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              {level.image ? (
-                                <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                                  <img
-                                    src={level.image}
-                                    alt={level.name}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                      e.target.style.display = 'none';
-                                      e.target.nextSibling.style.display = 'flex';
-                                    }}
-                                  />
-                                  <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                        <React.Fragment key={level.level || index}>
+                          <tr 
+                            className="hover:bg-gray-50 cursor-pointer" 
+                            onClick={() => {
+                              if (editingLevelId === level.level) {
+                                handleCancelEditLevel();
+                              } else {
+                                handleStartEditLevel(level);
+                              }
+                            }}
+                          >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                {level.image ? (
+                                  <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                                    <img
+                                      src={level.image}
+                                      alt={level.name}
+                                      className="w-full h-full object-cover"
+                                      onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                      }}
+                                    />
+                                    <div className="w-full h-full bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium" style={{ display: 'none' }}>
+                                      <Layers className="w-4 h-4" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
                                     <Layers className="w-4 h-4" />
                                   </div>
+                                )}
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">{level.name}</div>
+                                  <div className="text-sm text-gray-500">{level.description}</div>
                                 </div>
-                              ) : (
-                                <div className="w-12 h-12 bg-primary-600 text-white rounded-lg flex items-center justify-center text-sm font-medium">
-                                  <Layers className="w-4 h-4" />
-                                </div>
-                              )}
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">{level.name}</div>
-                                <div className="text-sm text-gray-500">{level.description}</div>
                               </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
-                            {editingLevelId === level.id ? (
-                              <input
-                                type="number"
-                                value={editingLevelData.level || ''}
-                                onChange={(e) => handleUpdateEditingLevelData('level', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              level.level || index + 1
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                            {editingLevelId === level.id ? (
-                              <input
-                                type="number"
-                                value={editingLevelData.requiredPoints || ''}
-                                onChange={(e) => handleUpdateEditingLevelData('requiredPoints', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              (level.requiredPoints || level.pointsRequired || 0).toLocaleString()
-                            )}
-                          </td>
-
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                            {editingLevelId === level.id ? (
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                              {level.level || index + 1}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {(level.requiredPoints || level.pointsRequired || 0).toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                               <div className="flex items-center justify-center space-x-2">
-                                <button
-                                  onClick={handleSaveEditLevel}
-                                  className="text-green-600 hover:text-green-900"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={handleCancelEditLevel}
+                                <button 
                                   className="text-gray-600 hover:text-gray-900"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center space-x-2">
-                                <button
-                                  onClick={() => handleStartEditLevel(level)}
-                                  className="text-blue-600 hover:text-blue-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStartEditLevel(level);
+                                  }}
                                 >
                                   <Edit className="w-4 h-4" />
                                 </button>
-                                <button
-                                  onClick={() => handleDeleteLevel(level)}
+                                <button 
                                   className="text-red-600 hover:text-red-900"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteLevel(level);
+                                  }}
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </div>
-                            )}
-                          </td>
-                        </tr>
+                            </td>
+                          </tr>
+                          
+                          {/* Expandable Edit Section */}
+                          {editingLevelId === level.level && (
+                            <tr>
+                              <td colSpan="4" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Level Details Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Layers className="w-5 h-5 mr-2 text-blue-600" />
+                                      Level Details
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">ID</label>
+                                        <input
+                                          type="text"
+                                          value={editingLevelData.id || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('id', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter level ID"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                        <input
+                                          type="text"
+                                          value={editingLevelData.name || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('name', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter level name"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Description
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <textarea
+                                          value={editingLevelData.description || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('description', e.target.value)}
+                                          rows={3}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter level description"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Image
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <div className="space-y-4">
+                                          {/* File Upload Section */}
+                                          <div className="flex items-center space-x-4">
+                                            <label className="flex items-center px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => {
+                                                  const file = e.target.files[0];
+                                                  if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (event) => {
+                                                      handleUpdateEditingLevelData('image', event.target.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                  }
+                                                }}
+                                                className="hidden"
+                                              />
+                                              <Upload className="w-5 h-5 mr-2 text-gray-400" />
+                                              <span className="text-gray-600">Browse for image</span>
+                                            </label>
+                                            {editingLevelData.image && (
+                                              <button
+                                                type="button"
+                                                onClick={() => handleUpdateEditingLevelData('image', '')}
+                                                className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                              >
+                                                Remove
+                                              </button>
+                                            )}
+                                          </div>
+                                          
+                                          {/* Image Preview */}
+                                          {editingLevelData.image && (
+                                            <div className="relative">
+                                              <div className="w-full max-w-xs h-48 border border-gray-200 rounded-xl overflow-hidden">
+                                                <img
+                                                  src={editingLevelData.image}
+                                                  alt="Level preview"
+                                                  className="w-full h-full object-cover"
+                                                />
+                                              </div>
+                                            </div>
+                                          )}
+                                          
+                                          {/* URL Input (fallback) */}
+                                          <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Or enter image URL</label>
+                                            <input 
+                                              name="image" 
+                                              value={editingLevelData.image || ''} 
+                                              onChange={(e) => handleUpdateEditingLevelData('image', e.target.value)} 
+                                              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                              placeholder="Enter image URL (optional if file uploaded)"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Category
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingLevelData.category || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('category', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Tags
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="text"
+                                          value={editingLevelData.tags || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('tags', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter tags (comma separated)"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Ordinal</label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.ordinal || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('ordinal', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter level number"
+                                          min="1"
+                                          required
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Objectives Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Target className="w-5 h-5 mr-2 text-blue-600" />
+                                      Objectives
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Points</label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.points || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('points', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter points required"
+                                          min="0"
+                                          required
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Credits</label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.credits || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('credits', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter credits required"
+                                          min="0"
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Achievement</label>
+                                        <select
+                                          value={editingLevelData.selectAchievement || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('selectAchievement', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          required
+                                        >
+                                          <option value="">Select an achievement</option>
+                                          <option value="first_blood">First Blood</option>
+                                          <option value="social_butterfly">Social Butterfly</option>
+                                          <option value="team_player">Team Player</option>
+                                          <option value="quiz_master">Quiz Master</option>
+                                          <option value="level_50">Level 50</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Rewards Section */}
+                                  <div className="bg-white rounded-lg p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Gift className="w-5 h-5 mr-2 text-blue-600" />
+                                      Rewards
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Points
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.rewardPoints || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('rewardPoints', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter reward points"
+                                          min="0"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Credits
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.rewardCredits || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('rewardCredits', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter reward credits"
+                                          min="0"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                          Achievements
+                                          <span className="text-gray-600 font-normal ml-2 px-2 py-1 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            (Optional)
+                                          </span>
+                                        </label>
+                                        <select
+                                          value={editingLevelData.rewardAchievements || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('rewardAchievements', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        >
+                                          <option value="">Select an achievement</option>
+                                          <option value="level_complete">Level Complete</option>
+                                          <option value="milestone_reached">Milestone Reached</option>
+                                          <option value="progress_master">Progress Master</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Steps Granted</label>
+                                        <input
+                                          type="number"
+                                          value={editingLevelData.stepsGranted || ''}
+                                          onChange={(e) => handleUpdateEditingLevelData('stepsGranted', e.target.value)}
+                                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                          placeholder="Enter steps granted"
+                                          min="0"
+                                          required
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                                    <button
+                                      type="button"
+                                      onClick={handleCancelEditLevel}
+                                      className="px-6 py-3 text-gray-600 border border-gray-300 rounded-3xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={handleSaveEditLevel}
+                                      className="px-6 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       ))}
                     </tbody>
                   </table>
