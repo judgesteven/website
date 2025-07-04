@@ -217,10 +217,10 @@ const levels = [
 ];
 
 const leaderboards = [
-  { name: 'Weekly Points', period: 'This Week', participants: 1247, topUser: 'John Doe', topScore: 15420 },
-  { name: 'Monthly Activity', period: 'This Month', participants: 892, topUser: 'Jane Smith', topScore: 12850 },
-  { name: 'Team Competition', period: 'Ongoing', participants: 234, topUser: 'Alpha Squad', topScore: 45600 },
-  { name: 'Mission Completion', period: 'All Time', participants: 567, topUser: 'Mike Johnson', topScore: 45 }
+  { id: 'leaderboard1', name: 'Weekly Points', period: 'This Week', participants: 1247, image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=400&h=300&fit=crop&crop=center' },
+  { id: 'leaderboard2', name: 'Monthly Activity', period: 'This Month', participants: 892, image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=300&fit=crop&crop=center' },
+  { id: 'leaderboard3', name: 'Team Competition', period: 'Ongoing', participants: 234, image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center' },
+  { id: 'leaderboard4', name: 'Mission Completion', period: 'All Time', participants: 567, image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop&crop=center' }
 ];
 
 const quizzes = [
@@ -1522,11 +1522,22 @@ const Dashboard = () => {
     setEditingLeaderboardData({
       name: leaderboard.name || '',
       description: leaderboard.description || '',
+      image: leaderboard.image || '',
+      category: leaderboard.category || '',
+      tags: leaderboard.tags || '',
+      sortBy: leaderboard.sortBy || 'points',
+      leaderboardUnits: leaderboard.leaderboardUnits || 'points',
+      startDate: leaderboard.startDate || '',
+      endDate: leaderboard.endDate || '',
+      refreshPeriod: leaderboard.refreshPeriod || 'none',
+      missionSpecific: leaderboard.missionSpecific || '',
+      requirementsCategory: leaderboard.requirementsCategory || '',
+      requirementsTags: leaderboard.requirementsTags || '',
+      selectLevel: leaderboard.selectLevel || '',
+      selectMission: leaderboard.selectMission || '',
+      selectAchievement: leaderboard.selectAchievement || '',
       period: leaderboard.period || '',
-      participants: leaderboard.participants || '',
-      topUser: leaderboard.topUser || '',
-      topScore: leaderboard.topScore || '',
-      status: leaderboard.status || 'active'
+      participants: leaderboard.participants || ''
     });
   };
 
@@ -1537,12 +1548,22 @@ const Dashboard = () => {
       )
     );
     setEditingLeaderboardId(null);
-    setEditingLeaderboardData({ name: '', description: '', period: '', participants: '', topUser: '', topScore: '', status: '' });
+    setEditingLeaderboardData({ 
+      name: '', description: '', image: '', category: '', tags: '', sortBy: 'points', 
+      leaderboardUnits: 'points', startDate: '', endDate: '', refreshPeriod: 'none', 
+      missionSpecific: '', requirementsCategory: '', requirementsTags: '', selectLevel: '', 
+      selectMission: '', selectAchievement: '', period: '', participants: '' 
+    });
   };
 
   const handleCancelEditLeaderboard = () => {
     setEditingLeaderboardId(null);
-    setEditingLeaderboardData({ name: '', description: '', period: '', participants: '', topUser: '', topScore: '', status: '' });
+    setEditingLeaderboardData({ 
+      name: '', description: '', image: '', category: '', tags: '', sortBy: 'points', 
+      leaderboardUnits: 'points', startDate: '', endDate: '', refreshPeriod: 'none', 
+      missionSpecific: '', requirementsCategory: '', requirementsTags: '', selectLevel: '', 
+      selectMission: '', selectAchievement: '', period: '', participants: '' 
+    });
   };
 
   const handleUpdateEditingLeaderboardData = (field, value) => {
@@ -5693,7 +5714,7 @@ const Dashboard = () => {
                     className="px-4 py-3 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors text-sm font-medium"
                     onClick={() => setAddLeaderboardOpen(true)}
                   >
-                    Create Leaderboard
+                    Add Leaderboard
                   </button>
                 </div>
 
@@ -5704,174 +5725,347 @@ const Dashboard = () => {
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Leaderboard
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Period
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Participants
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Top User
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Top Score
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {leaderboardsList.map((leaderboard, index) => (
-                        <tr key={leaderboard.id || index} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10">
-                                <div className="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                                  <span className="text-lg">🏆</span>
+                        <React.Fragment key={leaderboard.id || index}>
+                          <tr className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="flex-shrink-0 h-10 w-10">
+                                  <img
+                                    src={leaderboard.image}
+                                    alt={leaderboard.name}
+                                    className="h-10 w-10 rounded-lg object-cover"
+                                  />
+                                </div>
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">
+                                    {editingLeaderboardId === leaderboard.id ? (
+                                      <input
+                                        type="text"
+                                        value={editingLeaderboardData.name || ''}
+                                        onChange={(e) => handleUpdateEditingLeaderboardData('name', e.target.value)}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                      />
+                                    ) : (
+                                      leaderboard.name
+                                    )}
+                                  </div>
+                                  <div className="text-sm text-gray-500">
+                                    {editingLeaderboardId === leaderboard.id ? (
+                                      <input
+                                        type="text"
+                                        value={editingLeaderboardData.description || ''}
+                                        onChange={(e) => handleUpdateEditingLeaderboardData('description', e.target.value)}
+                                        className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Description"
+                                      />
+                                    ) : (
+                                      leaderboard.description || 'No description'
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {editingLeaderboardId === leaderboard.id ? (
-                                    <input
-                                      type="text"
-                                      value={editingLeaderboardData.name || ''}
-                                      onChange={(e) => handleUpdateEditingLeaderboardData('name', e.target.value)}
-                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-                                  ) : (
-                                    leaderboard.name
-                                  )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {editingLeaderboardId === leaderboard.id ? (
+                                <select
+                                  value={editingLeaderboardData.period || ''}
+                                  onChange={(e) => handleUpdateEditingLeaderboardData('period', e.target.value)}
+                                  className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option value="daily">Daily</option>
+                                  <option value="weekly">Weekly</option>
+                                  <option value="monthly">Monthly</option>
+                                  <option value="quarterly">Quarterly</option>
+                                  <option value="yearly">Yearly</option>
+                                  <option value="all-time">All Time</option>
+                                </select>
+                              ) : (
+                                leaderboard.period
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                              {editingLeaderboardId === leaderboard.id ? (
+                                <input
+                                  type="number"
+                                  value={editingLeaderboardData.participants || ''}
+                                  onChange={(e) => handleUpdateEditingLeaderboardData('participants', e.target.value)}
+                                  className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                              ) : (
+                                leaderboard.participants.toLocaleString()
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center">
+                              {editingLeaderboardId === leaderboard.id ? (
+                                <div className="flex items-center justify-center space-x-2">
+                                  <button
+                                    onClick={handleSaveEditLeaderboard}
+                                    className="text-green-600 hover:text-green-900"
+                                  >
+                                    <Check className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={handleCancelEditLeaderboard}
+                                    className="text-gray-600 hover:text-gray-900"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
                                 </div>
-                                <div className="text-sm text-gray-500">
-                                  {editingLeaderboardId === leaderboard.id ? (
-                                    <input
-                                      type="text"
-                                      value={editingLeaderboardData.description || ''}
-                                      onChange={(e) => handleUpdateEditingLeaderboardData('description', e.target.value)}
-                                      className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                      placeholder="Description"
-                                    />
-                                  ) : (
-                                    leaderboard.description || 'No description'
-                                  )}
+                              ) : (
+                                <div className="flex items-center justify-center space-x-2">
+                                  <button
+                                    onClick={() => handleStartEditLeaderboard(leaderboard)}
+                                    className="text-blue-600 hover:text-blue-900"
+                                  >
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteLeaderboard(leaderboard)}
+                                    className="text-red-600 hover:text-red-900"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
                                 </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <select
-                                value={editingLeaderboardData.period || ''}
-                                onChange={(e) => handleUpdateEditingLeaderboardData('period', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              >
-                                <option value="daily">Daily</option>
-                                <option value="weekly">Weekly</option>
-                                <option value="monthly">Monthly</option>
-                                <option value="quarterly">Quarterly</option>
-                                <option value="yearly">Yearly</option>
-                                <option value="all-time">All Time</option>
-                              </select>
-                            ) : (
-                              leaderboard.period
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <input
-                                type="number"
-                                value={editingLeaderboardData.participants || ''}
-                                onChange={(e) => handleUpdateEditingLeaderboardData('participants', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              leaderboard.participants.toLocaleString()
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <input
-                                type="text"
-                                value={editingLeaderboardData.topUser || ''}
-                                onChange={(e) => handleUpdateEditingLeaderboardData('topUser', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              leaderboard.topUser
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <input
-                                type="number"
-                                value={editingLeaderboardData.topScore || ''}
-                                onChange={(e) => handleUpdateEditingLeaderboardData('topScore', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              />
-                            ) : (
-                              leaderboard.topScore.toLocaleString()
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <select
-                                value={editingLeaderboardData.status || 'active'}
-                                onChange={(e) => handleUpdateEditingLeaderboardData('status', e.target.value)}
-                                className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              >
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="draft">Draft</option>
-                              </select>
-                            ) : (
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                leaderboard.status === 'active' ? 'bg-green-100 text-green-800' : 
-                                leaderboard.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
-                                'bg-yellow-100 text-yellow-800'
-                              }`}>
-                                {leaderboard.status || 'Active'}
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {editingLeaderboardId === leaderboard.id ? (
-                              <div className="flex items-center space-x-2">
-                                <button
-                                  onClick={handleSaveEditLeaderboard}
-                                  className="text-green-600 hover:text-green-900"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={handleCancelEditLeaderboard}
-                                  className="text-gray-600 hover:text-gray-900"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="flex items-center space-x-2">
-                                <button
-                                  onClick={() => handleStartEditLeaderboard(leaderboard)}
-                                  className="text-blue-600 hover:text-blue-900"
-                                >
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteLeaderboard(leaderboard)}
-                                  className="text-red-600 hover:text-red-900"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
+                              )}
+                            </td>
+                          </tr>
+                          
+                          {/* Expanded Edit Section */}
+                          {editingLeaderboardId === leaderboard.id && (
+                            <tr>
+                              <td colSpan="4" className="px-6 py-4 bg-gray-50">
+                                <div className="space-y-6">
+                                  {/* Basic Information Section */}
+                                  <div className="bg-white rounded-xl p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Settings className="w-5 h-5 mr-2 text-blue-600" />
+                                      Basic Information
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+                                        <input
+                                          type="text"
+                                          value={editingLeaderboardData.image || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('image', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          placeholder="Enter image URL"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                        <input
+                                          type="text"
+                                          value={editingLeaderboardData.category || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('category', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          placeholder="Enter category"
+                                        />
+                                      </div>
+                                      <div className="md:col-span-2">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                                        <input
+                                          type="text"
+                                          value={editingLeaderboardData.tags || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('tags', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          placeholder="Enter tags (comma separated)"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Leaderboard Configuration Section */}
+                                  <div className="bg-white rounded-xl p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Trophy className="w-5 h-5 mr-2 text-blue-600" />
+                                      Leaderboard Configuration
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                                        <select
+                                          value={editingLeaderboardData.sortBy || 'points'}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('sortBy', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="points">Points</option>
+                                          <option value="credits">Credits</option>
+                                          <option value="missions">Missions</option>
+                                          <option value="achievements">Achievements</option>
+                                          <option value="streaks">Streaks</option>
+                                          <option value="levels">Levels</option>
+                                          <option value="activity">Activity</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Leaderboard Units</label>
+                                        <select
+                                          value={editingLeaderboardData.leaderboardUnits || 'points'}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('leaderboardUnits', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="points">Points</option>
+                                          <option value="credits">Credits</option>
+                                          <option value="missions">Missions</option>
+                                          <option value="achievements">Achievements</option>
+                                          <option value="streaks">Streaks</option>
+                                          <option value="levels">Levels</option>
+                                          <option value="percentage">Percentage</option>
+                                          <option value="time">Time</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Schedule Section */}
+                                  <div className="bg-white rounded-xl p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Calendar className="w-5 h-5 mr-2 text-blue-600" />
+                                      Schedule
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                                        <input
+                                          type="date"
+                                          value={editingLeaderboardData.startDate || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('startDate', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                                        <input
+                                          type="date"
+                                          value={editingLeaderboardData.endDate || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('endDate', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Refresh Period</label>
+                                        <select
+                                          value={editingLeaderboardData.refreshPeriod || 'none'}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('refreshPeriod', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="none">None</option>
+                                          <option value="daily">Daily</option>
+                                          <option value="weekly">Weekly</option>
+                                          <option value="monthly">Monthly</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Requirements Section */}
+                                  <div className="bg-white rounded-xl p-6 border border-gray-200">
+                                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                      <Target className="w-5 h-5 mr-2 text-blue-600" />
+                                      Requirements
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                        <input
+                                          type="text"
+                                          value={editingLeaderboardData.requirementsCategory || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('requirementsCategory', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          placeholder="Required category"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                                        <input
+                                          type="text"
+                                          value={editingLeaderboardData.requirementsTags || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('requirementsTags', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          placeholder="Required tags"
+                                        />
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Level</label>
+                                        <select
+                                          value={editingLeaderboardData.selectLevel || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('selectLevel', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="">Select level</option>
+                                          <option value="1">Level 1</option>
+                                          <option value="5">Level 5</option>
+                                          <option value="10">Level 10</option>
+                                          <option value="25">Level 25</option>
+                                          <option value="50">Level 50</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Mission</label>
+                                        <select
+                                          value={editingLeaderboardData.selectMission || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('selectMission', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="">Select mission</option>
+                                          <option value="daily_checkin">Daily Check-in</option>
+                                          <option value="social_share">Social Share</option>
+                                          <option value="refer_friend">Refer a Friend</option>
+                                          <option value="complete_profile">Complete Profile</option>
+                                        </select>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Achievement</label>
+                                        <select
+                                          value={editingLeaderboardData.selectAchievement || ''}
+                                          onChange={(e) => handleUpdateEditingLeaderboardData('selectAchievement', e.target.value)}
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                          <option value="">Select achievement</option>
+                                          <option value="first_blood">First Blood</option>
+                                          <option value="social_butterfly">Social Butterfly</option>
+                                          <option value="team_player">Team Player</option>
+                                          <option value="quiz_master">Quiz Master</option>
+                                          <option value="level_50">Level 50</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex justify-end space-x-4 pt-4 border-t border-gray-200">
+                                    <button
+                                      onClick={handleCancelEditLeaderboard}
+                                      className="px-4 py-2 text-gray-600 border border-gray-300 rounded-3xl hover:bg-gray-50 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      onClick={handleSaveEditLeaderboard}
+                                      className="px-4 py-2 bg-blue-600 text-white rounded-3xl hover:bg-blue-700 transition-colors"
+                                    >
+                                      Save Changes
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </React.Fragment>
                       ))}
                     </tbody>
                   </table>

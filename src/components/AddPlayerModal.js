@@ -79,18 +79,26 @@ const AddPlayerModal = ({ open, onClose, onSave }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Add New Player</h2>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <User className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Add Player</h2>
+                <p className="text-sm text-gray-500">Create a new player for your gamification system</p>
+              </div>
+            </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-6 h-6" />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
             {/* Player Details Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <User className="w-5 h-5 mr-2 text-blue-600" />
                 Player Details

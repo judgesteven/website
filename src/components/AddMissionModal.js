@@ -110,18 +110,26 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900">Create New Mission</h2>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Flag className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Add Mission</h2>
+                <p className="text-sm text-gray-500">Create a new mission for your gamification system</p>
+              </div>
+            </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-6 h-6" />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="p-6 space-y-8">
             {/* Mission Details Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Flag className="w-5 h-5 mr-2 text-blue-600" />
                 Mission Details
@@ -264,7 +272,7 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Limits & Settings Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Clock className="w-5 h-5 mr-2 text-green-600" />
                 Limits & Settings
@@ -353,7 +361,7 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Objectives Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Zap className="w-5 h-5 mr-2 text-orange-600" />
                 Objectives
@@ -414,7 +422,7 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Rewards Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Star className="w-5 h-5 mr-2 text-yellow-600" />
                 Rewards
@@ -494,7 +502,7 @@ const AddMissionModal = ({ open, onClose, onSave }) => {
             </div>
 
             {/* Requirements Section */}
-            <div>
+            <div className="bg-gray-50 rounded-xl p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <Target className="w-5 h-5 mr-2 text-purple-600" />
                 Requirements
