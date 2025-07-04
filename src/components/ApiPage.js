@@ -73,7 +73,7 @@ const ApiPage = () => {
         default-api-server="production"
         use-path-in-nav-bar="true"
         show-method-in-nav-bar="as-colored-block"
-        update-route="true"
+        update-route="false"
         layout="column"
         regular-font="montserrat"
         nav-item-spacing="relaxed"
