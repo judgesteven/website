@@ -17,7 +17,7 @@ const ApiPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pt-16">
       {/* RapiDoc component with extensive configuration options */}
       <rapi-doc
         spec-url="https://glapidocs.blob.core.windows.net/apidocs/gamelayer.yaml"
