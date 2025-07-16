@@ -33,3 +33,22 @@
     background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 50%, #8b5cf6 100%);
   }
 } 
+
+.animated-gradient {
+  background: linear-gradient(270deg, #3b82f6, #a21caf, #ec4899, #3b82f6);
+  background-size: 600% 600%;
+  position: relative;
+}
+.animated-gradient-bg {
+  background: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  animation: gradientMove 10s ease-in-out infinite;
+  z-index: 1;
+  opacity: 1;
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+} 
