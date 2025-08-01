@@ -8,9 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: 'Testing', href: '/testing' },
     { name: 'Home', href: '/' },
-    { name: 'Projects', href: '/projects' },
     { name: 'References', href: '/references' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'API', href: '/api' },
