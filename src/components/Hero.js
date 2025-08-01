@@ -25,10 +25,10 @@ const Hero = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full text-base font-semibold mb-6 border border-purple-400/30 shadow-lg"
             >
-              <Zap className="w-4 h-4 mr-2" />
-              #1 Gamification Microservice
+              <Zap className="w-5 h-5 mr-3 text-yellow-300" />
+              <span className="text-white drop-shadow-sm">#1 Gamification Platform</span>
             </motion.div>
 
             <motion.h1

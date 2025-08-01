@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const OpenAI = require('openai');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -77,6 +78,67 @@ app.post('/api/gpt', async (req, res) => {
     res.json({ 
       response: fallbackResponse,
       note: 'Using fallback response due to API error. Please try again later.'
+    });
+  }
+});
+
+// Email endpoint for access requests
+app.post('/api/request-access', async (req, res) => {
+  try {
+    const { name, email, project } = req.body;
+    
+    // Validate required fields
+    if (!name || !email || !project) {
+      return res.status(400).json({ 
+        error: 'All fields are required: name, email, and project' 
+      });
+    }
+
+    // Create transporter (using Gmail for this example)
+    // You'll need to set up environment variables for email credentials
+    const transporter = nodemailer.createTransporter({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, // Your Gmail address
+        pass: process.env.EMAIL_PASS  // Your Gmail app password
+      }
+    });
+
+    // Email content
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: 'steve@gamelayer.co',
+      subject: 'New GameLayer Access Request',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">New Access Request</h2>
+          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #666; margin-top: 0;">Request Details:</h3>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Project:</strong></p>
+            <div style="background-color: white; padding: 15px; border-radius: 5px; border-left: 4px solid #007bff;">
+              ${project.replace(/\n/g, '<br>')}
+            </div>
+          </div>
+          <p style="color: #666; font-size: 14px;">
+            This request was submitted from the GameLayer website access form.
+          </p>
+        </div>
+      `
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    res.json({ 
+      success: true, 
+      message: 'Access request sent successfully!' 
+    });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ 
+      error: 'Failed to send access request. Please try again later.' 
     });
   }
 });

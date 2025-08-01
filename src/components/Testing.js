@@ -31,7 +31,8 @@ const Testing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [accessForm, setAccessForm] = useState({
     name: '',
-    email: ''
+    email: '',
+    project: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -95,21 +96,42 @@ const Testing = () => {
 
   const handleAccessSubmit = async (e) => {
     e.preventDefault();
-    if (!accessForm.name.trim() || !accessForm.email.trim()) return;
+    if (!accessForm.name.trim() || !accessForm.email.trim() || !accessForm.project.trim()) return;
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setSubmitSuccess(true);
-      setIsSubmitting(false);
-      setAccessForm({ name: '', email: '' });
+    try {
+      const response = await fetch('/api/request-access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: accessForm.name.trim(),
+          email: accessForm.email.trim(),
+          project: accessForm.project.trim()
+        })
+      });
+
+      const data = await response.json();
       
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 5000);
-    }, 1500);
+      if (response.ok) {
+        setSubmitSuccess(true);
+        setAccessForm({ name: '', email: '', project: '' });
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitSuccess(false);
+        }, 5000);
+      } else {
+        throw new Error(data.error || 'Failed to send request');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to send access request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (e) => {
@@ -164,10 +186,10 @@ const Testing = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.8 }}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full px-6 py-2 mb-6"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full px-6 py-3 mb-6 border border-purple-400/30 shadow-lg"
                       >
-                        <Sparkles className="w-5 h-5 text-purple-400" />
-                        <span className="text-purple-300 font-medium">#1 Gamification Platform</span>
+                        <Sparkles className="w-5 h-5 text-yellow-300" />
+                        <span className="text-white font-semibold drop-shadow-sm">#1 Gamification Platform</span>
                       </motion.div>
 
               <motion.h1
@@ -499,7 +521,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-xl text-gray-300 max-w-2xl mx-auto"
             >
-              Request free access and start transforming your user engagement today
+              Request free access and start transforming your user engagement
             </motion.p>
           </div>
 
@@ -557,11 +579,27 @@ const Testing = () => {
                     />
                   </div>
                   
+                  <div>
+                    <label htmlFor="project" className="block text-sm font-medium text-white mb-2">
+                      Your Project
+                    </label>
+                    <textarea
+                      id="project"
+                      name="project"
+                      value={accessForm.project}
+                      onChange={handleInputChange}
+                      required
+                      rows="3"
+                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 resize-none"
+                      placeholder="Tell us about your project"
+                    />
+                  </div>
+                  
                   <motion.button
                     type="submit"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    disabled={!accessForm.name.trim() || !accessForm.email.trim() || isSubmitting}
+                    disabled={!accessForm.name.trim() || !accessForm.email.trim() || !accessForm.project.trim() || isSubmitting}
                     className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-4 px-6 rounded-xl hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                   >
                     {isSubmitting ? (
