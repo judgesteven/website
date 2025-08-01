@@ -4,7 +4,6 @@ import {
   Zap, 
   CheckCircle, 
   Sparkles,
-  Shield,
   Star,
   Users,
   TrendingUp,
