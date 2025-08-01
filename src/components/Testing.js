@@ -7,25 +7,15 @@ import {
   BarChart3, 
   Gift, 
   Package, 
-  Users, 
   Flame, 
   Ticket, 
-  HelpCircle, 
-  ClipboardList, 
-  ArrowRight,
   Send,
   Bot,
-  MessageCircle,
   Sparkles,
-  Zap,
   CheckCircle,
   Star,
   Shield,
-  Zap as Lightning,
-  Globe,
-  Code,
-  Smartphone,
-  Monitor
+  Code
 } from 'lucide-react';
 
 const Testing = () => {
