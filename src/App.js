@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import Projects from './components/Projects';
 import Pricing from './components/Pricing';
 import Testing from './components/Testing';
+import References from './components/References';
 import ChatPage from './components/ChatPage';
 import ApiPage from './components/ApiPage';
 import Footer from './components/Footer';
@@ -32,6 +33,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/references" element={<References />} />
           <Route path="/api" element={<ApiPage />} />
         </Routes>
         <Footer />
