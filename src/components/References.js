@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Zap, 
   Star, 
   Users, 
   MapPin, 
   Target,
   Globe,
   Plane,
-  Heart,
   Gamepad2,
   BookOpen,
-  Vote,
   Sparkles,
   CheckCircle,
   Image,

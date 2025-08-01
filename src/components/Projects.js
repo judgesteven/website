@@ -12,7 +12,6 @@ import {
   Gamepad2,
   BookOpen,
   Vote,
-  Mail,
   Sparkles,
   CheckCircle
 } from 'lucide-react';
