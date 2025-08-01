@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Dashboard from './components/Dashboard';
+import DashboardLogin from './components/DashboardLogin';
 import Pricing from './components/Pricing';
 import Testing from './components/Testing';
 import References from './components/References';
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Testing />} />
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<DashboardLogin />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/references" element={<References />} />
           <Route path="/api" element={<ApiPage />} />
