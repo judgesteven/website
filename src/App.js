@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import Projects from './components/Projects';
 import Pricing from './components/Pricing';
 import Test from './components/Test';
+import Testing from './components/Testing';
 import ChatPage from './components/ChatPage';
 import ApiPage from './components/ApiPage';
 import Footer from './components/Footer';
@@ -28,6 +29,7 @@ function App() {
             </>
           } />
           <Route path="/test" element={<Test />} />
+          <Route path="/testing" element={<Testing />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
