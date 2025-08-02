@@ -38,11 +38,11 @@ const Pricing = () => {
     },
     {
       title: 'Growth',
-      users: 'Up to 10,000 users',
+      users: 'Up to 25,000 users',
       price: '€1,000',
       description: 'per month',
       features: [
-        'Up to 10,000 active users',
+        'Up to 25,000 active users',
         'Advanced gamification features',
         'Priority support',
         'Advanced analytics',
@@ -54,11 +54,11 @@ const Pricing = () => {
     },
     {
       title: 'Scale',
-      users: 'Up to 50,000 users',
-      price: '€2,000',
+      users: 'Up to 100,000 users',
+      price: '€2,500',
       description: 'per month',
       features: [
-        'Up to 50,000 active users',
+        'Up to 100,000 active users',
         'Enterprise features',
         'Dedicated support',
         'Advanced reporting',
@@ -70,11 +70,11 @@ const Pricing = () => {
     },
     {
       title: 'Enterprise',
-      users: 'Up to 100,000 users',
-      price: '€3,000',
-      description: 'per month',
+      users: 'Above 100,000 users',
+      price: 'Contact us',
+      description: '',
       features: [
-        'Up to 100,000 active users',
+        'Unlimited active users',
         'Full enterprise features',
         '24/7 dedicated support',
         'Custom SLA agreements',
@@ -290,7 +290,7 @@ const Pricing = () => {
                         ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
                         : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
                     }`}>
-                      {tier.title === 'Starter' ? 'Start Free Trial' : 'Choose Plan'}
+                      {tier.title === 'Starter' ? 'Start Free Trial' : tier.title === 'Enterprise' ? 'Contact Us' : 'Choose Plan'}
                     </button>
                   </div>
                 </motion.div>

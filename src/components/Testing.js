@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Target, 
   Trophy, 
@@ -196,7 +197,7 @@ const Testing = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-5xl lg:text-6xl font-bold leading-tight mb-6"
+                className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-8"
               >
                 Make Boring Tasks, Less Boring{' '}
                 <span className="text-yellow-400">
@@ -223,13 +224,15 @@ const Testing = () => {
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="flex justify-center items-center"
               >
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
-                >
-                  View API Docs
-                </motion.button>
+                <Link to="/api">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
+                  >
+                    API Docs
+                  </motion.button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
@@ -278,7 +281,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-xl text-gray-300 max-w-3xl mx-auto"
             >
-              Use our AI assistant to get instant answers about gamification, implementation strategies, and best practices for user engagement
+              Use our AI assistant to get immediate answers about gamification, implementation strategies, and best practices for user engagement
             </motion.p>
           </div>
 
@@ -298,7 +301,7 @@ const Testing = () => {
                       <Bot className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">Gamification Testing Assistant</h3>
+                      <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
                       <p className="text-sm text-gray-300">Powered by GPT-4o-mini</p>
                     </div>
                   </div>
@@ -355,7 +358,7 @@ const Testing = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about gamification testing..."
+                    placeholder="Ask me anything about gamification..."
                     className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-full px-6 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
                   />
                   <motion.button
@@ -369,7 +372,7 @@ const Testing = () => {
                   </motion.button>
                 </div>
                 <p className="text-xs text-gray-400 mt-3 text-center">
-                  💡 Try asking: "How do I test user engagement?" or "What metrics should I track?" or "Best practices for gamification testing"
+                  💡 Try asking: "How do I create user engagement with gamification?" or "What metrics should I track?" or "Best practices for implementing a gamification strategy"
                 </p>
               </div>
             </motion.div>
@@ -405,7 +408,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-4xl lg:text-5xl font-bold text-white mb-6"
             >
-              Start Quickly, Then{' '}
+              Start Quickly, then{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Iterate
               </span>
@@ -418,7 +421,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-xl text-gray-300 max-w-3xl mx-auto"
             >
-              Add some magic to your service ... Plugs seamlessly into your existing tech stack, making it quick and easy to create and manage new digital experiences
+              Add some magic to your service ... Plugs seamlessly into your existing tech stack, making it quick and easy to create and manage new gamification experiences
             </motion.p>
           </div>
 
