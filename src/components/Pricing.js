@@ -174,6 +174,19 @@ const Pricing = () => {
     }));
   };
 
+  const getPaymentUrl = (tierTitle) => {
+    switch (tierTitle) {
+      case 'Starter':
+        return 'https://pay.gocardless.com/BRT00040JFMP578';
+      case 'Growth':
+        return 'https://pay.gocardless.com/BRT00040JFP66YY';
+      case 'Scale':
+        return 'https://pay.gocardless.com/BRT00040JFTJ18E';
+      default:
+        return null;
+    }
+  };
+
   const handleEnterpriseSubmit = async (e) => {
     e.preventDefault();
     
@@ -383,35 +396,45 @@ const Pricing = () => {
                       ))}
                     </ul>
 
-                    {tier.title === 'Enterprise' ? (
-                      <button 
-                        onClick={() => setShowEnterpriseModal(true)}
-                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-                          tier.popular 
-                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
-                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                        }`}
-                      >
-                        Contact Us
-                      </button>
-                    ) : (
-                      <a 
-                        href={
-                          tier.title === 'Starter' ? 'https://pay.gocardless.com/BRT00040JFMP578' :
-                          tier.title === 'Growth' ? 'https://pay.gocardless.com/BRT00040JFP66YY' :
-                          tier.title === 'Scale' ? 'https://pay.gocardless.com/BRT00040JFTJ18E' : ''
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 inline-block text-center ${
-                          tier.popular 
-                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
-                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                        }`}
-                      >
-                        Choose Plan
-                      </a>
-                    )}
+                    {(() => {
+                      const paymentUrl = getPaymentUrl(tier.title);
+                      const buttonClass = `w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
+                        tier.popular 
+                          ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
+                          : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+                      }`;
+                      
+                      if (tier.title === 'Enterprise') {
+                        return (
+                          <button 
+                            onClick={() => setShowEnterpriseModal(true)}
+                            className={buttonClass}
+                          >
+                            Contact Us
+                          </button>
+                        );
+                      } else if (paymentUrl) {
+                        return (
+                          <a 
+                            href={paymentUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`${buttonClass} inline-block text-center`}
+                          >
+                            Choose Plan
+                          </a>
+                        );
+                      } else {
+                        return (
+                          <button 
+                            className={buttonClass}
+                            disabled
+                          >
+                            Choose Plan
+                          </button>
+                        );
+                      }
+                    })()}
                   </div>
                 </motion.div>
               );
