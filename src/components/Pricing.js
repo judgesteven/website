@@ -86,8 +86,7 @@ const Pricing = () => {
         'Unlimited active users',
         'All gamification mechanics',
         'Unlimited elements',
-        'Enterprise support',
-        'Custom SLA agreements',
+        'Custom SLA and support',
         'Advanced reporting'
       ],
       popular: false,
