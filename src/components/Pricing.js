@@ -322,7 +322,7 @@ const Pricing = () => {
                   }}
                   className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
                 >
-                  Start Free Trial
+                  Request Access
                 </motion.button>
               </motion.div>
             </motion.div>
