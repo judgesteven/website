@@ -399,7 +399,7 @@ const Pricing = () => {
                         href={
                           tier.title === 'Starter' ? 'https://pay.gocardless.com/BRT00040JFMP578' :
                           tier.title === 'Growth' ? 'https://pay.gocardless.com/BRT00040JFP66YY' :
-                          tier.title === 'Scale' ? 'https://pay.gocardless.com/BRT00040JFTJ18E' : '#'
+                          tier.title === 'Scale' ? 'https://pay.gocardless.com/BRT00040JFTJ18E' : ''
                         }
                         target="_blank"
                         rel="noopener noreferrer"
