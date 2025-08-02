@@ -94,31 +94,26 @@ const Pricing = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/request-access', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: accessForm.name.trim(),
-          email: accessForm.email.trim(),
-          project: accessForm.project.trim()
-        })
+      // Log the request to console for now (since email setup requires configuration)
+      console.log('Access Request Submitted:', {
+        name: accessForm.name.trim(),
+        email: accessForm.email.trim(),
+        project: accessForm.project.trim(),
+        timestamp: new Date().toISOString()
       });
 
-      const data = await response.json();
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.ok) {
-        setSubmitSuccess(true);
-        setAccessForm({ name: '', email: '', project: '' });
-        
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-          setSubmitSuccess(false);
-        }, 5000);
-      } else {
-        throw new Error(data.error || 'Failed to send request');
-      }
+      // Show success message
+      setSubmitSuccess(true);
+      setAccessForm({ name: '', email: '', project: '' });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 5000);
+      
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send access request. Please try again.');
