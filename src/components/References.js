@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Star, 
   Users, 
@@ -190,11 +191,10 @@ const References = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-5xl lg:text-6xl font-bold leading-tight mb-6"
+                className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-6"
               >
-                Real{' '}
-                <span className="text-yellow-300">Project</span>{' '}
-                Screenshots
+                Powered by{' '}
+                <span className="text-yellow-300">GameLayer</span>
               </motion.h1>
 
               <motion.p
@@ -203,8 +203,7 @@ const References = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="text-xl text-blue-100 mb-8 leading-relaxed"
               >
-                Explore actual screenshots from our gamification projects across various industries. 
-                See how we've transformed user engagement with real implementations.
+                Over the past decade we've helped many companies launch gamification experiences. From aviation to lottery to retail, our lightweight API-based solution is <span className="text-yellow-300 font-semibold">flexible and scalable</span> to meet the challenge of the most demanding projects
               </motion.p>
 
               <motion.div
@@ -213,13 +212,15 @@ const References = () => {
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="flex justify-center items-center"
               >
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
-                >
-                  View References
-                </motion.button>
+                <Link to="/pricing">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
+                  >
+                    View Pricing
+                  </motion.button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
@@ -245,28 +246,26 @@ const References = () => {
               className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full px-6 py-2 mb-6"
             >
               <Image className="w-5 h-5 text-purple-400" />
-              <span className="text-purple-300 font-medium">Project Screenshots</span>
+              <span className="text-purple-300 font-medium">Project Details</span>
             </motion.div>
             
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-4xl lg:text-5xl font-bold text-white mb-6"
-            >
-              Visual References
-            </motion.h2>
+
             
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-xl text-gray-300 max-w-3xl mx-auto"
+              className="max-w-4xl mx-auto"
             >
-              Click on any screenshot to view it in full size. See how our gamification solutions look in real applications.
-            </motion.p>
+              <blockquote className="text-xl text-gray-300 italic mb-4 leading-relaxed">
+                "Using GameLayer's platform has been a rewarding experience for us. We had some initial ideas on how to gamify our web service and engage our visitors better, however, we lacked the technical solution to make it happen. GameLayer has enabled us to bring those ideas to reality quickly and easily. And the results so far look more than promising."
+              </blockquote>
+              <div className="text-right">
+                <p className="text-white font-semibold">Joni Ruotsalainen</p>
+                <p className="text-gray-400 text-sm">Concept Designer, Veikkaus</p>
+              </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -325,7 +324,7 @@ const References = () => {
                         onClick={() => setSelectedImage(reference.largeImage || reference.image)}
                         className="w-full bg-white/10 text-white font-semibold py-2 px-4 rounded-xl hover:bg-white/20 border border-white/20 transition-all duration-200"
                       >
-                        View Full Size
+                        View
                       </motion.button>
                     </div>
                   </div>
@@ -370,11 +369,11 @@ const References = () => {
       )}
 
       {/* Access Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-800 via-purple-900 to-gray-800 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-gray-800 via-teal-900 to-gray-800 relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-20 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -384,10 +383,10 @@ const References = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-full px-6 py-2 mb-6"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-teal-500/20 to-emerald-500/20 border border-teal-500/30 rounded-full px-6 py-2 mb-6"
             >
-              <CheckCircle className="w-5 h-5 text-yellow-400" />
-              <span className="text-yellow-300 font-medium">Request Access</span>
+              <CheckCircle className="w-5 h-5 text-teal-400" />
+              <span className="text-teal-300 font-medium">Request Access</span>
             </motion.div>
             
             <motion.h2
@@ -398,7 +397,7 @@ const References = () => {
               className="text-4xl lg:text-5xl font-bold text-white mb-6"
             >
               Ready to{' '}
-              <span className="text-yellow-400">
+              <span className="text-teal-400">
                 Get Started?
               </span>
             </motion.h2>
@@ -447,7 +446,7 @@ const References = () => {
                       value={accessForm.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
+                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-200"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -463,7 +462,7 @@ const References = () => {
                       value={accessForm.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
+                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-200"
                       placeholder="your.email@company.com"
                     />
                   </div>
@@ -479,7 +478,7 @@ const References = () => {
                       onChange={handleInputChange}
                       required
                       rows="3"
-                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 resize-none"
+                      className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-200 resize-none"
                       placeholder="Tell us about your project"
                     />
                   </div>
@@ -489,7 +488,7 @@ const References = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={!accessForm.name.trim() || !accessForm.email.trim() || !accessForm.project.trim() || isSubmitting}
-                    className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-4 px-6 rounded-xl hover:from-yellow-600 hover:to-orange-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                    className="w-full bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-bold py-4 px-6 rounded-xl hover:from-teal-600 hover:to-emerald-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                   >
                     {isSubmitting ? (
                       <div className="flex items-center justify-center gap-2">
