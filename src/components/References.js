@@ -112,7 +112,29 @@ const References = () => {
 
   const handleAccessSubmit = async (e) => {
     e.preventDefault();
-    if (!accessForm.name.trim() || !accessForm.email.trim() || !accessForm.project.trim()) return;
+    
+    // Validation checks
+    if (!accessForm.name.trim()) {
+      alert('Please enter your full name');
+      return;
+    }
+    
+    if (!accessForm.email.trim()) {
+      alert('Please enter your email address');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(accessForm.email.trim())) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    if (!accessForm.project.trim()) {
+      alert('Please tell us about your project');
+      return;
+    }
 
     setIsSubmitting(true);
     

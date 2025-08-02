@@ -97,31 +97,58 @@ const Testing = () => {
 
   const handleAccessSubmit = async (e) => {
     e.preventDefault();
-    if (!accessForm.name.trim() || !accessForm.email.trim() || !accessForm.project.trim()) return;
+    
+    // Validation checks
+    if (!accessForm.name.trim()) {
+      alert('Please enter your full name');
+      return;
+    }
+    
+    if (!accessForm.email.trim()) {
+      alert('Please enter your email address');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(accessForm.email.trim())) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    if (!accessForm.project.trim()) {
+      alert('Please tell us about your project');
+      return;
+    }
 
     setIsSubmitting(true);
     
     try {
-      // Log the request to console for now (since email setup requires configuration)
-      console.log('Access Request Submitted:', {
-        name: accessForm.name.trim(),
-        email: accessForm.email.trim(),
-        project: accessForm.project.trim(),
-        timestamp: new Date().toISOString()
+      const response = await fetch('/api/request-access', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: accessForm.name.trim(),
+          email: accessForm.email.trim(),
+          project: accessForm.project.trim()
+        })
       });
 
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const data = await response.json();
       
-      // Show success message
-      setSubmitSuccess(true);
-      setAccessForm({ name: '', email: '', project: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 5000);
-      
+      if (response.ok) {
+        setSubmitSuccess(true);
+        setAccessForm({ name: '', email: '', project: '' });
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitSuccess(false);
+        }, 5000);
+      } else {
+        throw new Error(data.error || 'Failed to send request');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to send access request. Please try again.');
