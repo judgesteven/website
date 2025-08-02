@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // Navigation component with updated link texts
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu when route changes
+  React.useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const navItems = [
     { name: 'Home', href: '/' },

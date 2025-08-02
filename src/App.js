@@ -8,11 +8,13 @@ import References from './components/References';
 import ChatPage from './components/ChatPage';
 import ApiPage from './components/ApiPage';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<Testing />} />
