@@ -16,8 +16,17 @@ const Pricing = () => {
     email: '',
     project: ''
   });
+  const [enterpriseForm, setEnterpriseForm] = useState({
+    name: '',
+    email: '',
+    project: '',
+    users: ''
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnterpriseSubmitting, setIsEnterpriseSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [enterpriseSubmitSuccess, setEnterpriseSubmitSuccess] = useState(false);
+  const [showEnterpriseModal, setShowEnterpriseModal] = useState(false);
 
   const pricingTiers = [
     {
@@ -155,6 +164,83 @@ const Pricing = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleEnterpriseInputChange = (e) => {
+    const { name, value } = e.target;
+    setEnterpriseForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleEnterpriseSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validation checks
+    if (!enterpriseForm.name.trim()) {
+      alert('Please enter your full name');
+      return;
+    }
+    
+    if (!enterpriseForm.email.trim()) {
+      alert('Please enter your email address');
+      return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(enterpriseForm.email.trim())) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    if (!enterpriseForm.project.trim()) {
+      alert('Please tell us about your project');
+      return;
+    }
+    
+    if (!enterpriseForm.users.trim()) {
+      alert('Please tell us about your expected user count');
+      return;
+    }
+
+    setIsEnterpriseSubmitting(true);
+    
+    try {
+      // Using Formspree for form submission (no server setup required)
+      const response = await fetch('https://formspree.io/f/mgvzlonb', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: enterpriseForm.name.trim(),
+          email: enterpriseForm.email.trim(),
+          project: enterpriseForm.project.trim(),
+          users: enterpriseForm.users.trim(),
+          _subject: 'GameLayer Enterprise Plan Enquiry'
+        })
+      });
+
+      if (response.ok) {
+        setEnterpriseSubmitSuccess(true);
+        setEnterpriseForm({ name: '', email: '', project: '', users: '' });
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setEnterpriseSubmitSuccess(false);
+          setShowEnterpriseModal(false);
+        }, 5000);
+      } else {
+        throw new Error('Failed to send request');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to send enterprise enquiry. Please try again.');
+    } finally {
+      setIsEnterpriseSubmitting(false);
+    }
   };
 
   return (
@@ -297,13 +383,35 @@ const Pricing = () => {
                       ))}
                     </ul>
 
-                    <button className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
-                      tier.popular 
-                        ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
-                        : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                    }`}>
-                      {tier.title === 'Enterprise' ? 'Contact Us' : 'Choose Plan'}
-                    </button>
+                    {tier.title === 'Enterprise' ? (
+                      <button 
+                        onClick={() => setShowEnterpriseModal(true)}
+                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 ${
+                          tier.popular 
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
+                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+                        }`}
+                      >
+                        Contact Us
+                      </button>
+                    ) : (
+                      <a 
+                        href={
+                          tier.title === 'Starter' ? 'https://pay.gocardless.com/BRT00040JFMP578' :
+                          tier.title === 'Growth' ? 'https://pay.gocardless.com/BRT00040JFP66YY' :
+                          tier.title === 'Scale' ? 'https://pay.gocardless.com/BRT00040JFTJ18E' : '#'
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 inline-block text-center ${
+                          tier.popular 
+                            ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600' 
+                            : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
+                        }`}
+                      >
+                        Choose Plan
+                      </a>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -453,6 +561,131 @@ const Pricing = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Enterprise Modal */}
+      {showEnterpriseModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 border border-white/20 rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-white">Enterprise Plan Enquiry</h3>
+              <button
+                onClick={() => setShowEnterpriseModal(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {enterpriseSubmitSuccess ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center"
+              >
+                <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-white mb-2">Enquiry Sent!</h3>
+                <p className="text-green-300">
+                  Thank you for your interest in our Enterprise plan! We'll review your requirements and get back to you within 24 hours.
+                </p>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleEnterpriseSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="enterprise-name" className="block text-sm font-medium text-white mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="enterprise-name"
+                    name="name"
+                    value={enterpriseForm.name}
+                    onChange={handleEnterpriseInputChange}
+                    required
+                    className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="enterprise-email" className="block text-sm font-medium text-white mb-2">
+                    Company Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="enterprise-email"
+                    name="email"
+                    value={enterpriseForm.email}
+                    onChange={handleEnterpriseInputChange}
+                    required
+                    className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+                    placeholder="your.email@company.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="enterprise-users" className="block text-sm font-medium text-white mb-2">
+                    Expected User Count *
+                  </label>
+                  <input
+                    type="text"
+                    id="enterprise-users"
+                    name="users"
+                    value={enterpriseForm.users}
+                    onChange={handleEnterpriseInputChange}
+                    required
+                    className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+                    placeholder="e.g., 100,000+ users"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="enterprise-project" className="block text-sm font-medium text-white mb-2">
+                    Project Details *
+                  </label>
+                  <textarea
+                    id="enterprise-project"
+                    name="project"
+                    value={enterpriseForm.project}
+                    onChange={handleEnterpriseInputChange}
+                    required
+                    rows="3"
+                    className="w-full bg-white/20 backdrop-blur border border-white/30 rounded-xl px-4 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 resize-none"
+                    placeholder="Tell us about your project and gamification needs"
+                  />
+                </div>
+                
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={!enterpriseForm.name.trim() || !enterpriseForm.email.trim() || !enterpriseForm.project.trim() || !enterpriseForm.users.trim() || isEnterpriseSubmitting}
+                  className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold py-4 px-6 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                >
+                  {isEnterpriseSubmitting ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <span>Sending Enquiry...</span>
+                    </div>
+                  ) : (
+                    'Send Enterprise Enquiry'
+                  )}
+                </motion.button>
+                
+                <p className="text-xs text-gray-400 text-center">
+                  We'll review your requirements and respond within 24 hours
+                </p>
+              </form>
+            )}
+          </motion.div>
+        </div>
+      )}
     </>
   );
 };
