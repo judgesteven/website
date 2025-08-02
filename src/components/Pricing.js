@@ -30,6 +30,22 @@ const Pricing = () => {
 
   const pricingTiers = [
     {
+      title: 'Free',
+      users: 'Up to 100 users',
+      price: '€0',
+      description: 'forever',
+      features: [
+        'Up to 100 active users',
+        'Basic gamification features',
+        'Up to 10 elements',
+        'Community support',
+        'Basic analytics'
+      ],
+      popular: false,
+      icon: Sparkles,
+      color: 'from-gray-400 to-gray-600'
+    },
+    {
       title: 'Starter',
       users: 'Up to 1,000 users',
       price: '€100',
@@ -176,6 +192,8 @@ const Pricing = () => {
 
   const getPaymentUrl = (tierTitle) => {
     switch (tierTitle) {
+      case 'Free':
+        return null; // Free plan doesn't need payment
       case 'Starter':
         return 'https://pay.gocardless.com/BRT00040JFMP578';
       case 'Growth':
@@ -357,7 +375,7 @@ const Pricing = () => {
 
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {pricingTiers.map((tier, index) => {
               const IconComponent = tier.icon;
               return (
@@ -411,6 +429,20 @@ const Pricing = () => {
                             className={buttonClass}
                           >
                             Contact Us
+                          </button>
+                        );
+                      } else if (tier.title === 'Free') {
+                        return (
+                          <button 
+                            onClick={() => {
+                              const accessSection = document.getElementById('access-section');
+                              if (accessSection) {
+                                accessSection.scrollIntoView({ behavior: 'smooth' });
+                              }
+                            }}
+                            className={buttonClass}
+                          >
+                            Get Started Free
                           </button>
                         );
                       } else if (paymentUrl) {
