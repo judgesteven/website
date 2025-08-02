@@ -116,7 +116,8 @@ const Pricing = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/request-access', {
+      // Using Formspree for form submission (no server setup required)
+      const response = await fetch('https://formspree.io/f/xpzgwqjq', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,12 +125,11 @@ const Pricing = () => {
         body: JSON.stringify({
           name: accessForm.name.trim(),
           email: accessForm.email.trim(),
-          project: accessForm.project.trim()
+          project: accessForm.project.trim(),
+          _subject: 'New GameLayer Access Request'
         })
       });
 
-      const data = await response.json();
-      
       if (response.ok) {
         setSubmitSuccess(true);
         setAccessForm({ name: '', email: '', project: '' });
@@ -139,7 +139,7 @@ const Pricing = () => {
           setSubmitSuccess(false);
         }, 5000);
       } else {
-        throw new Error(data.error || 'Failed to send request');
+        throw new Error('Failed to send request');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
