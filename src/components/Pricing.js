@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import { 
   Zap, 
   CheckCircle, 
@@ -136,13 +135,6 @@ const Pricing = () => {
     }));
   };
 
-  const scrollToAccess = () => {
-    const accessSection = document.getElementById('access-section');
-    if (accessSection) {
-      accessSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <>
       {/* Main Hero Section */}
@@ -201,7 +193,12 @@ const Pricing = () => {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={scrollToAccess}
+                  onClick={() => {
+                    const accessSection = document.getElementById('access-section');
+                    if (accessSection) {
+                      accessSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
                   className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
                 >
                   Start Free Trial
