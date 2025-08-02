@@ -117,7 +117,7 @@ const Pricing = () => {
     
     try {
       // Using Formspree for form submission (no server setup required)
-      const response = await fetch('https://formspree.io/f/xpzgwqjq', {
+      const response = await fetch('https://formspree.io/f/mgvzlonb', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
