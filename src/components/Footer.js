@@ -14,8 +14,18 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Main content */}
         <div className="flex flex-col space-y-4">
-          {/* Top row - Social icons */}
-          <div className="flex justify-center lg:justify-end">
+          {/* Top row - Logo and Social icons */}
+          <div className="flex justify-between items-center">
+            {/* Left side - Logo */}
+            <div className="flex items-center">
+              <img 
+                src="/GameLayer_Logo_White.png" 
+                alt="GameLayer Logo" 
+                className="h-8 w-auto"
+              />
+            </div>
+            
+            {/* Right side - Social icons */}
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <a
@@ -30,18 +40,9 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Bottom row - Logo, Copyright and Legal links */}
+          {/* Bottom row - Company info and Legal links */}
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-2 lg:space-y-0">
-            {/* Left side - Logo */}
-            <div className="flex items-center">
-              <img 
-                src="/GameLayer_Logo_White.png" 
-                alt="GameLayer Logo" 
-                className="h-8 w-auto"
-              />
-            </div>
-            
-            {/* Center - Company info */}
+            {/* Left side - Company info */}
             <div className="text-center lg:text-left">
               <p className="text-gray-400 text-sm">
                 Company ID - 2503589-1
