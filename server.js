@@ -10,7 +10,13 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:3001',
+    'https://gamelayer-webapp.vercel.app',
+    'https://gamelayer-webapp-git-main-judgesteven.vercel.app',
+    'https://gamelayer-webapp-judgesteven.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());
