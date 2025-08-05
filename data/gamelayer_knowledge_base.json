@@ -1,0 +1,134 @@
+[
+  {
+    "id": "gamification-overview",
+    "source": "GameLayer Knowledge Base",
+    "type": "concept",
+    "content": "Gamification is the application of game-design elements and game principles in non-game contexts. It involves using game mechanics like points, badges, leaderboards, and challenges to motivate and engage users in activities that are not inherently game-like. The goal is to increase user engagement, motivation, and participation by making tasks more enjoyable and rewarding."
+  },
+  {
+    "id": "gamification-mechanics",
+    "source": "GameLayer Knowledge Base",
+    "type": "concept",
+    "content": "Core gamification mechanics include: 1) Points - numerical rewards for completing actions, 2) Badges/Achievements - visual representations of accomplishments, 3) Leaderboards - competitive rankings showing user progress, 4) Levels - progression systems that unlock new features, 5) Missions/Challenges - specific tasks with clear objectives, 6) Streaks - consecutive day completion rewards, 7) Social features - sharing achievements and competing with friends, 8) Rewards - tangible or intangible benefits for participation."
+  },
+  {
+    "id": "gamification-benefits",
+    "source": "GameLayer Knowledge Base",
+    "type": "concept",
+    "content": "Gamification provides numerous benefits: Increased user engagement and retention, improved learning outcomes, enhanced motivation and productivity, better user experience, increased brand loyalty, data collection and analytics, cost-effective user acquisition, measurable results and ROI, competitive differentiation, and improved customer satisfaction."
+  },
+  {
+    "id": "gamelayer-platform",
+    "source": "GameLayer Knowledge Base",
+    "type": "platform",
+    "content": "GameLayer is a comprehensive gamification platform that helps businesses increase user engagement through game mechanics. The platform offers four pricing tiers: Starter (€99/month for 1,000 users), Growth (€299/month for 10,000 users), Scale (€999/month for 100,000 users), and Enterprise (custom pricing for unlimited users). GameLayer provides all gamification features, unlimited elements, advanced analytics, and custom support options."
+  },
+  {
+    "id": "gamelayer-features",
+    "source": "GameLayer Knowledge Base",
+    "type": "platform",
+    "content": "GameLayer platform features include: Achievement systems with customizable badges and rewards, dynamic leaderboards with real-time rankings, mission and challenge creation tools, point systems with customizable currencies, level progression systems, streak tracking and rewards, social features for user interaction, comprehensive analytics and reporting, API integration capabilities, white-label customization options, and multi-language support."
+  },
+  {
+    "id": "gamelayer-pricing-starter",
+    "source": "GameLayer Knowledge Base",
+    "type": "pricing",
+    "content": "Starter Plan: €99/month for up to 1,000 active users. Includes all gamification features, unlimited elements, email support, and basic analytics. Payment via GoCardless at https://pay.gocardless.com/BRT00040JFMP578. Perfect for small businesses and startups looking to implement basic gamification."
+  },
+  {
+    "id": "gamelayer-pricing-growth",
+    "source": "GameLayer Knowledge Base",
+    "type": "pricing",
+    "content": "Growth Plan: €299/month for up to 10,000 active users. Includes all gamification mechanics, unlimited elements, priority support, and basic analytics. Payment via GoCardless at https://pay.gocardless.com/BRT00040JFP66YY. Ideal for growing businesses with moderate user bases."
+  },
+  {
+    "id": "gamelayer-pricing-scale",
+    "source": "GameLayer Knowledge Base",
+    "type": "pricing",
+    "content": "Scale Plan: €999/month for up to 100,000 active users. Includes all gamification mechanics, unlimited elements, advanced support, and advanced reporting. Payment via GoCardless at https://pay.gocardless.com/BRT00040JFTJ18E. Designed for large organizations with substantial user bases."
+  },
+  {
+    "id": "gamelayer-pricing-enterprise",
+    "source": "GameLayer Knowledge Base",
+    "type": "pricing",
+    "content": "Enterprise Plan: Custom pricing for unlimited active users. Includes all gamification mechanics, unlimited elements, custom SLA and support, and advanced reporting. Contact via form submission to Formspree endpoint with subject 'GameLayer Enterprise Plan Enquiry'. Tailored for enterprise organizations with specific requirements."
+  },
+  {
+    "id": "gamelayer-integration",
+    "source": "GameLayer Knowledge Base",
+    "type": "technical",
+    "content": "GameLayer provides comprehensive API integration capabilities including RESTful APIs, webhook support, SDK libraries for multiple programming languages, real-time data synchronization, custom event tracking, user authentication integration, and comprehensive documentation. The platform supports integration with existing systems and workflows."
+  },
+  {
+    "id": "gamelayer-analytics",
+    "source": "GameLayer Knowledge Base",
+    "type": "technical",
+    "content": "GameLayer analytics include user engagement metrics, achievement completion rates, leaderboard performance tracking, user progression analysis, retention and churn metrics, feature usage statistics, A/B testing capabilities, custom report generation, data export functionality, and real-time dashboard monitoring."
+  },
+  {
+    "id": "gamelayer-support",
+    "source": "GameLayer Knowledge Base",
+    "type": "support",
+    "content": "GameLayer offers tiered support: Starter plan includes email support, Growth plan includes priority support, Scale plan includes advanced support, and Enterprise plan includes custom SLA agreements. Support covers technical implementation, best practices guidance, troubleshooting, and strategic consultation for enterprise clients."
+  },
+  {
+    "id": "gamelayer-company",
+    "source": "GameLayer Knowledge Base",
+    "type": "company",
+    "content": "GameLayer Oy is a Finnish company (Company ID: 2503589-1) founded in 2012, specializing in gamification solutions. The company is led by Steve Judge, Founder. Contact email: steve@gamelayer.co. GameLayer provides enterprise-grade gamification platform services to businesses worldwide."
+  },
+  {
+    "id": "gamification-best-practices",
+    "source": "GameLayer Knowledge Base",
+    "type": "guidance",
+    "content": "Gamification best practices include: 1) Clear objectives and goals, 2) Meaningful rewards and recognition, 3) Balanced difficulty progression, 4) Social interaction features, 5) Regular content updates, 6) Mobile-first design, 7) Data-driven optimization, 8) User feedback integration, 9) Accessibility considerations, 10) Ethical design principles."
+  },
+  {
+    "id": "gamification-implementation",
+    "source": "GameLayer Knowledge Base",
+    "type": "guidance",
+    "content": "Successful gamification implementation requires: Understanding user motivations, defining clear success metrics, starting with simple mechanics, testing and iterating, ensuring technical stability, providing adequate support, measuring and analyzing results, maintaining user engagement over time, and continuously improving the experience."
+  },
+  {
+    "id": "gamification-use-cases",
+    "source": "GameLayer Knowledge Base",
+    "type": "examples",
+    "content": "Common gamification use cases include: Employee training and development, customer loyalty programs, educational platforms, fitness and wellness apps, productivity tools, e-commerce platforms, social media applications, learning management systems, customer support platforms, and community engagement initiatives."
+  },
+  {
+    "id": "gamification-psychology",
+    "source": "GameLayer Knowledge Base",
+    "type": "concept",
+    "content": "Gamification leverages psychological principles including: Intrinsic and extrinsic motivation, social comparison theory, operant conditioning, flow theory, self-determination theory, goal-setting theory, and behavioral economics. Understanding these principles helps create more effective and engaging gamification experiences."
+  },
+  {
+    "id": "gamification-metrics",
+    "source": "GameLayer Knowledge Base",
+    "type": "analytics",
+    "content": "Key gamification metrics include: User engagement rates, achievement completion rates, time spent on platform, user retention rates, social interaction levels, progression through levels, reward redemption rates, user satisfaction scores, feature adoption rates, and overall platform performance indicators."
+  },
+  {
+    "id": "gamification-challenges",
+    "source": "GameLayer Knowledge Base",
+    "type": "guidance",
+    "content": "Common gamification challenges include: Maintaining long-term engagement, avoiding gamification fatigue, ensuring fair competition, balancing difficulty levels, managing user expectations, technical implementation complexity, measuring ROI, ensuring accessibility, and adapting to different user preferences and motivations."
+  },
+  {
+    "id": "gamification-trends",
+    "source": "GameLayer Knowledge Base",
+    "type": "industry",
+    "content": "Current gamification trends include: AI-powered personalization, augmented reality integration, blockchain-based rewards, social gamification features, mobile-first experiences, micro-learning integration, emotional intelligence elements, sustainability-focused mechanics, and cross-platform synchronization."
+  },
+  {
+    "id": "gamelayer-api-overview",
+    "source": "GameLayer Knowledge Base",
+    "type": "technical",
+    "content": "GameLayer API provides comprehensive endpoints for user management, achievement systems, leaderboards, missions, analytics, and authentication. The API supports RESTful operations, real-time webhooks, comprehensive error handling, rate limiting, authentication via JWT tokens, and detailed documentation with examples."
+  },
+  {
+    "id": "gamelayer-security",
+    "source": "GameLayer Knowledge Base",
+    "type": "technical",
+    "content": "GameLayer implements enterprise-grade security including: JWT-based authentication, HTTPS encryption, rate limiting, input validation, SQL injection prevention, XSS protection, data encryption at rest, regular security audits, GDPR compliance, and secure API key management."
+  }
+] 

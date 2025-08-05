@@ -113,7 +113,7 @@ const GptSection = () => {
             viewport={{ once: true }}
             className="text-xl text-gray-300 max-w-3xl mx-auto"
           >
-            Powered by GPT-4o-mini, our AI assistant specializes in gamification and GameLayer API. Get instant answers about implementation, best practices, and troubleshooting.
+            Powered by GPT-4o-mini with GameLayer knowledge base integration. Get instant, accurate answers about gamification implementation, API features, pricing, and best practices.
           </motion.p>
         </div>
 
@@ -134,7 +134,7 @@ const GptSection = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Gamification & GameLayer Assistant</h3>
-                    <p className="text-sm text-gray-300">Powered by GPT-4o-mini</p>
+                    <p className="text-sm text-gray-300">Powered by GPT-4o-mini + Knowledge Base</p>
                   </div>
                 </div>
                                   <div className="flex items-center gap-2 text-green-400">
@@ -204,7 +204,7 @@ const GptSection = () => {
                 </motion.button>
               </div>
               <p className="text-xs text-gray-400 mt-3 text-center">
-                💡 Try asking: "How do I implement user achievements?" or "What's the best way to set up leaderboards?" or "Tell me about GameLayer API features"
+                💡 Try asking: "What are GameLayer's pricing plans?" or "How do I implement user achievements?" or "Tell me about the API endpoints" or "What gamification mechanics are available?"
               </p>
             </div>
           </motion.div>
@@ -220,18 +220,18 @@ const GptSection = () => {
             {[
               {
                 icon: MessageCircle,
-                title: "GPT-4o-mini Powered",
-                description: "Advanced AI responses for gamification and GameLayer questions"
+                title: "Knowledge Base Powered",
+                description: "Access to comprehensive GameLayer platform and API information"
               },
               {
                 icon: Zap,
                 title: "Instant Responses",
-                description: "Get immediate answers about implementation and best practices"
+                description: "Get immediate, accurate answers about implementation and best practices"
               },
               {
                 icon: Sparkles,
                 title: "Expert Guidance",
-                description: "Specialized knowledge in gamification and GameLayer API"
+                description: "Specialized knowledge in gamification mechanics and GameLayer features"
               }
             ].map((feature, index) => (
               <motion.div

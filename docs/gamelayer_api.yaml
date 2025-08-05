@@ -1,0 +1,491 @@
+openapi: 3.0.0
+info:
+  title: GameLayer API
+  description: API for GameLayer gamification platform
+  version: 1.0.0
+  contact:
+    email: steve@gamelayer.co
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://api.gamelayer.co/v1
+    description: Production server
+  - url: https://staging-api.gamelayer.co/v1
+    description: Staging server
+
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate user with email and password
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Invalid credentials
+
+  /auth/register:
+    post:
+      summary: User registration
+      description: Register a new user account
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                company_name:
+                  type: string
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Invalid input data
+
+  /users:
+    get:
+      summary: Get users
+      description: Retrieve list of users for the authenticated organization
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+          description: Number of users to return
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of users to skip
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  total:
+                    type: integer
+
+  /users/{user_id}:
+    get:
+      summary: Get user details
+      description: Retrieve specific user information
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /achievements:
+    get:
+      summary: Get achievements
+      description: Retrieve list of achievements for the organization
+      tags: [Achievements]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+
+    post:
+      summary: Create achievement
+      description: Create a new achievement
+      tags: [Achievements]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AchievementInput'
+      responses:
+        '201':
+          description: Achievement created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+
+  /achievements/{achievement_id}:
+    put:
+      summary: Update achievement
+      description: Update an existing achievement
+      tags: [Achievements]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AchievementInput'
+      responses:
+        '200':
+          description: Achievement updated
+
+    delete:
+      summary: Delete achievement
+      description: Delete an achievement
+      tags: [Achievements]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: achievement_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Achievement deleted
+
+  /leaderboards:
+    get:
+      summary: Get leaderboards
+      description: Retrieve list of leaderboards
+      tags: [Leaderboards]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of leaderboards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Leaderboard'
+
+    post:
+      summary: Create leaderboard
+      description: Create a new leaderboard
+      tags: [Leaderboards]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeaderboardInput'
+      responses:
+        '201':
+          description: Leaderboard created
+
+  /missions:
+    get:
+      summary: Get missions
+      description: Retrieve list of missions
+      tags: [Missions]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of missions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mission'
+
+    post:
+      summary: Create mission
+      description: Create a new mission
+      tags: [Missions]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MissionInput'
+      responses:
+        '201':
+          description: Mission created
+
+  /analytics/users:
+    get:
+      summary: Get user analytics
+      description: Retrieve user engagement and activity analytics
+      tags: [Analytics]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Start date for analytics period
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date
+          description: End date for analytics period
+      responses:
+        '200':
+          description: User analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAnalytics'
+
+  /analytics/achievements:
+    get:
+      summary: Get achievement analytics
+      description: Retrieve achievement completion analytics
+      tags: [Analytics]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Achievement analytics data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AchievementAnalytics'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        company_name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+        points:
+          type: integer
+        level:
+          type: integer
+        achievements:
+          type: array
+          items:
+            type: string
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        points:
+          type: integer
+        icon:
+          type: string
+        criteria:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+
+    AchievementInput:
+      type: object
+      required:
+        - name
+        - description
+        - points
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        points:
+          type: integer
+        icon:
+          type: string
+        criteria:
+          type: object
+
+    Leaderboard:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        metric:
+          type: string
+        time_period:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    LeaderboardInput:
+      type: object
+      required:
+        - name
+        - metric
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        metric:
+          type: string
+        time_period:
+          type: string
+
+    Mission:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        points:
+          type: integer
+        duration:
+          type: integer
+        requirements:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+
+    MissionInput:
+      type: object
+      required:
+        - name
+        - description
+        - points
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        points:
+          type: integer
+        duration:
+          type: integer
+        requirements:
+          type: object
+
+    UserAnalytics:
+      type: object
+      properties:
+        total_users:
+          type: integer
+        active_users:
+          type: integer
+        new_users:
+          type: integer
+        engagement_rate:
+          type: number
+        average_session_duration:
+          type: number
+        top_achievements:
+          type: array
+          items:
+            type: object
+
+    AchievementAnalytics:
+      type: object
+      properties:
+        total_achievements:
+          type: integer
+        completion_rate:
+          type: number
+        most_popular:
+          type: array
+          items:
+            type: object
+        least_popular:
+          type: array
+          items:
+            type: object
