@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const OpenAI = require('openai');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
@@ -27,36 +26,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 // Import and use the chat route
 const chatRouter = require('./server/chat');
 app.use('/chat', chatRouter);
-
-// OpenAI configuration
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-// Import knowledge base module
-const { getEnhancedResponse } = require('./server/knowledge_base');
-
-// Enhanced GPT API endpoint with knowledge base integration
-app.post('/api/gpt', async (req, res) => {
-  try {
-    const { message, context } = req.body;
-    
-    // OpenAI API key is handled in the knowledge base module
-
-    // Get enhanced response with knowledge base context
-    const gptResponse = await getEnhancedResponse(message);
-
-    res.json({ response: gptResponse });
-  } catch (error) {
-    console.error('Error calling enhanced GPT-4o-mini:', error);
-    
-    // Provide fallback response on any error
-    const fallbackResponse = 'GameLayer\'s API provides powerful gamification tools for building engaging user experiences. The API includes features for missions, achievements, leaderboards, rewards, and more. For implementation guidance, check the GameLayer documentation or contact their support team.';
-    
-    res.json({ 
-      response: fallbackResponse,
-      note: 'Using fallback response due to API error. Please try again later.'
-    });
-  }
-});
 
 // Email endpoint for access requests
 app.post('/api/request-access', async (req, res) => {
@@ -98,7 +67,7 @@ app.post('/api/request-access', async (req, res) => {
             </div>
           </div>
           <p style="color: #666; font-size: 14px;">
-            This request was submitted from the GameLayer website access form.
+            This request was submitted from the GameLayer website.
           </p>
         </div>
       `
@@ -109,7 +78,7 @@ app.post('/api/request-access', async (req, res) => {
 
     res.json({ 
       success: true, 
-      message: 'Access request sent successfully!' 
+      message: 'Access request sent successfully! We\'ll get back to you soon.' 
     });
   } catch (error) {
     console.error('Error sending email:', error);
@@ -119,14 +88,21 @@ app.post('/api/request-access', async (req, res) => {
   }
 });
 
-// Catch all handler: send back React's index.html file for any non-API routes
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'GameLayer server is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Catch-all handler: send back React's index.html file for any non-API routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  console.log(`OpenAI API Key configured: ${OPENAI_API_KEY ? 'Yes' : 'No'}`);
-  console.log(`GPT-4o-mini model: Active`);
-  console.log(`Gamification & GameLayer Assistant: Ready`);
+  console.log(`Health check available at: http://localhost:${PORT}/api/health`);
 }); 
