@@ -1,77 +1,171 @@
 const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-require('dotenv').config();
+const GamificationAI = require('./ai_assistant');
 
 const router = express.Router();
+const ai = new GamificationAI();
 
-// Add CORS middleware to the router
-router.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
-  credentials: true
-}));
+// Store conversation history (in production, use a database)
+const conversations = new Map();
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const ASSISTANT_ID = process.env.ASSISTANT_ID || "asst_lzs07OeXOmexQ1zNiohi1lPB";
-
-router.post('/chat', async (req, res) => {
+// Chat endpoint
+router.post('/api/ai', async (req, res) => {
   try {
-    const userMessage = req.body.message;
+    const { message, conversationId = 'default' } = req.body;
 
-    if (!OPENAI_API_KEY) {
-      return res.status(500).json({ 
-        error: 'OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.' 
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        error: 'Message is required'
       });
     }
 
-    // Create thread
-    const threadRes = await axios.post('https://api.openai.com/v1/threads', {}, {
-      headers: { Authorization: `Bearer ${OPENAI_API_KEY}` }
+    // Get conversation history
+    let conversationHistory = conversations.get(conversationId) || [];
+    
+    // Add user message to history
+    conversationHistory.push({
+      role: 'user',
+      content: message,
+      timestamp: new Date()
     });
-    const threadId = threadRes.data.id;
 
-    // Post message to thread
-    await axios.post(
-      `https://api.openai.com/v1/threads/${threadId}/messages`,
-      { role: 'user', content: userMessage },
-      { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
-    );
+    // Process message with AI
+    const aiResponse = await ai.processMessage(message, conversationHistory);
 
-    // Run assistant on thread
-    const run = await axios.post(
-      `https://api.openai.com/v1/threads/${threadId}/runs`,
-      { assistant_id: ASSISTANT_ID },
-      { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
-    );
+    // Add AI response to history
+    conversationHistory.push({
+      role: 'assistant',
+      content: aiResponse.response,
+      timestamp: new Date()
+    });
 
-    // Wait for completion
-    let status, result;
-    do {
-      await new Promise((r) => setTimeout(r, 2000));
-      result = await axios.get(
-        `https://api.openai.com/v1/threads/${threadId}/runs/${run.data.id}`,
-        { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
-      );
-      status = result.data.status;
-    } while (status !== 'completed');
+    // Keep only last 10 messages to prevent context overflow
+    if (conversationHistory.length > 10) {
+      conversationHistory = conversationHistory.slice(-10);
+    }
 
-    // Get final messages
-    const messages = await axios.get(
-      `https://api.openai.com/v1/threads/${threadId}/messages`,
-      { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
-    );
+    // Store updated conversation
+    conversations.set(conversationId, conversationHistory);
 
-    const reply = messages.data.data.find(m => m.role === 'assistant');
-    res.json({ reply: reply?.content[0]?.text?.value || "No reply." });
-  } catch (err) {
-    console.error('Error talking to assistant:', err);
+    // Send response
+    res.json({
+      response: aiResponse.response,
+      conversationId: conversationId,
+      knowledgeBaseResults: aiResponse.knowledgeBaseResults || [],
+      apiInfo: aiResponse.apiInfo || null,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Chat API error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to process message'
+    });
+  }
+});
+
+// Get conversation history
+router.get('/api/conversation/:conversationId', (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const conversation = conversations.get(conversationId) || [];
     
-    // Provide fallback response on any error
-    const fallbackResponse = 'GameLayer\'s API provides powerful gamification tools for building engaging user experiences. The API includes features for missions, achievements, leaderboards, rewards, and more. For implementation guidance, check the GameLayer documentation or contact their support team.';
+    res.json({
+      conversationId: conversationId,
+      messages: conversation,
+      messageCount: conversation.length
+    });
+  } catch (error) {
+    console.error('Get conversation error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// Clear conversation history
+router.delete('/api/conversation/:conversationId', (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    conversations.delete(conversationId);
     
-    res.json({ 
-      reply: fallbackResponse,
-      note: 'Using fallback response due to API error. Please try again later.'
+    res.json({
+      message: 'Conversation cleared successfully',
+      conversationId: conversationId
+    });
+  } catch (error) {
+    console.error('Clear conversation error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// Get available topics
+router.get('/api/topics', (req, res) => {
+  try {
+    const topics = ai.getAvailableTopics();
+    const stats = ai.getKnowledgeBaseStats();
+    
+    res.json({
+      topics: topics,
+      stats: stats,
+      totalDocuments: stats.total_documents
+    });
+  } catch (error) {
+    console.error('Get topics error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// Search knowledge base directly
+router.post('/api/search', async (req, res) => {
+  try {
+    const { query, limit = 5 } = req.body;
+
+    if (!query || !query.trim()) {
+      return res.status(400).json({
+        error: 'Search query is required'
+      });
+    }
+
+    const results = ai.knowledgeBase.search(query, limit);
+    
+    res.json({
+      query: query,
+      results: results,
+      totalResults: results.length
+    });
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+
+// Get AI assistant status
+router.get('/api/status', (req, res) => {
+  try {
+    const stats = ai.getKnowledgeBaseStats();
+    
+    res.json({
+      status: 'active',
+      knowledgeBase: {
+        totalDocuments: stats.total_documents,
+        categories: stats.categories,
+        lastUpdated: new Date().toISOString()
+      },
+      apiDocs: ai.apiDocs ? 'loaded' : 'not available',
+      model: 'gpt-4o-mini',
+      specialization: 'Gamification & GameLayer Platform'
+    });
+  } catch (error) {
+    console.error('Status error:', error);
+    res.status(500).json({
+      error: 'Internal server error'
     });
   }
 });

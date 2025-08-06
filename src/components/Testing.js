@@ -24,7 +24,7 @@ const Testing = () => {
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: "Hi! I'm your gamification expert powered by GPT-4o-mini. Ask me anything about implementing gamification features, GameLayer API, or best practices for user engagement!", 
+      text: "Hi! I'm your Gamification Assistant, here to provide expert guidance on gamification, implementation strategies, and best practices for user engagement. What would you like to know about gamification?", 
       sender: 'ai',
       timestamp: new Date()
     }
@@ -39,7 +39,7 @@ const Testing = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+    if (!inputMessage.trim() || isLoading) return;
 
     const userMessage = {
       id: Date.now(),
@@ -53,32 +53,35 @@ const Testing = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/gpt', {
+      const response = await fetch('/chat/api/ai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: inputMessage,
-          context: 'You are a gamification expert helping users understand how to implement user engagement features in their applications. Provide helpful, practical advice about gamification mechanics, best practices, and implementation strategies.'
-        })
+          conversationId: 'testing'
+        }),
       });
 
       const data = await response.json();
-      
-      const aiMessage = {
-        id: Date.now() + 1,
-        text: data.response,
-        sender: 'ai',
-        timestamp: new Date()
-      };
 
-      setMessages(prev => [...prev, aiMessage]);
+      if (data.response) {
+        const aiMessage = {
+          id: Date.now() + 1,
+          text: data.response,
+          sender: 'ai',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      } else {
+        throw new Error('No response from AI');
+      }
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage = {
         id: Date.now() + 1,
-        text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment!",
+        text: "I'm having trouble connecting right now. Please try again in a moment!",
         sender: 'ai',
         timestamp: new Date()
       };
@@ -205,15 +208,15 @@ const Testing = () => {
               transition={{ duration: 0.8 }}
               className="text-white"
             >
-                                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8 }}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full px-6 py-3 mb-6 border border-purple-400/30 shadow-lg"
-                      >
-                        <Sparkles className="w-5 h-5 text-yellow-300" />
-                        <span className="text-white font-semibold drop-shadow-sm">#1 Gamification Platform</span>
-                      </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8 }}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full px-6 py-3 mb-6 border border-purple-400/30 shadow-lg"
+              >
+                <Sparkles className="w-5 h-5 text-yellow-300" />
+                <span className="text-white font-semibold drop-shadow-sm">#1 Gamification Platform</span>
+              </motion.div>
 
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
@@ -280,7 +283,7 @@ const Testing = () => {
               className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full px-6 py-2 mb-6"
             >
               <Sparkles className="w-5 h-5 text-purple-400" />
-              <span className="text-purple-300 font-medium">AI-Powered Gamification Assistant</span>
+              <span className="text-purple-300 font-medium">AI-Powered Support</span>
             </motion.div>
             
             <motion.h2
@@ -323,13 +326,13 @@ const Testing = () => {
                       <Bot className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
-                      <p className="text-sm text-gray-300">Powered by GPT-4o-mini</p>
+                                          <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
+                    <p className="text-sm text-gray-300">Powered by GPT-4o-min</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-green-400">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-sm">GPT-4o-mini Active</span>
+                    <span className="text-sm">AI Active</span>
                   </div>
                 </div>
               </div>
@@ -351,7 +354,10 @@ const Testing = () => {
                           : 'bg-white/20 backdrop-blur text-white border border-white/10'
                       }`}
                     >
-                      <p className="text-sm leading-relaxed">{message.text}</p>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                      <p className="text-xs opacity-70 mt-2">
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
@@ -375,26 +381,27 @@ const Testing = () => {
               {/* Input */}
               <div className="p-6 border-t border-white/20">
                 <div className="flex gap-3">
-                  <input
-                    type="text"
+                  <textarea
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about gamification..."
-                    className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-full px-6 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200"
+                    placeholder="Ask about gamification concepts, GameLayer features, or API documentation..."
+                    className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-xl px-6 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 resize-none"
+                    rows="2"
+                    disabled={isLoading}
                   />
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleSendMessage}
                     disabled={!inputMessage.trim() || isLoading}
-                    className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-3 rounded-full hover:from-purple-600 hover:to-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-purple-500 to-blue-500 text-white p-3 rounded-xl hover:from-purple-600 hover:to-blue-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                   >
                     <Send className="w-5 h-5" />
                   </motion.button>
                 </div>
                 <p className="text-xs text-gray-400 mt-3 text-center">
-                  💡 Try asking: "How do I create user engagement with gamification?" or "What metrics should I track?" or "Best practices for implementing a gamification strategy"
+                  💡 Try asking: "What is gamification?" or "How do I create a mission with GameLayer?" or "What are the best practices for implementing gamification?"
                 </p>
               </div>
             </motion.div>
@@ -422,7 +429,7 @@ const Testing = () => {
               <Star className="w-5 h-5 text-blue-400" />
               <span className="text-blue-300 font-medium">Core Features</span>
             </motion.div>
-            
+
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -646,7 +653,6 @@ const Testing = () => {
           </motion.div>
         </div>
       </section>
-
     </>
   );
 };

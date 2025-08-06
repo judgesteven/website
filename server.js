@@ -102,7 +102,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/api/health`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Port ${PORT} is busy, trying port ${PORT + 1}`);
+    const newServer = app.listen(PORT + 1, () => {
+      console.log(`Server is running on port ${PORT + 1}`);
+      console.log(`Health check available at: http://localhost:${PORT + 1}/api/health`);
+    });
+  } else {
+    console.error('Server error:', err);
+  }
 }); 

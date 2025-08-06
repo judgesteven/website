@@ -8,9 +8,6 @@ The access request form now sends emails to `steve@gamelayer.co` when users subm
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key_here
-
 # Email Configuration (Gmail)
 EMAIL_USER=your_gmail_address@gmail.com
 EMAIL_PASS=your_gmail_app_password_here

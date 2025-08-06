@@ -11,13 +11,13 @@ export default function ChatComponent() {
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-white">GameLayer AI Assistant</h3>
-            <p className="text-sm text-gray-400">Powered by advanced AI</p>
+            <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
+            <p className="text-sm text-gray-400">AI Feature Coming Soon</p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
           <Sparkles className="w-4 h-4 text-yellow-400" />
-          <span className="text-xs text-yellow-400 font-medium">Coming Soon</span>
+          <span className="text-xs text-yellow-400 font-medium">Updating</span>
         </div>
       </div>
 
@@ -32,7 +32,7 @@ export default function ChatComponent() {
               AI Assistant Coming Soon
             </h3>
             <p className="text-gray-400 mb-6">
-              We're working on an intelligent AI assistant that will help you with GameLayer questions, 
+              We're updating our intelligent AI assistant to provide even better support for GameLayer questions, 
               API documentation, and gamification strategies.
             </p>
           </div>
@@ -59,11 +59,11 @@ export default function ChatComponent() {
 
           {/* Contact Info */}
           <div className="mt-8 p-4 bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-400 mb-2">
-              Need help right now?
+            <p className="text-sm text-gray-300 mb-2">
+              Need help now? Contact our team:
             </p>
-            <p className="text-sm text-blue-400">
-              Contact us at <span className="font-medium">steve@gamelayer.co</span>
+            <p className="text-blue-400 text-sm">
+              steve@gamelayer.co
             </p>
           </div>
         </div>
