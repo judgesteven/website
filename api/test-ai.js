@@ -10,10 +10,11 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Test endpoint
+  // Test endpoint with deployment timestamp
   res.json({
     message: 'AI API is working!',
     timestamp: new Date().toISOString(),
+    deployment: '2025-08-07T20:00:00.000Z',
     environment: process.env.NODE_ENV || 'development',
     hasOpenAIKey: !!(process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your_openai_api_key_here')
   });
