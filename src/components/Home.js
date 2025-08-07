@@ -237,11 +237,10 @@ const Testing = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
               >
-                With a{' '}
+                Start turning users into loyal fans who will keep coming back for more with a{' '}
                 <span className="text-yellow-400 font-semibold">
                   simple API integration
                 </span>
-                , start turning users into loyal fans who will keep coming back for more
               </motion.p>
 
               <motion.div
@@ -402,7 +401,7 @@ const Testing = () => {
                   </motion.button>
                 </div>
                 <p className="text-xs text-gray-400 mt-3 text-center">
-                  💡 Try asking: "What is gamification?" or "How do I create a mission with GameLayer?" or "What are the best practices for implementing gamification?"
+                  💡 Try asking: "What is gamification?" or "How do I boost loyalty with gamification?" or "How can GameLayer help me create user engagement?"
                 </p>
               </div>
             </motion.div>
