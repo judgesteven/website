@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEOHead from './SEOHead';
+import StructuredData from './StructuredData';
 import { 
   Target, 
   Trophy, 
@@ -191,6 +193,15 @@ const Testing = () => {
 
   return (
     <>
+      <SEOHead 
+        title="GameLayer - #1 Gamification Platform & API for Business | Enterprise Gamification Solution"
+        description="GameLayer is the leading gamification platform and API for businesses. Build gamification software, loyalty programs, and engagement solutions. Enterprise gamification SaaS with gamification tools, rewards system, and gamification mechanics."
+        keywords="gamification platform, gamification software, gamification SaaS, gamification API, enterprise gamification solution, gamification for business, gamification platform pricing, gamification service provider, gamification tools, gamification system"
+        canonical="https://gamelayer.com/"
+        ogImage="https://gamelayer.com/gamelayer-logo.png"
+      />
+      <StructuredData />
+      
       {/* Main Hero Section */}
       <section className="hero-gradient min-h-screen flex items-center relative overflow-hidden">
         {/* Background Elements */}
@@ -224,9 +235,9 @@ const Testing = () => {
                 transition={{ delay: 0.4, duration: 0.8 }}
                 className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-8"
               >
-                Make Boring Tasks, Less Boring{' '}
+                More engagement. Higher retention.{' '}
                 <span className="text-yellow-400">
-                  ... Even Fun!
+                  Happier customers.
                 </span>
               </motion.h1>
 
@@ -240,7 +251,7 @@ const Testing = () => {
                 <span className="text-yellow-400 font-semibold">
                   simple API integration
                 </span>
-                , create gamification mechanics to engage, motivate and retain your audiences
+                , start turning users into loyal fans who will keep coming back for more
               </motion.p>
 
               <motion.div
@@ -306,7 +317,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-xl text-gray-300 max-w-3xl mx-auto"
             >
-              Use our AI assistant to get immediate answers about gamification, implementation strategies, and best practices for user engagement
+              Ask our AI Assistant for guidance on gamification strategies, user engagement, customer loyalty and GameLayer related questions.
             </motion.p>
           </div>
 

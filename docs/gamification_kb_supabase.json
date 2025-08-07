@@ -1,0 +1,211 @@
+[
+  {
+    "id": "1",
+    "title": "Enhancing User Engagement: The Role of Gamification",
+    "author": "Bitri\u00e1n et al.",
+    "year": "2021",
+    "type": "Academic",
+    "url": "https://www.sciencedirect.com/science/article/pii/S0148296321002666",
+    "summary": "Shows gamification boosts engagement by satisfying competence, autonomy, and relatedness.",
+    "tags": [
+      "engagement",
+      "retention"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "From Engagement to Retention: The Power of Gamification",
+    "author": "Koneti",
+    "year": "2025",
+    "type": "Academic",
+    "url": "https://www.researchgate.net/publication/391720545",
+    "summary": "Case study evidence from Duolingo and Starbucks showing gamification pathways to retention.",
+    "tags": [
+      "retention",
+      "gamification"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "How Gamification Features Drive Brand Loyalty",
+    "author": "Li et al.",
+    "year": "2025",
+    "type": "Academic",
+    "url": "https://www.mdpi.com/0718-1876/20/2/113",
+    "summary": "Immersion, achievement, and social interaction mediate engagement to loyalty.",
+    "tags": [
+      "loyalty",
+      "engagement"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Gamification and Customer Experience in Online Retail",
+    "author": "Tyagi",
+    "year": "2022",
+    "type": "Academic",
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9716125/",
+    "summary": "Gamification positively influences online shopper motivation and retention.",
+    "tags": [
+      "retention",
+      "gamification"
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Gamification in Marketing: A Bibliometric Review",
+    "author": "Santos et al.",
+    "year": "2024",
+    "type": "Academic",
+    "url": "https://www.sciencedirect.com/science/article/pii/S2405844024080782",
+    "summary": "Analyzes trends and key themes from 114 published articles on gamification in marketing.",
+    "tags": [
+      "marketing",
+      "engagement"
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Gamification Benefits in Sports",
+    "author": "Habachi",
+    "year": "2024",
+    "type": "Academic",
+    "url": "https://www.emerald.com/insight/content/doi/10.1108/jpbm-07-2022-4070/full/html",
+    "summary": "Game-based experiences in sports drive loyalty and behavioral change.",
+    "tags": [
+      "loyalty",
+      "sports"
+    ]
+  },
+  {
+    "id": "7",
+    "title": "Long-Term Engagement via Personalized Gamification in Fitness",
+    "author": "Altmeyer et al.",
+    "year": "2021",
+    "type": "Academic",
+    "url": "https://arxiv.org/abs/2107.12597",
+    "summary": "Tailored gamification designs significantly increase long-term participation.",
+    "tags": [
+      "retention",
+      "fitness"
+    ]
+  },
+  {
+    "id": "8",
+    "title": "When Gamification Spoils Your Learning",
+    "author": "Mogavi et al.",
+    "year": "2022",
+    "type": "Academic",
+    "url": "https://arxiv.org/abs/2203.16175",
+    "summary": "Explores the downsides of gamification when misaligned with user goals.",
+    "tags": [
+      "pitfalls",
+      "education"
+    ]
+  },
+  {
+    "id": "9",
+    "title": "Gamification in Statistics Education",
+    "author": "Jack et al.",
+    "year": "2024",
+    "type": "Academic",
+    "url": "https://arxiv.org/abs/2402.18313",
+    "summary": "Evaluates impact of gamification on student motivation in statistics courses.",
+    "tags": [
+      "education",
+      "engagement"
+    ]
+  },
+  {
+    "id": "10",
+    "title": "Gamification and Virality in Freemium Education",
+    "author": "Osipov et al.",
+    "year": "2014",
+    "type": "Academic",
+    "url": "https://arxiv.org/abs/1412.5401",
+    "summary": "Shows connection between gamification and retention via K-growth metric.",
+    "tags": [
+      "virality",
+      "education"
+    ]
+  },
+  {
+    "id": "11",
+    "title": "Octalysis Framework",
+    "author": "Yu-Kai Chou",
+    "year": "2013",
+    "type": "Framework",
+    "url": "https://en.wikipedia.org/wiki/Octalysis",
+    "summary": "The eight core drives of gamified motivation.",
+    "tags": [
+      "framework",
+      "motivation"
+    ]
+  },
+  {
+    "id": "12",
+    "title": "Game-Based Marketing",
+    "author": "Zichermann & Cunningham",
+    "year": "2011",
+    "type": "Book",
+    "url": "https://en.wikipedia.org/wiki/Gabe_Zichermann",
+    "summary": "Foundational concepts in marketing through gamification.",
+    "tags": [
+      "marketing",
+      "loyalty"
+    ]
+  },
+  {
+    "id": "13",
+    "title": "10 Best Gamified Loyalty Programs",
+    "author": "OpenLoyalty",
+    "year": "2025",
+    "type": "Case Study",
+    "url": "https://www.openloyalty.io/resources/10-best-gamification-loyalty-programs",
+    "summary": "Real brand examples showing gamified loyalty mechanics.",
+    "tags": [
+      "loyalty",
+      "case study"
+    ]
+  },
+  {
+    "id": "14",
+    "title": "How Gamification Increases Engagement",
+    "author": "OpenLoyalty",
+    "year": "2025",
+    "type": "Industry Guide",
+    "url": "https://www.openloyalty.io/insider/gamification-increases-engagement",
+    "summary": "Shows how engagement and retention metrics improve with gamified loyalty.",
+    "tags": [
+      "engagement",
+      "retention"
+    ]
+  },
+  {
+    "id": "15",
+    "title": "Comprehensive Guide to Gamification in Loyalty Programs",
+    "author": "Capillary Tech",
+    "year": "2024",
+    "type": "Guide",
+    "url": "https://www.capillarytech.com/blog/comprehensive-guide-to-gamification-in-loyalty-programs/",
+    "summary": "Clear statistics on how gamification boosts engagement by 47%.",
+    "tags": [
+      "loyalty",
+      "stats"
+    ]
+  },
+  {
+    "id": "16",
+    "title": "GameLayer \u2013 Gamification API Platform",
+    "author": "GameLayer",
+    "year": "2025",
+    "type": "Platform",
+    "url": "https://www.gamelayer.co",
+    "summary": "Platform offering gamification APIs for developers and product managers. Supports loyalty, engagement, and retention.",
+    "tags": [
+      "platform",
+      "gamification",
+      "api"
+    ]
+  }
+]

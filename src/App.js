@@ -3,7 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import DashboardLogin from './components/DashboardLogin';
 import Pricing from './components/Pricing';
-import Testing from './components/Testing';
+import Home from './components/Home';
 import References from './components/References';
 import ChatPage from './components/ChatPage';
 import ApiPage from './components/ApiPage';
@@ -17,7 +17,7 @@ function App() {
         <ScrollToTop />
         <Navbar />
         <Routes>
-          <Route path="/" element={<Testing />} />
+          <Route path="/" element={<Home />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/dashboard" element={<DashboardLogin />} />
           <Route path="/pricing" element={<Pricing />} />

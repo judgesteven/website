@@ -1,80 +1,123 @@
-# GameLayer Troubleshooting Guide
+# GameLayer Website Troubleshooting Guide
 
-## Recent Fixes Applied
+## Current Status: AI Functionality Enabled
 
-### 1. OpenAI API Key Issues ✅ FIXED
-**Problem**: Server was failing with 401 authentication errors due to missing/invalid OpenAI API key.
+**Note**: AI assistant functionality is now enabled with restricted scope focused on gamification topics and GameLayer platform questions.
 
-**Solution**: 
-- Added graceful fallback responses when OpenAI API is not available
-- The AI assistant now works even without an API key
-- Fallback responses cover common questions about pricing, API, and gamification
+## Server Status
 
-### 4. Pricing Information ✅ FIXED
-**Problem**: AI assistant was providing outdated pricing information (€99/month instead of €100/month, missing Scale tier, and incorrect Scale pricing).
+✅ **AI-Enabled Server**: Running on port 3001  
+✅ **React Frontend**: Available on port 3000  
+✅ **Health Check**: Available at `/api/health`  
+✅ **AI Assistant**: Enabled with restricted scope  
 
-**Solution**:
-- Updated knowledge base with correct pricing tiers: Starter (€100/month), Growth (€1,000/month), Scale (€2,500/month), Enterprise (custom)
-- Updated AI assistant fallback responses with accurate pricing
-- All pricing information now matches the pricing page exactly
-- Verified that Scale plan is correctly quoted as €2,500/month (not €3,000)
+## Quick Start
 
-**To enable full AI functionality**:
-1. Get an OpenAI API key from: https://platform.openai.com/account/api-keys
-2. Add it to your `.env` file: `OPENAI_API_KEY=your_key_here`
-
-### 2. Port Conflicts ✅ FIXED
-**Problem**: Server was failing to start due to port 3001 being in use.
-
-**Solution**: 
-- Added automatic port fallback (tries 3001, then 3002)
-- Server now handles port conflicts gracefully
-
-### 3. Supabase Search Errors ✅ FIXED
-**Problem**: Database function signature mismatches were causing search failures.
-
-**Solution**: 
-- Removed dependency on external Supabase database
-- Now uses local JSON knowledge base file
-- More reliable and faster search functionality
-
-## Current Status
-
-✅ **Server**: Running on http://localhost:3001  
-✅ **React App**: Running on http://localhost:3000  
-✅ **AI Assistant**: Working with fallback responses  
-✅ **Health Check**: Available at http://localhost:3001/api/health  
-
-## Testing the Fix
-
-1. **Test the AI Assistant**:
+1. **Start the server**:
    ```bash
-   curl -X POST http://localhost:3001/chat/api/ai \
-     -H "Content-Type: application/json" \
-     -d '{"message": "What are GameLayer pricing plans?"}'
+   npm run server
    ```
 
-2. **Test the Health Check**:
+2. **Start the React app** (in another terminal):
    ```bash
-   curl http://localhost:3001/api/health
+   npm start
    ```
 
-3. **Visit the Website**: http://localhost:3000
+3. **Or run both together**:
+   ```bash
+   npm run dev
+   ```
 
-## Common Questions
+## Health Check
 
-**Q: Do I need an OpenAI API key?**
-A: No! The AI assistant works with intelligent fallback responses even without an API key.
+Test if the server is running:
+```bash
+curl http://localhost:3001/api/health
+```
 
-**Q: What if I get port conflicts?**
-A: The server automatically tries the next available port (3001 → 3002 → 3003).
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-08-07T04:32:00.667Z",
+  "message": "Static file server running"
+}
+```
 
-**Q: How do I enable full AI functionality?**
-A: Add your OpenAI API key to the `.env` file and restart the server.
+## Chat Endpoint
 
-## Next Steps
+The AI chat endpoint is now active and responds to gamification and GameLayer questions:
+```bash
+curl -X POST http://localhost:3001/chat/api/ai \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What are GameLayer pricing plans?"}'
+```
 
-1. The website should now work without connection errors
-2. The AI assistant provides helpful responses about GameLayer
-3. To enable advanced AI features, add your OpenAI API key
-4. All core functionality is working properly 
+Expected response:
+```json
+{
+  "response": "GameLayer offers four pricing tiers...",
+  "conversationId": "ai-chat",
+  "knowledgeBaseResults": [...],
+  "timestamp": "2025-08-07T04:32:04.552Z"
+}
+```
+
+## UI Features
+
+The website UI is fully functional and includes:
+- ✅ Landing page with GameLayer information
+- ✅ Features and pricing sections
+- ✅ API documentation
+- ✅ Contact forms
+- ✅ AI Chat interface (fully functional)
+
+## AI Implementation
+
+The AI assistant is now active and includes:
+- GameLayer pricing and plan information
+- API documentation and code examples
+- Gamification strategy guidance
+- Implementation best practices
+- User engagement, customer loyalty, and employee retention topics
+
+## Contact Support
+
+For immediate assistance with GameLayer:
+- Email: steve@gamelayer.co
+- Website: https://gamelayer.co
+
+## Common Issues
+
+### Port Already in Use
+If you get "EADDRINUSE" errors:
+```bash
+# Kill existing processes
+pkill -f "node server.js"
+pkill -f "react-scripts"
+
+# Then restart
+npm run dev
+```
+
+### React App Won't Start
+If the React app fails to start:
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+npm start
+```
+
+### Server Won't Start
+If the server fails to start:
+```bash
+# Check if port 3001 is available
+lsof -i :3001
+
+# Kill any processes using the port
+kill -9 <PID>
+
+# Restart server
+npm run server
+``` 

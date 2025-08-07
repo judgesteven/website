@@ -6,7 +6,7 @@ const GptSection = () => {
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: "Hi! I'm your Gamification Assistant, here to provide expert guidance on gamification, implementation strategies, and best practices for user engagement. What would you like to know about gamification?", 
+      text: "Hi! I'm your Gamification Assistant, what can I help you with today?", 
       sender: 'ai',
       timestamp: new Date()
     }
@@ -101,7 +101,7 @@ const GptSection = () => {
             viewport={{ once: true }}
             className="text-xl text-gray-300 max-w-3xl mx-auto"
           >
-            Use our AI assistant to get immediate answers about gamification, implementation strategies, and best practices for user engagement
+            Get expert guidance on gamification strategies, user engagement, customer loyalty, employee retention, and GameLayer platform questions
           </motion.p>
         </motion.div>
 
@@ -182,7 +182,7 @@ const GptSection = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about gamification concepts, GameLayer features, or API documentation..."
+                    placeholder="Ask me anything about gamification..."
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     rows="2"
                     disabled={isLoading}
@@ -198,7 +198,7 @@ const GptSection = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-400 mt-3 text-center">
-                💡 Try asking: "What is gamification?" or "How do I create a mission with GameLayer?" or "What are the best practices for implementing gamification?"
+                💡 Try asking: "How can gamification help my loyalty program?" or "Why is gamification so powerful in user engagement?" or "What are the best practices for implementing gamification?"
               </p>
             </div>
           </motion.div>
@@ -214,18 +214,18 @@ const GptSection = () => {
             {[
               {
                 icon: MessageCircle,
-                title: "Knowledge Base Powered",
-                description: "Access to comprehensive gamification concepts and GameLayer platform information"
+                title: "Gamification Expert",
+                description: "Specialized in user engagement, customer loyalty, employee retention, and GameLayer platform"
               },
               {
                 icon: Zap,
                 title: "Instant Responses",
-                description: "Get immediate, accurate answers about gamification and GameLayer implementation"
+                description: "Get immediate answers about gamification strategies and GameLayer implementation"
               },
               {
                 icon: Sparkles,
-                title: "Expert Guidance",
-                description: "Specialized knowledge in gamification mechanics and GameLayer features"
+                title: "Platform Knowledge",
+                description: "Access to GameLayer pricing, API docs, case studies, and implementation guidance"
               }
             ].map((feature, index) => (
               <motion.div

@@ -15,10 +15,10 @@ export default function ChatComponent() {
             <p className="text-sm text-gray-400">AI Feature Coming Soon</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <Sparkles className="w-4 h-4 text-yellow-400" />
-          <span className="text-xs text-yellow-400 font-medium">Updating</span>
-        </div>
+                  <div className="flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-gray-400" />
+            <span className="text-xs text-gray-400 font-medium">Disabled</span>
+          </div>
       </div>
 
       {/* Placeholder Content */}
@@ -29,11 +29,11 @@ export default function ChatComponent() {
               <Bot className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">
-              AI Assistant Coming Soon
+              AI Assistant Temporarily Disabled
             </h3>
             <p className="text-gray-400 mb-6">
-              We're updating our intelligent AI assistant to provide even better support for GameLayer questions, 
-              API documentation, and gamification strategies.
+              The AI assistant functionality has been temporarily disabled. The UI is preserved for future use. 
+              When active, it will specialize in gamification topics (user engagement, customer loyalty, employee retention) and GameLayer platform questions.
             </p>
           </div>
 
@@ -41,19 +41,19 @@ export default function ChatComponent() {
           <div className="space-y-3 text-left">
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span className="text-sm text-gray-300">Instant answers about GameLayer pricing</span>
+              <span className="text-sm text-gray-300">Gamification strategies for user engagement</span>
             </div>
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span className="text-sm text-gray-300">API documentation and code examples</span>
+              <span className="text-sm text-gray-300">Customer loyalty and employee retention</span>
             </div>
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span className="text-sm text-gray-300">Gamification strategy guidance</span>
+              <span className="text-sm text-gray-300">GameLayer pricing and API documentation</span>
             </div>
             <div className="flex items-center space-x-3">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span className="text-sm text-gray-300">Implementation best practices</span>
+              <span className="text-sm text-gray-300">Implementation guidance and case studies</span>
             </div>
           </div>
 
