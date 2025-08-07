@@ -29,7 +29,7 @@ const GptSection = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/chat/api/ai', {
+      const response = await fetch('/api/chat/ai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
