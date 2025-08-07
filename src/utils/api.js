@@ -14,6 +14,7 @@ export const sendMessage = async (message, conversationId) => {
   const endpoint = getApiEndpoint();
   
   console.log('Sending message to:', endpoint);
+  console.log('Current hostname:', window.location.hostname);
   
   try {
     const response = await fetch(endpoint, {
@@ -33,6 +34,12 @@ export const sendMessage = async (message, conversationId) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('API Error:', errorText);
+      
+      // Special handling for 404 errors
+      if (response.status === 404) {
+        throw new Error(`API endpoint not found. Please check if the backend is properly deployed. Status: ${response.status}, Message: ${errorText}`);
+      }
+      
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
@@ -41,6 +48,17 @@ export const sendMessage = async (message, conversationId) => {
     return data;
   } catch (error) {
     console.error('API Call Error:', error);
+    
+    // Return a fallback response for production errors
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      return {
+        response: "I'm currently experiencing technical difficulties. Please try again later or contact support. In the meantime, you can learn more about GameLayer's gamification features and pricing on our website.",
+        conversationId: conversationId || 'error',
+        knowledgeBaseResults: [],
+        timestamp: new Date().toISOString()
+      };
+    }
+    
     throw error;
   }
 }; 
