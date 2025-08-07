@@ -1,4 +1,4 @@
-const OpenAI = require('openai');
+import OpenAI from 'openai';
 
 // GameLayer Knowledge Base
 const gamelayerKnowledge = {
@@ -178,11 +178,11 @@ function searchKnowledgeBase(query) {
   return results;
 }
 
-module.exports = async (req, res) => {
-  // Enable CORS
+export default async function handler(req, res) {
+  // Enable CORS for Vercel
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   // Handle preflight requests
   if (req.method === 'OPTIONS') {

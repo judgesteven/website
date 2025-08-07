@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEOHead from './SEOHead';
 import StructuredData from './StructuredData';
+import { sendMessage } from '../utils/api';
 import { 
   Target, 
   Trophy, 
@@ -55,18 +56,7 @@ const Testing = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/chat/api/ai', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputMessage,
-          conversationId: 'testing'
-        }),
-      });
-
-      const data = await response.json();
+      const data = await sendMessage(inputMessage, 'testing');
 
       if (data.response) {
         const aiMessage = {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Bot, MessageCircle, Sparkles, Zap } from 'lucide-react';
+import { sendMessage } from '../utils/api';
 
 const GptSection = () => {
   const [messages, setMessages] = useState([
@@ -29,18 +30,7 @@ const GptSection = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat/ai', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputMessage,
-          conversationId: 'gpt-section'
-        }),
-      });
-
-      const data = await response.json();
+      const data = await sendMessage(inputMessage, 'gpt-section');
 
       if (data.response) {
         const aiMessage = {
