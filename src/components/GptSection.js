@@ -172,7 +172,7 @@ const GptSection = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about gamification or GameLayer ..."
+                    placeholder="Ask me about gamification or GameLayer..."
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     rows="2"
                     disabled={isLoading}

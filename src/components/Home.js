@@ -386,7 +386,7 @@ const Testing = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about gamification concepts, GameLayer features, or API documentation..."
+                    placeholder="Ask me about gamification or GameLayer..."
                     className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-xl px-6 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 resize-none"
                     rows="2"
                     disabled={isLoading}
