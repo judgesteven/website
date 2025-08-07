@@ -1,5 +1,4 @@
 {
-  "name": "gamelayer-webapp",
   "builds": [
     {
       "src": "package.json",
@@ -7,24 +6,16 @@
       "config": {
         "distDir": "build"
       }
-    },
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
+      "source": "/api/chat/ai",
+      "destination": "/api/chat/ai.js"
     },
     {
-      "src": "/chat/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/build/$1"
+      "source": "/(.*)",
+      "destination": "/build/$1"
     }
   ],
   "headers": [
@@ -45,8 +36,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 } 
