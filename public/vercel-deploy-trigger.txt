@@ -1,3 +1,0 @@
-Deployment triggered at: 2025-01-07 17:45:00 UTC
-Build ID: force-fresh-deploy-$(date +%s)
-Reason: Force fresh deployment to ensure all changes are live 
