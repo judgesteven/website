@@ -6,7 +6,7 @@ const GptSection = () => {
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: "Hi! I'm your Gamification Assistant, what can I help you with today?", 
+      text: "Hi! I'm your Gamification Assistant, here to provide expert guidance on gamification, implementation strategies, and best practices for user engagement.", 
       sender: 'ai',
       timestamp: new Date()
     }
@@ -182,7 +182,7 @@ const GptSection = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about gamification..."
+                    placeholder="Ask about gamification or GameLayer ..."
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                     rows="2"
                     disabled={isLoading}
@@ -198,7 +198,7 @@ const GptSection = () => {
                 </button>
               </div>
               <p className="text-xs text-gray-400 mt-3 text-center">
-                💡 Try asking: "How can gamification help my loyalty program?" or "Why is gamification so powerful in user engagement?" or "What are the best practices for implementing gamification?"
+                💡 Try asking: "How can gamification boost my loyalty program?" or "What are the best practices for implementing gamification?"
               </p>
             </div>
           </motion.div>
