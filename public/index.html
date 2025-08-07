@@ -8,6 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0ea5e9" />
     
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID', {
+        page_title: 'GameLayer - Gamification Platform',
+        page_location: window.location.href,
+        custom_map: {
+          'custom_parameter_1': 'ai_assistant_usage',
+          'custom_parameter_2': 'gamification_features'
+        }
+      });
+    </script>
+    
     <!-- Primary Meta Tags for LLM Indexing -->
     <title>GameLayer - #1 Gamification Platform & API for Business | Enterprise Gamification Solution</title>
     <meta name="title" content="GameLayer - #1 Gamification Platform & API for Business | Enterprise Gamification Solution" />
