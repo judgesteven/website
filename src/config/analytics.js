@@ -1,7 +1,7 @@
 // Analytics Configuration
 export const ANALYTICS_CONFIG = {
   // Google Analytics 4
-  GA_MEASUREMENT_ID: process.env.REACT_APP_GA_MEASUREMENT_ID || 'GA_MEASUREMENT_ID',
+  GA_MEASUREMENT_ID: process.env.REACT_APP_GA_MEASUREMENT_ID || 'G-4T24BJP830',
   
   // Event Categories
   EVENT_CATEGORIES: {

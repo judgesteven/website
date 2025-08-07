@@ -21,7 +21,7 @@ export const useAnalytics = () => {
 
   const trackPageView = useCallback((pageName, pagePath) => {
     if (typeof gtag !== 'undefined') {
-      gtag('config', 'GA_MEASUREMENT_ID', {
+      gtag('config', 'G-4T24BJP830', {
         page_title: pageName,
         page_location: pagePath
       });
