@@ -300,7 +300,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('gamelayer') && (lowerMessage.includes('help') || lowerMessage.includes('can') || lowerMessage.includes('do'))) {
     conversationContext.lastTopic = 'capabilities';
     return {
-      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on:\n\n• Features: Points, leaderboards, achievements, missions, streaks\n• Implementation: Phase-by-phase setup and best practices\n• Pricing: All four tiers with detailed features and costs\n• Use Cases: E-commerce, fitness, education, employee engagement\n• Case Studies: Real-world examples with results",
+      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on gamification strategies, implementation best practices, and user engagement techniques.",
       type: "capabilities"
     };
   }

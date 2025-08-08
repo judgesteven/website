@@ -385,7 +385,7 @@ const Testing = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me about gamification or GameLayer..."
+                    placeholder="Ask me anything about gamification..."
                     className="flex-1 bg-white/20 backdrop-blur border border-white/30 rounded-xl px-6 py-3 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all duration-200 resize-none"
                     rows="2"
                     disabled={isLoading}
@@ -401,7 +401,7 @@ const Testing = () => {
                   </motion.button>
                 </div>
                 <p className="text-xs text-gray-400 mt-3 text-center">
-                  💡 Try asking: "What is gamification?" or "How do I boost loyalty with gamification?" or "How can GameLayer help me create user engagement?"
+                  💡 Try asking: "What is gamification?" or "How do I boost customer loyalty by adding gamification?"
                 </p>
               </div>
             </motion.div>

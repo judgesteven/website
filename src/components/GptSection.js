@@ -7,7 +7,7 @@ const GptSection = () => {
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: "Hi! I'm your Gamification Assistant, here to provide expert guidance on gamification, implementation strategies, and best practices for user engagement. What would you like to know?",
+      text: "Hi! I'm your Gamification Assistant, here to provide expert guidance on gamification strategies, implementation best practices, and user engagement techniques. What would you like to know?",
       sender: 'ai',
       timestamp: new Date(),
       type: 'welcome'
@@ -31,11 +31,11 @@ const GptSection = () => {
   // Suggested questions for better UX
   const suggestedQuestions = [
     "How can gamification boost my loyalty program?",
-    "What are GameLayer's pricing plans?",
-    "How do I implement gamification in my app?",
     "What are the best practices for user engagement?",
+    "How do I implement gamification in my app?",
     "Can you show me some gamification examples?",
-    "How does GameLayer's API work?"
+    "What makes gamification effective?",
+    "How do I measure gamification success?"
   ];
 
   const handleSendMessage = async (message = inputMessage) => {
@@ -277,7 +277,7 @@ const GptSection = () => {
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me about gamification or GameLayer..."
+                    placeholder="Ask me anything about gamification..."
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
                     rows="2"
                     disabled={isLoading}
