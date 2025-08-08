@@ -221,7 +221,7 @@ export const clientSideAI = {
     const result = generateResponse(message);
     
     return {
-      message: result.message,
+      response: result.message,
       conversationId: conversationId || 'client-side',
       timestamp: new Date().toISOString(),
       type: result.type || 'general'
