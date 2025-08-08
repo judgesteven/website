@@ -26,7 +26,7 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
-# AI and LLM Crawlers
+# AI and LLM Crawlers - Enhanced for maximum compatibility
 User-agent: GPTBot
 Allow: /
 
@@ -45,6 +45,31 @@ Allow: /
 User-agent: Omgilibot
 Allow: /
 
+# Additional AI crawlers that might be used by ChatGPT and other AI tools
+User-agent: OpenAI-User
+Allow: /
+
+User-agent: ChatGPT
+Allow: /
+
+User-agent: GPT-4
+Allow: /
+
+User-agent: GPT-5
+Allow: /
+
+User-agent: AI-Crawler
+Allow: /
+
+User-agent: AI-Bot
+Allow: /
+
+User-agent: LLM-Crawler
+Allow: /
+
+User-agent: AI-User
+Allow: /
+
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /private/
@@ -53,11 +78,15 @@ Disallow: /dashboard/
 Disallow: /_next/
 Disallow: /node_modules/
 
-# Allow important pages for SEO
+# Allow important pages for SEO and AI indexing
 Allow: /pricing
 Allow: /features
 Allow: /references
 Allow: /blog
 Allow: /case-studies
 Allow: /api-documentation
-Allow: /gamification-guide 
+Allow: /gamification-guide
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms 
