@@ -5,8 +5,8 @@ const getApiEndpoint = () => {
     // Local development - use the proxy endpoint
     return '/chat/api/ai';
   } else {
-    // Production (Vercel) - use the API route
-    return '/api/chat/ai';
+    // Production (Vercel) - use the simplified API route
+    return '/api/chat-ai';
   }
 };
 
