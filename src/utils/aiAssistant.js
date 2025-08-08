@@ -126,21 +126,21 @@ function generateResponse(message) {
   // API-specific questions
   if (lowerMessage.includes('api') && (lowerMessage.includes('player') || lowerMessage.includes('create'))) {
     return {
-      text: "For creating players, use POST /players with JSON payload: { id, name, description }. Need a sample request?",
+      message: "For creating players, use POST /players with JSON payload: { id, name, description }. Need a sample request?",
       type: "api_help"
     };
   }
   
   if (lowerMessage.includes('api') && lowerMessage.includes('achievement')) {
     return {
-      text: "Award achievements with POST /achievements. Send player ID and achievement type. Want the exact endpoint?",
+      message: "Award achievements with POST /achievements. Send player ID and achievement type. Want the exact endpoint?",
       type: "api_help"
     };
   }
   
   if (lowerMessage.includes('api') && lowerMessage.includes('leaderboard')) {
     return {
-      text: "Get leaderboards with GET /leaderboards. Can filter by time period, category, or player group.",
+      message: "Get leaderboards with GET /leaderboards. Can filter by time period, category, or player group.",
       type: "api_help"
     };
   }
@@ -148,21 +148,21 @@ function generateResponse(message) {
   // Gamification mechanics
   if (lowerMessage.includes('retention') || lowerMessage.includes('keep users')) {
     return {
-      text: "Boost retention with daily streaks + XP rewards. Add badges for milestones. Gamify the routine! 💪",
+      message: "Boost retention with daily streaks + XP rewards. Add badges for milestones. Gamify the routine! 💪",
       type: "strategy"
     };
   }
   
   if (lowerMessage.includes('engagement') || lowerMessage.includes('active users')) {
     return {
-      text: "Drive engagement with challenges, leaderboards, and social features. Make it competitive and shareable! 🏆",
+      message: "Drive engagement with challenges, leaderboards, and social features. Make it competitive and shareable! 🏆",
       type: "strategy"
     };
   }
   
   if (lowerMessage.includes('loyalty') || lowerMessage.includes('customer')) {
     return {
-      text: "Build loyalty with tier-based rewards, exclusive access, and personalized experiences. Points + perks = happy customers! ⭐",
+      message: "Build loyalty with tier-based rewards, exclusive access, and personalized experiences. Points + perks = happy customers! ⭐",
       type: "strategy"
     };
   }
@@ -170,14 +170,14 @@ function generateResponse(message) {
   // Use case specific
   if (lowerMessage.includes('fitness') || lowerMessage.includes('workout')) {
     return {
-      text: "Fitness apps: Daily workout streaks, achievement badges, social challenges, progress tracking. Turn sweat into wins! 💪",
+      message: "Fitness apps: Daily workout streaks, achievement badges, social challenges, progress tracking. Turn sweat into wins! 💪",
       type: "use_case"
     };
   }
   
   if (lowerMessage.includes('ecommerce') || lowerMessage.includes('shopping')) {
     return {
-      text: "E-commerce: Loyalty points, tier benefits, referral rewards, seasonal challenges. Shop + earn = repeat customers! 🛒",
+      message: "E-commerce: Loyalty points, tier benefits, referral rewards, seasonal challenges. Shop + earn = repeat customers! 🛒",
       type: "use_case"
     };
   }
@@ -186,7 +186,7 @@ function generateResponse(message) {
   if (knowledge && knowledge.mechanics) {
     const mechanics = knowledge.mechanics.slice(0, 3).join(", ");
     return {
-      text: `Key gamification mechanics: ${mechanics}. Start with one, measure impact, then scale! 🎮`,
+      message: `Key gamification mechanics: ${mechanics}. Start with one, measure impact, then scale! 🎮`,
       type: "mechanics"
     };
   }
@@ -194,21 +194,21 @@ function generateResponse(message) {
   if (knowledge && knowledge.strategies) {
     const strategies = knowledge.strategies.slice(0, 2).join(" + ");
     return {
-      text: `Loyalty strategy: ${strategies}. Combine for maximum impact! 🎯`,
+      message: `Loyalty strategy: ${strategies}. Combine for maximum impact! 🎯`,
       type: "strategy"
     };
   }
   
   if (knowledge && knowledge.useCase) {
     return {
-      text: `Perfect use case: ${knowledge.useCase}. Ready to implement with GameLayer! 🚀`,
+      message: `Perfect use case: ${knowledge.useCase}. Ready to implement with GameLayer! 🚀`,
       type: "use_case"
     };
   }
   
   // Default response for gamification focus
   return {
-    text: "I'm your gamification expert! Ask me about user engagement, loyalty programs, retention strategies, or GameLayer's API. What's your goal? 🎮",
+    message: "I'm your gamification expert! Ask me about user engagement, loyalty programs, retention strategies, or GameLayer's API. What's your goal? 🎮",
     type: "general"
   };
 }
@@ -221,7 +221,7 @@ export const clientSideAI = {
     const result = generateResponse(message);
     
     return {
-      message: result.text,
+      message: result.message,
       conversationId: conversationId || 'client-side',
       timestamp: new Date().toISOString(),
       type: result.type || 'general'
