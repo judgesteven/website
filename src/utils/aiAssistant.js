@@ -290,24 +290,7 @@ function searchKnowledgeBase(query) {
   return null;
 }
 
-function detectFollowUpQuestion(message, context) {
-  const lowerMessage = message.toLowerCase();
-  
-  // Follow-up indicators
-  const followUpIndicators = [
-    'what about', 'how about', 'and', 'also', 'what if', 'can you', 'tell me more',
-    'explain', 'elaborate', 'details', 'specific', 'example', 'instance'
-  ];
-  
-  // Check if this is likely a follow-up
-  const isFollowUp = followUpIndicators.some(indicator => lowerMessage.includes(indicator));
-  
-  if (isFollowUp && context.lastTopic) {
-    return true;
-  }
-  
-  return false;
-}
+
 
 function generateContextualResponse(message, context) {
   const lowerMessage = message.toLowerCase();
