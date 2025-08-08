@@ -15,6 +15,7 @@ export const sendMessage = async (message, conversationId) => {
   
   console.log('Sending message to:', endpoint);
   console.log('Current hostname:', window.location.hostname);
+  console.log('Current URL:', window.location.href);
   
   try {
     const response = await fetch(endpoint, {
