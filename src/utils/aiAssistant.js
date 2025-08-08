@@ -300,7 +300,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('gamelayer') && (lowerMessage.includes('help') || lowerMessage.includes('can') || lowerMessage.includes('do'))) {
     conversationContext.lastTopic = 'capabilities';
     return {
-      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on features, implementation, pricing, or use cases.",
+      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on:\n\n• Features: Points, leaderboards, achievements, missions, streaks\n• Implementation: Phase-by-phase setup and best practices\n• Pricing: All four tiers with detailed features and costs\n• Use Cases: E-commerce, fitness, education, employee engagement\n• Case Studies: Real-world examples with results",
       type: "capabilities"
     };
   }
@@ -351,6 +351,22 @@ function generateExpertResponse(message) {
     return {
       message: "Customer loyalty programs are essential for long-term business success, and gamification makes them more engaging and effective. Modern loyalty programs go beyond simple points - they create emotional connections through tier systems, exclusive access, personalized rewards, and community features. GameLayer's platform supports sophisticated loyalty strategies with flexible reward systems, social features, and advanced analytics. Successful programs like Starbucks Rewards and Sephora Beauty Insider show how gamification can drive repeat purchases and increase customer lifetime value. What type of loyalty program are you considering?",
       type: "loyalty"
+    };
+  }
+
+  if (lowerMessage.includes('use case') || lowerMessage.includes('use cases') || lowerMessage.includes('examples')) {
+    conversationContext.lastTopic = 'useCases';
+    return {
+      message: "Here are detailed use cases for GameLayer gamification:\n\nE-commerce & Retail:\n• Loyalty points for purchases and actions\n• Tier-based reward systems (Bronze, Silver, Gold)\n• Referral programs with bonus rewards\n• Seasonal challenges and limited-time events\n• Benefits: Increase customer lifetime value by 30-50%\n\nFitness & Wellness:\n• Workout tracking and progress visualization\n• Achievement badges for milestones\n• Social challenges and team competitions\n• Streak tracking for consistency\n• Benefits: Increase workout consistency by 40-60%\n\nEducation & Learning:\n• Progress tracking and skill badges\n• Study streaks and consistency rewards\n• Peer competitions and leaderboards\n• Benefits: Increase study time by 45%\n\nEmployee Engagement:\n• Performance tracking and recognition\n• Team challenges and competitions\n• Skill development and certification badges\n• Benefits: Increase employee satisfaction by 40%\n\nWhich use case interests you most? I can provide specific implementation details.",
+      type: "useCases"
+    };
+  }
+
+  if (lowerMessage.includes('implementation') || lowerMessage.includes('how to implement') || lowerMessage.includes('phases')) {
+    conversationContext.lastTopic = 'implementation';
+    return {
+      message: "Here's the detailed implementation approach for GameLayer:\n\nPhase 1: Foundation (1-2 weeks)\n• Basic points system and simple achievements\n• User profiles and basic analytics\n• Start with core gamification elements\n\nPhase 2: Social Features (2-3 weeks)\n• Leaderboards and social sharing\n• Community features and team challenges\n• Add social elements to increase engagement\n\nPhase 3: Advanced Mechanics (3-4 weeks)\n• Complex challenges and personalization\n• Advanced analytics and A/B testing\n• Implement sophisticated mechanics\n\nPhase 4: Optimization (Ongoing)\n• Performance optimization and advanced reporting\n• Custom integrations and white-label options\n• Continuously optimize based on user behavior\n\nBest Practices:\n• Start simple - don't overwhelm users initially\n• Make rewards meaningful and achievable\n• Use data to iterate and improve continuously\n• Ensure mobile-first design and accessibility\n\nWhat specific phase would you like to focus on?",
+      type: "implementation"
     };
   }
 

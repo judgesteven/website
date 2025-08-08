@@ -94,24 +94,146 @@ const gamelayerKnowledge = {
     {
       title: 'Veikkaus Points',
       description: 'Finnish National Lottery loyalty experience with challenges and rewards',
-      category: 'Gaming & Lottery'
+      category: 'Gaming & Lottery',
+      details: 'Implemented points system, daily challenges, and reward redemption. Increased user engagement by 45% and retention by 30%.'
     },
     {
       title: 'Reima GO!',
       description: 'Kids learning adventure with collaborative physical activity',
-      category: 'Kids & Education'
+      category: 'Kids & Education',
+      details: 'Created team-based challenges, achievement badges, and progress tracking. Boosted daily active users by 60% and learning completion rates by 40%.'
     },
     {
       title: 'Finnair',
       description: 'Airline loyalty program with personalized non-transactional tasks',
-      category: 'Travel & Aviation'
+      category: 'Travel & Aviation',
+      details: 'Developed personalized missions, tier-based rewards, and social features. Improved customer loyalty scores by 35% and repeat bookings by 25%.'
     },
     {
       title: 'Baaz',
       description: 'Social platform gamification with content creation challenges',
-      category: 'Social Media'
+      category: 'Social Media',
+      details: 'Implemented content creation challenges, community leaderboards, and creator rewards. Increased content creation by 50% and user engagement by 40%.'
     }
   ],
+  useCases: {
+    ecommerce: {
+      title: 'E-commerce & Retail',
+      description: 'Boost customer loyalty and repeat purchases',
+      implementation: [
+        'Loyalty points for purchases and actions',
+        'Tier-based reward systems (Bronze, Silver, Gold)',
+        'Referral programs with bonus rewards',
+        'Seasonal challenges and limited-time events',
+        'Personalized recommendations based on behavior',
+        'Social sharing and community features'
+      ],
+      benefits: [
+        'Increase customer lifetime value by 30-50%',
+        'Boost repeat purchase rates by 25-40%',
+        'Improve customer retention by 35%',
+        'Increase average order value by 20%'
+      ],
+      examples: ['Starbucks Rewards', 'Sephora Beauty Insider', 'Amazon Prime']
+    },
+    fitness: {
+      title: 'Fitness & Wellness',
+      description: 'Drive user engagement and habit formation',
+      implementation: [
+        'Workout tracking and progress visualization',
+        'Achievement badges for milestones',
+        'Social challenges and team competitions',
+        'Streak tracking for consistency',
+        'Progress sharing and community support',
+        'Personalized workout recommendations'
+      ],
+      benefits: [
+        'Increase workout consistency by 40-60%',
+        'Improve user retention by 50%',
+        'Boost social engagement by 70%',
+        'Increase premium subscriptions by 30%'
+      ],
+      examples: ['Nike Run Club', 'Strava', 'Fitbit', 'MyFitnessPal']
+    },
+    education: {
+      title: 'Education & Learning',
+      description: 'Make learning engaging and addictive',
+      implementation: [
+        'Progress tracking and skill badges',
+        'Study streaks and consistency rewards',
+        'Peer competitions and leaderboards',
+        'Achievement system for milestones',
+        'Personalized learning paths',
+        'Community challenges and group study'
+      ],
+      benefits: [
+        'Increase study time by 45%',
+        'Improve course completion rates by 60%',
+        'Boost knowledge retention by 35%',
+        'Increase user satisfaction by 50%'
+      ],
+      examples: ['Duolingo', 'Khan Academy', 'Coursera', 'Codecademy']
+    },
+    employee: {
+      title: 'Employee Engagement',
+      description: 'Improve workplace satisfaction and productivity',
+      implementation: [
+        'Performance tracking and recognition',
+        'Team challenges and competitions',
+        'Skill development and certification badges',
+        'Peer recognition and social features',
+        'Wellness challenges and health tracking',
+        'Career progression and level systems'
+      ],
+      benefits: [
+        'Increase employee satisfaction by 40%',
+        'Improve productivity by 25%',
+        'Reduce turnover by 30%',
+        'Boost team collaboration by 50%'
+      ],
+      examples: ['Microsoft Viva', 'Slack integrations', 'HR platforms']
+    }
+  },
+  implementation: {
+    phases: [
+      {
+        phase: 'Phase 1: Foundation',
+        duration: '1-2 weeks',
+        features: ['Basic points system', 'Simple achievements', 'User profiles', 'Basic analytics'],
+        description: 'Start with core gamification elements to establish user engagement patterns.'
+      },
+      {
+        phase: 'Phase 2: Social Features',
+        duration: '2-3 weeks',
+        features: ['Leaderboards', 'Social sharing', 'Community features', 'Team challenges'],
+        description: 'Add social elements to increase engagement and create community.'
+      },
+      {
+        phase: 'Phase 3: Advanced Mechanics',
+        duration: '3-4 weeks',
+        features: ['Complex challenges', 'Personalization', 'Advanced analytics', 'A/B testing'],
+        description: 'Implement sophisticated mechanics and optimization features.'
+      },
+      {
+        phase: 'Phase 4: Optimization',
+        duration: 'Ongoing',
+        features: ['Performance optimization', 'Advanced reporting', 'Custom integrations', 'White-label options'],
+        description: 'Continuously optimize based on user behavior and business goals.'
+      }
+    ],
+    bestPractices: [
+      'Start simple - don\'t overwhelm users initially',
+      'Make rewards meaningful and achievable',
+      'Use data to iterate and improve continuously',
+      'Ensure mobile-first design and accessibility',
+      'Test with real users before scaling',
+      'Align with business objectives and user goals',
+      'Maintain balance between fun and functionality',
+      'Provide clear progression paths',
+      'Include social elements for community building',
+      'Measure success through engagement metrics'
+    ]
+  },
   apiEndpoints: [
     '/auth/login - User authentication',
     '/auth/register - User registration',
@@ -206,16 +328,41 @@ function searchKnowledgeBase(query) {
     }
   });
   
-  // Search case studies
+  // Search case studies with enhanced details
   gamelayerKnowledge.caseStudies.forEach(study => {
     if (lowerQuery.includes(study.title.toLowerCase()) || 
-        lowerQuery.includes(study.category.toLowerCase())) {
+        lowerQuery.includes(study.category.toLowerCase()) ||
+        lowerQuery.includes('case study') || lowerQuery.includes('case studies')) {
       results.push({
         type: 'caseStudy',
         data: study
       });
     }
   });
+  
+  // Search use cases
+  Object.keys(gamelayerKnowledge.useCases).forEach(useCaseKey => {
+    const useCase = gamelayerKnowledge.useCases[useCaseKey];
+    if (lowerQuery.includes(useCase.title.toLowerCase()) ||
+        lowerQuery.includes(useCaseKey) ||
+        lowerQuery.includes('use case') || lowerQuery.includes('use cases') ||
+        lowerQuery.includes('implementation') || lowerQuery.includes('examples')) {
+      results.push({
+        type: 'useCase',
+        key: useCaseKey,
+        data: useCase
+      });
+    }
+  });
+  
+  // Search implementation guidance
+  if (lowerQuery.includes('implementation') || lowerQuery.includes('phases') || 
+      lowerQuery.includes('best practices') || lowerQuery.includes('how to implement')) {
+    results.push({
+      type: 'implementation',
+      data: gamelayerKnowledge.implementation
+    });
+  }
   
   // Search gamification concepts
   Object.keys(gamificationKnowledge.concepts).forEach(concept => {
@@ -391,11 +538,19 @@ IMPORTANT GUIDELINES:
 - Always cite sources when using web search results
 - Combine local knowledge with web search results for comprehensive answers
 
+CRITICAL: When you say you can provide detailed guidance, ACTUALLY PROVIDE IT. Don't just make promises - deliver specific, actionable information.
+
 PRICING QUESTIONS:
 - When asked about pricing, always provide all available pricing tiers
 - Include user limits, features, and pricing for each tier
 - Mention that Enterprise pricing is custom for larger deployments
 - Suggest the best plan based on user count if mentioned
+
+USE CASES & IMPLEMENTATION:
+- When asked about use cases, provide specific examples with implementation details
+- Include benefits, features, and real-world examples
+- When asked about implementation, provide phase-by-phase guidance
+- Include best practices and actionable steps
 
 FORMATTING RULES:
 - Use bullet points (•) for lists
@@ -426,6 +581,20 @@ PERSONALITY: You're an expert gamification consultant who's passionate about hel
           userMessage += `- Case Study: ${result.data.title} (${result.data.category})\n`;
         } else if (result.type === 'concept') {
           userMessage += `- ${result.concept}: ${result.data}\n`;
+        } else if (result.type === 'useCase') {
+          userMessage += `- Use Case: ${result.data.title}\n`;
+          userMessage += `  Description: ${result.data.description}\n`;
+          userMessage += `  Implementation: ${result.data.implementation.join(', ')}\n`;
+          userMessage += `  Benefits: ${result.data.benefits.join(', ')}\n`;
+          userMessage += `  Examples: ${result.data.examples.join(', ')}\n`;
+        } else if (result.type === 'implementation') {
+          userMessage += `- Implementation Phases:\n`;
+          result.data.phases.forEach(phase => {
+            userMessage += `  Phase ${phase.phase}: ${phase.duration}\n`;
+            userMessage += `    Features: ${phase.features.join(', ')}\n`;
+            userMessage += `    Description: ${phase.description}\n`;
+          });
+          userMessage += `- Best Practices: ${result.data.bestPractices.join(', ')}\n`;
         }
       });
     }
