@@ -1,3 +1,5 @@
+import { clientSideAI } from './aiAssistant';
+
 // API endpoint configuration for different environments
 const getApiEndpoint = () => {
   // Check if we're in development (localhost) or production (Vercel)
@@ -38,7 +40,8 @@ export const sendMessage = async (message, conversationId) => {
       
       // Special handling for 404 errors
       if (response.status === 404) {
-        throw new Error(`API endpoint not found. Please check if the backend is properly deployed. Status: ${response.status}, Message: ${errorText}`);
+        console.log('API endpoint not found, using client-side AI as fallback');
+        return await clientSideAI.sendMessage(message, conversationId);
       }
       
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
@@ -50,16 +53,8 @@ export const sendMessage = async (message, conversationId) => {
   } catch (error) {
     console.error('API Call Error:', error);
     
-    // Return a fallback response for production errors
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      return {
-        response: "I'm currently experiencing technical difficulties. Please try again later or contact support. In the meantime, you can learn more about GameLayer's gamification features and pricing on our website.",
-        conversationId: conversationId || 'error',
-        knowledgeBaseResults: [],
-        timestamp: new Date().toISOString()
-      };
-    }
-    
-    throw error;
+    // Use client-side AI as fallback for any errors
+    console.log('Using client-side AI as fallback due to API error');
+    return await clientSideAI.sendMessage(message, conversationId);
   }
 }; 
