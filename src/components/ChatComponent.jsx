@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Bot, Send, Sparkles } from "lucide-react";
+import { Bot, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sendMessage } from "../utils/api";
 
