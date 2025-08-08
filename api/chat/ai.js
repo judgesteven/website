@@ -212,6 +212,98 @@ function searchKnowledgeBase(query) {
   return results;
 }
 
+// Enhanced web search function using multiple sources
+async function searchWeb(query) {
+  try {
+    let searchResults = [];
+    
+    // Search using DuckDuckGo Instant Answer API
+    try {
+      const duckDuckGoUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&skip_disambig=1`;
+      const ddgResponse = await fetch(duckDuckGoUrl);
+      const ddgData = await ddgResponse.json();
+      
+      if (ddgData.Abstract) {
+        searchResults.push({
+          title: ddgData.Heading || 'Search Result',
+          content: ddgData.Abstract,
+          url: ddgData.AbstractURL || '',
+          source: 'DuckDuckGo'
+        });
+      }
+      
+      // Add related topics
+      if (ddgData.RelatedTopics && ddgData.RelatedTopics.length > 0) {
+        ddgData.RelatedTopics.slice(0, 2).forEach(topic => {
+          if (topic.Text) {
+            searchResults.push({
+              title: topic.Text.split(' - ')[0] || 'Related Topic',
+              content: topic.Text,
+              url: topic.FirstURL || '',
+              source: 'DuckDuckGo'
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error('DuckDuckGo search error:', error);
+    }
+    
+    // Search using Wikipedia API for additional context
+    try {
+      const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query.replace(/\s+/g, '_'))}`;
+      const wikiResponse = await fetch(wikiUrl);
+      const wikiData = await wikiResponse.json();
+      
+      if (wikiData.extract) {
+        searchResults.push({
+          title: wikiData.title || 'Wikipedia Result',
+          content: wikiData.extract,
+          url: wikiData.content_urls?.desktop?.page || '',
+          source: 'Wikipedia'
+        });
+      }
+    } catch (error) {
+      console.error('Wikipedia search error:', error);
+    }
+    
+    // Search for GameLayer-specific information
+    if (query.toLowerCase().includes('gamelayer') || query.toLowerCase().includes('game layer')) {
+      try {
+        const gamelayerSearchUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent('GameLayer gamification platform')}&format=json&no_html=1&skip_disambig=1`;
+        const glResponse = await fetch(gamelayerSearchUrl);
+        const glData = await glResponse.json();
+        
+        if (glData.Abstract) {
+          searchResults.push({
+            title: 'GameLayer Platform Information',
+            content: glData.Abstract,
+            url: glData.AbstractURL || '',
+            source: 'GameLayer Search'
+          });
+        }
+      } catch (error) {
+        console.error('GameLayer search error:', error);
+      }
+    }
+    
+    return searchResults;
+  } catch (error) {
+    console.error('Web search error:', error);
+    return [];
+  }
+}
+
+// Enhanced search function that combines local knowledge and web search
+async function enhancedSearch(query) {
+  const results = {
+    local: searchKnowledgeBase(query),
+    web: await searchWeb(query)
+  };
+  
+  return results;
+}
+
 export default async function handler(req, res) {
   // Enable CORS for Vercel
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -253,8 +345,10 @@ export default async function handler(req, res) {
       apiKey: process.env.OPENAI_API_KEY
     });
 
-    // Search knowledge base for relevant information
-    const knowledgeResults = searchKnowledgeBase(message);
+    // Search knowledge base and web for relevant information
+    const searchResults = await enhancedSearch(message);
+    const knowledgeResults = searchResults.local;
+    const webResults = searchResults.web;
     
     // Create system prompt with restricted scope and enhanced personality
     const systemPrompt = `You are a specialized Gamification Assistant focused on:
@@ -274,17 +368,23 @@ IMPORTANT GUIDELINES:
 - Reference GameLayer features and capabilities when relevant
 - Show enthusiasm for gamification and its benefits
 - Use plain text only (no markdown formatting)
+- If web search results are available, incorporate them into your response
+- Always cite sources when using web search results
+- Combine local knowledge with web search results for comprehensive answers
 
 FORMATTING RULES:
 - Use bullet points (•) for lists
 - Add line breaks between sections
 - Keep paragraphs short and readable
 - Use clear headings when appropriate
+- When citing web sources, mention the source briefly
 
-PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice.`;
+PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice. You have access to both local knowledge and real-time web search results to provide the most up-to-date information.`;
 
     // Create user message with enhanced context
     let userMessage = message;
+    
+    // Add local knowledge base results
     if (knowledgeResults.length > 0) {
       userMessage += '\n\nRelevant information from knowledge base:\n';
       knowledgeResults.forEach(result => {
@@ -300,6 +400,17 @@ PERSONALITY: You're an expert gamification consultant who's passionate about hel
           userMessage += `- Case Study: ${result.data.title} (${result.data.category})\n`;
         } else if (result.type === 'concept') {
           userMessage += `- ${result.concept}: ${result.data}\n`;
+        }
+      });
+    }
+    
+    // Add web search results
+    if (webResults.length > 0) {
+      userMessage += '\n\nRecent web search results:\n';
+      webResults.forEach(result => {
+        userMessage += `- ${result.title}: ${result.content}\n`;
+        if (result.url) {
+          userMessage += `  Source: ${result.url}\n`;
         }
       });
     }
@@ -323,6 +434,8 @@ PERSONALITY: You're an expert gamification consultant who's passionate about hel
       response: aiResponse,
       conversationId: conversationId || 'ai-chat',
       knowledgeBaseResults: knowledgeResults,
+      webSearchResults: webResults,
+      searchSources: webResults.map(result => result.source),
       timestamp: new Date().toISOString()
     });
 

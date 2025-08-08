@@ -292,7 +292,7 @@ function generateExpertResponse(message) {
       (lowerMessage.includes('what is') && lowerMessage.includes('gamelayer'))) {
     conversationContext.lastTopic = 'overview';
     return {
-      message: "GameLayer is a comprehensive gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through game-like mechanics.\n\nKey Benefits:\n• Increase user engagement by 40-60%\n• Improve customer retention by 25-40%\n• Boost customer lifetime value\n• Provide rich behavioral insights\n\nPerfect for e-commerce, mobile apps, fitness platforms, educational apps, and employee engagement programs.\n\nWhat specific aspect of GameLayer would you like to explore?",
+      message: "GameLayer is a comprehensive gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through game-like mechanics.\n\nKey Benefits:\n• Increase user engagement by 40-60%\n• Improve customer retention by 25-40%\n• Boost customer lifetime value\n• Provide rich behavioral insights\n\nPerfect for e-commerce, mobile apps, fitness platforms, educational apps, and employee engagement programs.\n\nI can also search the web for the latest information about GameLayer and gamification trends. What specific aspect would you like to explore?",
       type: "overview"
     };
   }
