@@ -249,13 +249,13 @@ const Testing = () => {
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="flex justify-center items-center"
               >
-                <Link to="/api">
+                <Link to="/references">
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-4 rounded-full text-lg font-bold text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
                   >
-                    API Docs
+                    See Examples
                   </motion.button>
                 </Link>
               </motion.div>
