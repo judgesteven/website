@@ -39,7 +39,7 @@ This guide will help you set up comprehensive analytics tracking for your GameLa
    - Go to [Google Analytics](https://analytics.google.com/)
    - Create a new property for "GameLayer"
    - Choose "Web" as the platform
-   - Enter your website URL: `https://gamelayer.com`
+   - Enter your website URL: `https://gamelayer.io`
 
 2. **Get Measurement ID:**
    - Copy your GA4 Measurement ID (format: G-XXXXXXXXXX)

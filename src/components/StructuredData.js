@@ -9,11 +9,11 @@ const StructuredData = () => {
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "GameLayer",
-          "url": "https://gamelayer.com",
+          "url": "https://gamelayer.io",
           "description": "Leading gamification platform for user engagement, loyalty programs, and retention strategies",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://gamelayer.com/search?q={search_term_string}",
+            "target": "https://gamelayer.io/search?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         })}
@@ -24,8 +24,8 @@ const StructuredData = () => {
           "@context": "https://schema.org",
           "@type": "Organization",
           "name": "GameLayer",
-          "url": "https://gamelayer.com",
-          "logo": "https://gamelayer.com/gamelayer-logo.png",
+          "url": "https://gamelayer.io",
+          "logo": "https://gamelayer.io/gamelayer-logo.png",
           "description": "Gamification platform provider for user engagement and loyalty programs",
           "sameAs": [
             "https://twitter.com/gamelayer",

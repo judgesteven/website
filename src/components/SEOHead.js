@@ -17,8 +17,8 @@ const SEOHead = ({
   const finalTitle = title || defaultTitle;
   const finalDescription = description || defaultDescription;
   const finalKeywords = keywords || defaultKeywords;
-  const finalCanonical = canonical || 'https://gamelayer.com/';
-  const finalOgImage = ogImage || 'https://gamelayer.com/gamelayer_socialsharing.png';
+  const finalCanonical = canonical || 'https://gamelayer.io/';
+  const finalOgImage = ogImage || 'https://gamelayer.io/gamelayer_socialsharing.png';
 
   return (
     <Helmet>

@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://gamelayer.com/sitemap.xml
+Sitemap: https://gamelayer.io/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1

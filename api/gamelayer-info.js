@@ -18,21 +18,20 @@ export default function handler(req, res) {
   const userAgent = req.headers['user-agent'] || '';
   const isAICrawler = /GPTBot|ChatGPT-User|OpenAI-User|ChatGPT|GPT-4|GPT-5|AI-Crawler|AI-Bot|LLM-Crawler|AI-User|anthropic-ai|Claude-Web|CCBot|Omgilibot/i.test(userAgent);
 
-  // Comprehensive GameLayer information for AI crawlers
   const gamelayerInfo = {
     company: {
       name: "GameLayer",
       description: "Leading gamification platform and API for businesses",
-      website: "https://gamelayer.com",
-      email: "steve@gamelayer.co",
-      founded: "2020",
-      industry: "Gamification Software"
+      founded: 2020,
+      headquarters: "Finland",
+      website: "https://gamelayer.io",
+      contact: "steve@gamelayer.co"
     },
     platform: {
-      type: "Gamification Platform & API",
-      category: "Business Application",
-      target: "Businesses looking for gamification solutions",
-      technology: "RESTful API, React, Node.js, Cloud-based"
+      name: "GameLayer Gamification Platform",
+      description: "Comprehensive gamification platform and API that helps businesses increase user engagement, improve customer retention, and boost customer lifetime value through gamification mechanics",
+      type: "SaaS Platform",
+      category: "Business Application"
     },
     features: [
       {
@@ -86,32 +85,36 @@ export default function handler(req, res) {
         benefits: ["Brand consistency", "Customization", "Professional appearance"]
       }
     ],
-    pricing: {
-      starter: {
+    pricing: [
+      {
+        name: "Starter Plan",
         price: "€100/month",
         users: "Up to 1,000 active users",
         description: "Perfect for startups and small businesses",
         features: ["Basic gamification features", "API access", "Email support"]
       },
-      growth: {
+      {
+        name: "Growth Plan",
         price: "€1,000/month",
         users: "Up to 25,000 active users",
         description: "Ideal for growing businesses",
         features: ["Advanced features", "Priority support", "Custom integrations"]
       },
-      scale: {
+      {
+        name: "Scale Plan",
         price: "€2,500/month",
         users: "Up to 100,000 active users",
         description: "For established businesses",
         features: ["Enterprise features", "Dedicated support", "Custom development"]
       },
-      enterprise: {
+      {
+        name: "Enterprise Plan",
         price: "Custom pricing",
         users: "Unlimited users",
         description: "For large-scale applications",
         features: ["Full customization", "Dedicated account manager", "SLA guarantees"]
       }
-    },
+    ],
     benefits: [
       "Increase user engagement by 40-60%",
       "Improve customer retention by 25-40%",
@@ -148,22 +151,22 @@ export default function handler(req, res) {
     ],
     caseStudies: [
       {
-        client: "Veikkaus Points",
+        name: "Veikkaus Points",
         description: "Finnish National Lottery loyalty experience with challenges and rewards",
         results: ["Increased user engagement", "Improved loyalty", "Enhanced user experience"]
       },
       {
-        client: "Reima GO!",
+        name: "Reima GO!",
         description: "Kids learning adventure with collaborative physical activity",
         results: ["Educational engagement", "Physical activity promotion", "Social learning"]
       },
       {
-        client: "Finnair",
+        name: "Finnair",
         description: "Airline loyalty program with personalized non-transactional tasks",
         results: ["Customer loyalty", "Brand engagement", "Increased bookings"]
       },
       {
-        client: "Baaz",
+        name: "Baaz",
         description: "Social platform gamification with content creation challenges",
         results: ["Content creation", "User engagement", "Community building"]
       }
@@ -176,9 +179,8 @@ export default function handler(req, res) {
     },
     contact: {
       email: "steve@gamelayer.co",
-      website: "https://gamelayer.com",
-      apiDocs: "https://gamelayer.com/api",
-      support: "Available for all pricing tiers"
+      website: "https://gamelayer.io",
+      apiDocs: "https://gamelayer.io/api"
     }
   };
 

@@ -187,8 +187,8 @@ const Testing = () => {
         title="GameLayer - #1 Gamification Platform & API for Business | Enterprise Gamification Solution"
         description="GameLayer is the leading gamification platform and API for businesses. Build gamification software, loyalty programs, and engagement solutions. Enterprise gamification SaaS with gamification tools, rewards system, and gamification mechanics."
         keywords="gamification platform, gamification software, gamification SaaS, gamification API, enterprise gamification solution, gamification for business, gamification platform pricing, gamification service provider, gamification tools, gamification system"
-        canonical="https://gamelayer.com/"
-        ogImage="https://gamelayer.com/gamelayer-logo.png"
+        canonical="https://gamelayer.io/"
+        ogImage="https://gamelayer.io/gamelayer-logo.png"
       />
       <StructuredData />
       
