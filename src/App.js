@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import DashboardLogin from './components/DashboardLogin';
-import Pricing from './components/Pricing';
-import Home from './components/Home';
-import References from './components/References';
-import ChatPage from './components/ChatPage';
-import ApiPage from './components/ApiPage';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { useAnalytics } from './hooks/useAnalytics';
+
+// Lazy load components for better performance
+const DashboardLogin = lazy(() => import('./components/DashboardLogin'));
+const Pricing = lazy(() => import('./components/Pricing'));
+const Home = lazy(() => import('./components/Home'));
+const References = lazy(() => import('./components/References'));
+const ChatPage = lazy(() => import('./components/ChatPage'));
+const ApiPage = lazy(() => import('./components/ApiPage'));
+
+// Loading component for lazy-loaded routes
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+  </div>
+);
 
 // Component to track page views
 function PageTracker() {
@@ -32,14 +41,16 @@ function App() {
         <PageTracker />
         <ScrollToTop />
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/dashboard" element={<DashboardLogin />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/references" element={<References />} />
-          <Route path="/api" element={<ApiPage />} />
-        </Routes>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/dashboard" element={<DashboardLogin />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/references" element={<References />} />
+            <Route path="/api" element={<ApiPage />} />
+          </Routes>
+        </Suspense>
         <Footer />
       </div>
     </Router>
