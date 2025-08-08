@@ -2,6 +2,28 @@ import OpenAI from 'openai';
 
 // GameLayer Knowledge Base
 const gamelayerKnowledge = {
+  overview: {
+    name: 'GameLayer',
+    description: 'GameLayer is a comprehensive gamification platform that enables businesses to implement sophisticated engagement systems quickly and efficiently.',
+    what: 'GameLayer is a powerful gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through game-like mechanics.',
+    purpose: 'Transform your business with gamification - increase user engagement by 40-60%, improve retention by 25-40%, and build stronger customer relationships.',
+    keyBenefits: [
+      'Increase user engagement by 40-60%',
+      'Improve customer retention by 25-40%',
+      'Boost customer lifetime value',
+      'Enhance employee satisfaction and productivity',
+      'Provide rich behavioral insights',
+      'Scale from startups to enterprise'
+    ],
+    targetUsers: [
+      'E-commerce businesses seeking customer loyalty',
+      'Mobile apps wanting user engagement',
+      'Fitness and wellness platforms',
+      'Educational applications',
+      'Employee engagement programs',
+      'Gaming and entertainment platforms'
+    ]
+  },
   pricing: {
     starter: {
       title: 'Starter',
@@ -130,6 +152,18 @@ function searchKnowledgeBase(query) {
   const results = [];
   const lowerQuery = query.toLowerCase();
   
+  // Search for GameLayer overview queries
+  if (lowerQuery.includes('what is gamelayer') || 
+      lowerQuery.includes('what is game layer') ||
+      lowerQuery.includes('gamelayer') ||
+      lowerQuery.includes('game layer') ||
+      lowerQuery.includes('what is') && lowerQuery.includes('gamelayer')) {
+    results.push({
+      type: 'overview',
+      data: gamelayerKnowledge.overview
+    });
+  }
+  
   // Search pricing information
   Object.keys(gamelayerKnowledge.pricing).forEach(tier => {
     const plan = gamelayerKnowledge.pricing[tier];
@@ -233,11 +267,19 @@ You should ONLY answer questions related to these topics. If asked about other s
 IMPORTANT GUIDELINES:
 - Keep responses conversational, helpful, and engaging
 - Use bullet points when listing features or benefits
-- Maximum 3-4 sentences for most answers
+- Format responses in readable chunks with proper spacing
+- Use line breaks to separate different sections
+- Maximum 4-5 sentences for most answers
 - Be specific and actionable in your advice
 - Reference GameLayer features and capabilities when relevant
 - Show enthusiasm for gamification and its benefits
 - Use plain text only (no markdown formatting)
+
+FORMATTING RULES:
+- Use bullet points (•) for lists
+- Add line breaks between sections
+- Keep paragraphs short and readable
+- Use clear headings when appropriate
 
 PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice.`;
 
@@ -246,7 +288,11 @@ PERSONALITY: You're an expert gamification consultant who's passionate about hel
     if (knowledgeResults.length > 0) {
       userMessage += '\n\nRelevant information from knowledge base:\n';
       knowledgeResults.forEach(result => {
-        if (result.type === 'pricing') {
+        if (result.type === 'overview') {
+          userMessage += `- GameLayer Overview: ${result.data.what}\n`;
+          userMessage += `- Purpose: ${result.data.purpose}\n`;
+          userMessage += `- Key Benefits: ${result.data.keyBenefits.join(', ')}\n`;
+        } else if (result.type === 'pricing') {
           userMessage += `- ${result.data.title} plan: ${result.data.price} ${result.data.description} for ${result.data.users}\n`;
         } else if (result.type === 'feature') {
           userMessage += `- Feature: ${result.data}\n`;

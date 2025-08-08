@@ -288,10 +288,19 @@ function generateExpertResponse(message) {
   }
 
   // Enhanced expert-level responses for different topics
+  if (lowerMessage.includes('what is gamelayer') || lowerMessage.includes('what is game layer') || 
+      (lowerMessage.includes('what is') && lowerMessage.includes('gamelayer'))) {
+    conversationContext.lastTopic = 'overview';
+    return {
+      message: "GameLayer is a comprehensive gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through game-like mechanics.\n\nKey Benefits:\n• Increase user engagement by 40-60%\n• Improve customer retention by 25-40%\n• Boost customer lifetime value\n• Provide rich behavioral insights\n\nPerfect for e-commerce, mobile apps, fitness platforms, educational apps, and employee engagement programs.\n\nWhat specific aspect of GameLayer would you like to explore?",
+      type: "overview"
+    };
+  }
+
   if (lowerMessage.includes('gamelayer') && (lowerMessage.includes('help') || lowerMessage.includes('can') || lowerMessage.includes('do'))) {
     conversationContext.lastTopic = 'capabilities';
     return {
-      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy. We provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics. Our API-first approach makes integration seamless, and our platform scales from startups to enterprise. What specific aspect of gamification are you looking to implement? I can provide detailed guidance on features, implementation, pricing, or use cases.",
+      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on features, implementation, pricing, or use cases.",
       type: "capabilities"
     };
   }
@@ -299,7 +308,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
     conversationContext.lastTopic = 'pricing';
     return {
-      message: "GameLayer offers flexible pricing designed to scale with your business. Our Starter plan (€100/month) is perfect for small apps and MVPs with up to 1,000 users. Growth plan (€1,000/month) supports up to 25,000 users with advanced features. Scale plan (€2,500/month) handles up to 100,000 users with enterprise features. For larger deployments, our Enterprise plan offers unlimited users with custom pricing. All plans include full gamification features, API access, and support. Which plan aligns with your current user base and growth projections?",
+      message: "GameLayer offers flexible pricing designed to scale with your business.\n\nOur Starter plan (€100/month) is perfect for small apps and MVPs with up to 1,000 users.\n\nGrowth plan (€1,000/month) supports up to 25,000 users with advanced features.\n\nScale plan (€2,500/month) handles up to 100,000 users with enterprise features.\n\nFor larger deployments, our Enterprise plan offers unlimited users with custom pricing.\n\nAll plans include full gamification features, API access, and support.\n\nWhich plan aligns with your current user base and growth projections?",
       type: "pricing"
     };
   }
@@ -307,7 +316,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('implement') || lowerMessage.includes('setup') || lowerMessage.includes('start')) {
     conversationContext.lastTopic = 'implementation';
     return {
-      message: "Implementation with GameLayer is straightforward and developer-friendly. Start by creating an account and obtaining your API keys. Our SDKs are available for JavaScript, React, React Native, iOS, and Android, or you can use our REST API. Basic integration takes 1-2 days: create account, get API keys, initialize SDK, start tracking user actions. Full gamification system: 1-2 weeks. We provide comprehensive documentation, code examples, and support throughout the process. What's your current tech stack? I can provide specific implementation guidance.",
+      message: "Implementation with GameLayer is straightforward and developer-friendly.\n\nStart by creating an account and obtaining your API keys.\n\nOur SDKs are available for JavaScript, React, React Native, iOS, and Android, or you can use our REST API.\n\nBasic integration takes 1-2 days: create account, get API keys, initialize SDK, start tracking user actions.\n\nFull gamification system: 1-2 weeks.\n\nWe provide comprehensive documentation, code examples, and support throughout the process.\n\nWhat's your current tech stack? I can provide specific implementation guidance.",
       type: "implementation"
     };
   }
@@ -315,7 +324,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('gamification') && lowerMessage.includes('what')) {
     conversationContext.lastTopic = 'gamification';
     return {
-      message: "Gamification is the strategic application of game-design elements in non-game contexts to engage users and drive desired behaviors. It leverages human psychology - our natural desire for achievement, competition, collaboration, and progression. Key elements include points, badges, leaderboards, streaks, levels, challenges, and social features. The goal is to make everyday activities more engaging and rewarding, leading to increased user engagement (40-60% improvement), higher retention rates (25-40% boost), and improved customer loyalty. What specific aspect of gamification would you like to explore?",
+      message: "Gamification is the strategic application of game-design elements in non-game contexts to engage users and drive desired behaviors.\n\nIt leverages human psychology - our natural desire for achievement, competition, collaboration, and progression.\n\nKey elements include:\n• Points, badges, and leaderboards\n• Streaks, levels, and challenges\n• Social features and community interaction\n\nThe goal is to make everyday activities more engaging and rewarding, leading to increased user engagement (40-60% improvement), higher retention rates (25-40% boost), and improved customer loyalty.\n\nWhat specific aspect of gamification would you like to explore?",
       type: "gamification"
     };
   }
