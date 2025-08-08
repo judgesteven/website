@@ -4,8 +4,8 @@ import { useCallback } from 'react';
 export const useAnalytics = () => {
   const trackEvent = useCallback((eventName, parameters = {}) => {
     // Google Analytics 4
-    if (typeof gtag !== 'undefined') {
-      gtag('event', eventName, {
+    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
+      window.gtag('event', eventName, {
         event_category: 'user_engagement',
         event_label: parameters.label || 'gamelayer_interaction',
         value: parameters.value || 1,
@@ -20,8 +20,8 @@ export const useAnalytics = () => {
   }, []);
 
   const trackPageView = useCallback((pageName, pagePath) => {
-    if (typeof gtag !== 'undefined') {
-      gtag('config', 'G-4T24BJP830', {
+    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
+      window.gtag('config', 'G-4T24BJP830', {
         page_title: pageName,
         page_location: pagePath
       });

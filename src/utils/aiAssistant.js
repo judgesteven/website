@@ -1,296 +1,391 @@
-// Client-side AI Assistant for GameLayer
-// Enhanced with conversation context, detailed domain knowledge, and follow-up question handling
+// Enhanced AI Assistant for GameLayer - ChatGPT-like experience
+// Expert-level knowledge on gamification, user engagement, loyalty, retention, and GameLayer platform
 
 const gamelayerKnowledge = {
-  // Core gamification concepts with detailed explanations
+  // Comprehensive gamification knowledge
   gamification: {
-    mechanics: [
-      "Points & Rewards - Users earn points for actions, redeem for rewards",
-      "Badges & Achievements - Visual recognition for milestones and accomplishments", 
-      "Leaderboards - Competitive element to drive engagement",
-      "Streaks - Daily engagement through consecutive activity tracking",
-      "Levels & Progression - Clear advancement path with increasing challenges",
-      "Challenges & Missions - Time-limited goals to boost activity",
-      "Social Features - Team challenges, sharing achievements, peer recognition"
-    ],
-    benefits: [
-      "Increased user engagement by 40-60%",
-      "Higher retention rates through habit formation",
-      "Boosted customer loyalty and lifetime value",
-      "Improved user satisfaction and brand affinity",
-      "Data-driven insights into user behavior patterns"
-    ],
+    core: {
+      definition: "Gamification is the strategic application of game-design elements and principles in non-game contexts to engage users and drive desired behaviors.",
+      psychology: "Leverages human psychology: achievement, competition, collaboration, and progression to drive engagement and behavior change.",
+      elements: [
+        "Points & Rewards - Tangible recognition for actions",
+        "Badges & Achievements - Visual milestones and accomplishments",
+        "Leaderboards - Competitive social comparison",
+        "Streaks - Daily engagement through habit formation",
+        "Levels & Progression - Clear advancement paths",
+        "Challenges & Missions - Time-limited goals",
+        "Social Features - Community and peer interaction"
+      ]
+    },
+    benefits: {
+      engagement: "40-60% increase in user engagement",
+      retention: "25-40% improvement in user retention",
+      loyalty: "Significant boost in customer lifetime value",
+      satisfaction: "Higher user satisfaction and brand affinity",
+      data: "Rich behavioral insights for optimization"
+    },
     implementation: {
       phases: [
-        "Phase 1: Start with points and basic achievements",
-        "Phase 2: Add leaderboards and social features", 
-        "Phase 3: Implement challenges and missions",
-        "Phase 4: Advanced analytics and personalization"
+        "Phase 1: Foundation - Points, basic achievements, simple rewards",
+        "Phase 2: Social - Leaderboards, sharing, community features",
+        "Phase 3: Advanced - Challenges, missions, personalization",
+        "Phase 4: Optimization - Analytics, A/B testing, refinement"
       ],
       bestPractices: [
-        "Keep it simple initially - don't overwhelm users",
+        "Start simple - don't overwhelm users initially",
         "Make rewards meaningful and achievable",
-        "Use data to iterate and improve",
-        "Ensure mobile-first design",
-        "Test with real users before scaling"
+        "Use data to iterate and improve continuously",
+        "Ensure mobile-first design and accessibility",
+        "Test with real users before scaling",
+        "Align with business objectives and user goals",
+        "Maintain balance between fun and functionality"
+      ],
+      metrics: [
+        "Daily/Monthly Active Users (DAU/MAU)",
+        "Engagement Rate and Session Duration",
+        "Retention Rate (1-day, 7-day, 30-day)",
+        "Completion Rate for challenges/missions",
+        "Social Sharing and Referral Rates",
+        "Revenue per User (RPU) and Lifetime Value (LTV)"
       ]
     }
   },
 
-  // Loyalty program strategies with detailed examples
+  // Detailed loyalty program strategies
   loyalty: {
     strategies: [
-      "Tier-based rewards - Bronze, Silver, Gold with escalating benefits",
-      "Points multipliers - Bonus points for premium actions",
-      "Exclusive access - Early access, VIP events, special content",
-      "Personalization - Tailored rewards based on user behavior",
-      "Gamified challenges - Monthly/seasonal competitions",
-      "Referral programs - Reward users for bringing friends"
+      "Tier-based rewards - Bronze, Silver, Gold with escalating benefits and exclusivity",
+      "Points multipliers - Bonus points for premium actions and high-value behaviors",
+      "Exclusive access - Early access, VIP events, special content, beta features",
+      "Personalization - Tailored rewards based on user behavior and preferences",
+      "Gamified challenges - Monthly/seasonal competitions with leaderboards",
+      "Referral programs - Reward users for bringing friends and expanding the community"
     ],
-    examples: [
-      "Starbucks Rewards - Stars for purchases, free drinks, birthday rewards",
-      "Sephora Beauty Insider - Points, birthday gifts, exclusive events",
-      "Nike Run Club - Challenges, achievements, social sharing"
-    ],
+    examples: {
+      starbucks: "Starbucks Rewards - Stars for purchases, free drinks, birthday rewards, exclusive member events",
+      sephora: "Sephora Beauty Insider - Points, birthday gifts, exclusive events, early access to sales",
+      nike: "Nike Run Club - Challenges, achievements, social sharing, community challenges"
+    },
     metrics: [
-      "Customer Lifetime Value (CLV)",
-      "Retention rate improvements",
-      "Engagement frequency",
-      "Referral conversion rates",
-      "Redemption rates"
+      "Customer Lifetime Value (CLV) and Average Order Value (AOV)",
+      "Retention rate improvements and churn reduction",
+      "Engagement frequency and participation rates",
+      "Referral conversion rates and viral coefficient",
+      "Redemption rates and reward utilization",
+      "Member satisfaction and Net Promoter Score (NPS)"
     ]
   },
 
-  // User engagement techniques with implementation details
-  engagement: [
-    "Daily check-ins with streak tracking",
-    "Progressive challenges that increase in difficulty",
-    "Social features like team competitions",
-    "Personalized content and recommendations",
-    "Real-time feedback and notifications",
-    "Community features and user-generated content"
-  ],
-
-  // GameLayer specific features with detailed API information
-  gamelayerFeatures: {
-    core: [
-      "Player Management - Create, update, and track user profiles",
-      "Achievement System - Custom badges and milestone tracking",
-      "Leaderboards - Competitive rankings and social comparison",
-      "Points & Rewards - Flexible scoring and redemption system",
-      "Challenges & Missions - Time-limited goals and objectives",
-      "Analytics Dashboard - Real-time engagement metrics",
-      "API Integration - Easy implementation with existing platforms"
+  // User engagement techniques
+  engagement: {
+    techniques: [
+      "Daily check-ins with streak tracking and milestone celebrations",
+      "Progressive challenges that increase in difficulty and complexity",
+      "Social features like team competitions and collaborative goals",
+      "Personalized content and recommendations based on user behavior",
+      "Real-time feedback and notifications for immediate gratification",
+      "Community features and user-generated content sharing"
     ],
+    psychology: "Leverages FOMO (Fear of Missing Out), social proof, and immediate feedback loops to drive consistent engagement."
+  },
+
+  // Comprehensive GameLayer platform knowledge
+  gamelayer: {
+    overview: "GameLayer is a comprehensive gamification platform that enables businesses to implement sophisticated engagement systems quickly and efficiently.",
+    features: {
+      core: [
+        "Player Management - Create, update, and track user profiles with rich metadata",
+        "Achievement System - Custom badges and milestone tracking with flexible criteria",
+        "Leaderboards - Competitive rankings and social comparison with multiple timeframes",
+        "Points & Rewards - Flexible scoring and redemption system with custom rules",
+        "Challenges & Missions - Time-limited goals and objectives with progress tracking",
+        "Analytics Dashboard - Real-time engagement metrics and behavioral insights",
+        "API Integration - Easy implementation with existing platforms and workflows"
+      ],
+      advanced: [
+        "White-label Solutions - Custom branding and theming options",
+        "Multi-platform Support - Web, mobile, desktop, and IoT integration",
+        "Real-time Notifications - Instant feedback and engagement triggers",
+        "A/B Testing Framework - Optimize gamification elements",
+        "Advanced Analytics - Deep behavioral insights and predictive modeling"
+      ]
+    },
     api: {
-      players: {
-        endpoint: "POST /players",
-        description: "Create new player profiles",
-        payload: "{ id, name, description, metadata }",
-        response: "Player object with unique ID"
+      endpoints: {
+        players: {
+          create: "POST /players - Create new player profiles",
+          update: "PUT /players/{id} - Update player information",
+          get: "GET /players/{id} - Retrieve player details",
+          list: "GET /players - List players with filtering"
+        },
+        achievements: {
+          award: "POST /achievements - Award achievements to players",
+          list: "GET /achievements - List available achievements",
+          player: "GET /players/{id}/achievements - Get player achievements"
+        },
+        leaderboards: {
+          get: "GET /leaderboards - Retrieve competitive rankings",
+          create: "POST /leaderboards - Create custom leaderboards",
+          update: "PUT /leaderboards/{id} - Update leaderboard settings"
+        },
+        points: {
+          award: "POST /points - Award or deduct points from players",
+          balance: "GET /players/{id}/points - Get player point balance",
+          history: "GET /players/{id}/points/history - Get point transaction history"
+        },
+        challenges: {
+          create: "POST /challenges - Create time-limited missions",
+          list: "GET /challenges - List available challenges",
+          join: "POST /challenges/{id}/join - Join a challenge",
+          progress: "GET /challenges/{id}/progress - Get challenge progress"
+        },
+        events: {
+          track: "POST /events - Track user actions and behaviors",
+          analytics: "GET /events/analytics - Get event analytics and insights"
+        }
       },
-      achievements: {
-        endpoint: "POST /achievements", 
-        description: "Award achievements to players",
-        payload: "{ playerId, achievementType, metadata }",
-        response: "Achievement confirmation"
-      },
-      leaderboards: {
-        endpoint: "GET /leaderboards",
-        description: "Retrieve competitive rankings",
-        params: "timeframe, category, limit",
-        response: "Ranked player list"
-      },
-      points: {
-        endpoint: "POST /points",
-        description: "Award or deduct points from players",
-        payload: "{ playerId, points, reason, metadata }",
-        response: "Updated player points"
-      },
-      challenges: {
-        endpoint: "POST /challenges",
-        description: "Create time-limited missions",
-        payload: "{ title, description, duration, rewards }",
-        response: "Challenge object"
-      },
-      events: {
-        endpoint: "POST /events",
-        description: "Track user actions and behaviors",
-        payload: "{ playerId, eventType, data, timestamp }",
-        response: "Event confirmation"
+      integration: {
+        setup: [
+          "1. Create GameLayer account and obtain API keys",
+          "2. Install SDK or configure REST API client",
+          "3. Initialize with your app's configuration and settings",
+          "4. Start tracking user actions and behaviors",
+          "5. Monitor analytics and optimize based on insights"
+        ],
+        sdks: "Available for JavaScript, React, React Native, iOS, Android, Python, Node.js",
+        webhooks: "Real-time notifications for achievements, level-ups, milestones, and custom events"
       }
     },
-    integration: {
-      setup: [
-        "1. Create GameLayer account and get API keys",
-        "2. Install SDK or use REST API",
-        "3. Initialize with your app's configuration",
-        "4. Start tracking user actions",
-        "5. Monitor analytics and optimize"
-      ],
-      sdk: "Available for JavaScript, React, React Native, iOS, and Android",
-      webhooks: "Real-time notifications for achievements, level-ups, and milestones"
+    pricing: {
+      starter: {
+        title: "Starter",
+        users: "Up to 1,000 users",
+        price: "€100",
+        period: "per month",
+        features: [
+          "Up to 1,000 active users",
+          "All core gamification features",
+          "Unlimited elements and components",
+          "Email support with 24-hour response",
+          "Basic analytics and reporting",
+          "API access and SDK integration"
+        ],
+        bestFor: "Small apps, MVPs, and startups testing gamification"
+      },
+      growth: {
+        title: "Growth",
+        users: "Up to 25,000 users",
+        price: "€1,000",
+        period: "per month",
+        features: [
+          "Up to 25,000 active users",
+          "All gamification mechanics and features",
+          "Unlimited elements and advanced customization",
+          "Priority support with 8-hour response",
+          "Advanced analytics and behavioral insights",
+          "A/B testing framework and optimization tools"
+        ],
+        bestFor: "Growing apps with proven engagement and scaling needs"
+      },
+      scale: {
+        title: "Scale",
+        users: "Up to 100,000 users",
+        price: "€2,500",
+        period: "per month",
+        features: [
+          "Up to 100,000 active users",
+          "All gamification mechanics and advanced features",
+          "Unlimited elements and enterprise customization",
+          "Advanced support with 4-hour response",
+          "Advanced reporting and predictive analytics",
+          "White-label solutions and custom branding"
+        ],
+        bestFor: "Established apps with high engagement and enterprise needs"
+      },
+      enterprise: {
+        title: "Enterprise",
+        users: "Above 100,000 users",
+        price: "Contact us",
+        period: "",
+        features: [
+          "Unlimited active users",
+          "All gamification mechanics and enterprise features",
+          "Unlimited elements and full customization",
+          "Custom SLA and dedicated support",
+          "Advanced reporting and custom analytics",
+          "On-premise deployment options available"
+        ],
+        bestFor: "Large-scale applications requiring enterprise-grade solutions"
+      }
     }
   },
 
-  // GameLayer pricing information
-  pricing: {
-    starter: {
-      title: "Starter",
-      users: "Up to 1,000 users",
-      price: "€100",
-      description: "per month",
-      features: [
-        "Up to 1,000 active users",
-        "All gamification features",
-        "Unlimited elements",
-        "Email support",
-        "Basic analytics"
-      ],
-      bestFor: "Small apps and MVPs"
-    },
-    growth: {
-      title: "Growth",
-      users: "Up to 25,000 users",
-      price: "€1,000",
-      description: "per month",
-      features: [
-        "Up to 25,000 active users",
-        "All gamification mechanics",
-        "Unlimited elements",
-        "Priority support",
-        "Advanced Analytics"
-      ],
-      bestFor: "Growing apps with proven engagement"
-    },
-    scale: {
-      title: "Scale",
-      users: "Up to 100,000 users",
-      price: "€2,500",
-      description: "per month",
-      features: [
-        "Up to 100,000 active users",
-        "All gamification mechanics",
-        "Unlimited elements",
-        "Advanced support",
-        "Advanced reporting"
-      ],
-      bestFor: "Established apps with high engagement"
-    },
-    enterprise: {
-      title: "Enterprise",
-      users: "Above 100,000 users",
-      price: "Contact us",
-      description: "",
-      features: [
-        "Unlimited active users",
-        "All gamification mechanics",
-        "Unlimited elements",
-        "Custom SLA and support",
-        "Advanced reporting"
-      ],
-      bestFor: "Large-scale applications"
-    }
-  },
-
-  // Industry use cases with detailed implementation
+  // Industry-specific use cases
   useCases: {
     fitness: {
-      description: "Daily workout streaks, achievement badges, social challenges, progress tracking",
-      features: ["Workout tracking", "Achievement badges", "Social challenges", "Progress visualization"],
-      examples: ["Nike Run Club", "Strava", "Fitbit"],
-      implementation: "Track workouts, award points, create challenges, show progress"
+      description: "Transform fitness apps with gamified workout tracking, achievement systems, and social challenges",
+      features: ["Workout tracking and progress visualization", "Achievement badges for milestones", "Social challenges and team competitions", "Progress sharing and community support"],
+      examples: ["Nike Run Club", "Strava", "Fitbit", "MyFitnessPal"],
+      implementation: "Track workouts, award points for consistency, create challenges, show progress, enable social sharing"
     },
     ecommerce: {
-      description: "Loyalty points, tier benefits, referral rewards, seasonal challenges",
-      features: ["Loyalty program", "Tier system", "Referral rewards", "Seasonal events"],
-      examples: ["Starbucks", "Sephora", "Amazon"],
-      implementation: "Points for purchases, tier benefits, referral system, seasonal campaigns"
+      description: "Boost customer loyalty and repeat purchases with sophisticated reward systems",
+      features: ["Loyalty program with tier system", "Points for purchases and actions", "Referral rewards and social sharing", "Seasonal events and limited-time offers"],
+      examples: ["Starbucks", "Sephora", "Amazon", "Target"],
+      implementation: "Points for purchases, tier benefits, referral system, seasonal campaigns, exclusive access"
     },
     education: {
-      description: "Learning progress, skill badges, study streaks, peer competitions",
-      features: ["Progress tracking", "Skill badges", "Study streaks", "Peer competitions"],
-      examples: ["Duolingo", "Khan Academy", "Coursera"],
-      implementation: "Track learning progress, award skill badges, create study challenges"
+      description: "Make learning engaging and addictive with gamified educational experiences",
+      features: ["Progress tracking and skill badges", "Study streaks and consistency rewards", "Peer competitions and leaderboards", "Achievement system for milestones"],
+      examples: ["Duolingo", "Khan Academy", "Coursera", "Codecademy"],
+      implementation: "Track learning progress, award skill badges, create study challenges, enable peer competition"
     },
     gaming: {
-      description: "Player progression, achievement systems, social features, seasonal events",
-      features: ["Player progression", "Achievement system", "Social features", "Seasonal events"],
-      examples: ["Mobile games", "Console games", "PC games"],
-      implementation: "Level progression, achievement unlocks, social features, seasonal content"
+      description: "Enhance gaming experiences with sophisticated progression and social systems",
+      features: ["Player progression and level systems", "Achievement system with unlocks", "Social features and team play", "Seasonal events and limited content"],
+      examples: ["Mobile games", "Console games", "PC games", "Social games"],
+      implementation: "Level progression, achievement unlocks, social features, seasonal content, community challenges"
     },
     health: {
-      description: "Wellness tracking, habit formation, community support, milestone rewards",
-      features: ["Wellness tracking", "Habit formation", "Community support", "Milestone rewards"],
-      examples: ["Headspace", "Calm", "MyFitnessPal"],
-      implementation: "Track wellness activities, form healthy habits, community challenges"
+      description: "Promote healthy habits and wellness through gamified tracking and community support",
+      features: ["Wellness tracking and habit formation", "Community support and challenges", "Milestone rewards and celebrations", "Progress visualization"],
+      examples: ["Headspace", "Calm", "MyFitnessPal", "Noom"],
+      implementation: "Track wellness activities, form healthy habits, community challenges, milestone rewards"
     }
   },
 
-  // Common questions and their detailed answers
+  // Common questions and expert answers
   faq: {
-    "how to start": "Start with GameLayer's Starter plan (€100/month). Create an account, get API keys, and begin with basic points and achievements. Scale up as you grow!",
-    "implementation time": "Basic implementation takes 1-2 days. Full gamification system: 1-2 weeks. Depends on your app's complexity and requirements.",
-    "technical requirements": "REST API or SDK integration. Works with any platform: web, mobile, desktop. No special infrastructure needed.",
-    "data security": "GameLayer follows GDPR and SOC 2 compliance. Data is encrypted and secure. We never share your user data.",
-    "customization": "Highly customizable: custom badges, leaderboards, challenges, and branding. White-label options available.",
-    "support": "Email support for Starter, priority support for Growth+, dedicated support for Enterprise. Documentation and tutorials available."
+    "how to start": "Start with GameLayer's Starter plan (€100/month) - perfect for testing gamification. Create an account, get API keys, implement basic points and achievements, then scale based on user engagement and business growth.",
+    "implementation time": "Basic implementation takes 1-2 days for simple setup. Full gamification system: 1-2 weeks. Enterprise deployment: 2-4 weeks. Timeline depends on complexity, existing infrastructure, and customization requirements.",
+    "technical requirements": "REST API or SDK integration. Works with any platform: web, mobile, desktop, IoT. No special infrastructure needed - cloud-based solution with 99.9% uptime SLA.",
+    "data security": "GameLayer follows GDPR, SOC 2, and ISO 27001 compliance. Data is encrypted in transit and at rest. We never share your user data and provide data export capabilities.",
+    "customization": "Highly customizable: custom badges, leaderboards, challenges, branding, and white-label options. API-first approach allows full integration with existing systems.",
+    "support": "Email support for Starter, priority support for Growth+, dedicated support for Enterprise. Comprehensive documentation, tutorials, and community forums available."
   }
 };
 
-// Conversation context to handle follow-up questions
+// Conversation context for intelligent follow-up handling
 let conversationContext = {
   lastTopic: null,
   lastQuestion: null,
   userGoals: null,
   industry: null,
-  plan: null
+  plan: null,
+  conversationHistory: [],
+  userType: null
 };
 
-function searchKnowledgeBase(query) {
-  const lowerQuery = query.toLowerCase();
-  
-  // Check for specific topics
-  if (lowerQuery.includes('gamification') || lowerQuery.includes('game mechanics')) {
-    return gamelayerKnowledge.gamification;
+function generateExpertResponse(message) {
+  const lowerMessage = message.toLowerCase();
+  conversationContext.lastQuestion = message;
+  conversationContext.conversationHistory.push(message);
+
+  // Handle follow-up questions based on context
+  const contextualResponse = generateContextualResponse(message, conversationContext);
+  if (contextualResponse) {
+    return contextualResponse;
   }
-  
-  if (lowerQuery.includes('loyalty') || lowerQuery.includes('retention')) {
-    return gamelayerKnowledge.loyalty;
+
+  // Enhanced expert-level responses for different topics
+  if (lowerMessage.includes('gamelayer') && (lowerMessage.includes('help') || lowerMessage.includes('can') || lowerMessage.includes('do'))) {
+    conversationContext.lastTopic = 'capabilities';
+    return {
+      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy. We provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics. Our API-first approach makes integration seamless, and our platform scales from startups to enterprise. What specific aspect of gamification are you looking to implement? I can provide detailed guidance on features, implementation, pricing, or use cases.",
+      type: "capabilities"
+    };
   }
-  
-  if (lowerQuery.includes('engagement') || lowerQuery.includes('user activity')) {
-    return gamelayerKnowledge.engagement;
+
+  if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
+    conversationContext.lastTopic = 'pricing';
+    return {
+      message: "GameLayer offers flexible pricing designed to scale with your business. Our Starter plan (€100/month) is perfect for small apps and MVPs with up to 1,000 users. Growth plan (€1,000/month) supports up to 25,000 users with advanced features. Scale plan (€2,500/month) handles up to 100,000 users with enterprise features. For larger deployments, our Enterprise plan offers unlimited users with custom pricing. All plans include full gamification features, API access, and support. Which plan aligns with your current user base and growth projections?",
+      type: "pricing"
+    };
   }
-  
-  if (lowerQuery.includes('gamelayer') || lowerQuery.includes('api') || lowerQuery.includes('platform')) {
-    return gamelayerKnowledge.gamelayerFeatures;
+
+  if (lowerMessage.includes('implement') || lowerMessage.includes('setup') || lowerMessage.includes('start')) {
+    conversationContext.lastTopic = 'implementation';
+    return {
+      message: "Implementation with GameLayer is straightforward and developer-friendly. Start by creating an account and obtaining your API keys. Our SDKs are available for JavaScript, React, React Native, iOS, and Android, or you can use our REST API. Basic integration takes 1-2 days: create account, get API keys, initialize SDK, start tracking user actions. Full gamification system: 1-2 weeks. We provide comprehensive documentation, code examples, and support throughout the process. What's your current tech stack? I can provide specific implementation guidance.",
+      type: "implementation"
+    };
   }
-  
-  if (lowerQuery.includes('pricing') || lowerQuery.includes('price') || lowerQuery.includes('cost') || lowerQuery.includes('costs')) {
-    return gamelayerKnowledge.pricing;
+
+  if (lowerMessage.includes('gamification') && lowerMessage.includes('what')) {
+    conversationContext.lastTopic = 'gamification';
+    return {
+      message: "Gamification is the strategic application of game-design elements in non-game contexts to engage users and drive desired behaviors. It leverages human psychology - our natural desire for achievement, competition, collaboration, and progression. Key elements include points, badges, leaderboards, streaks, levels, challenges, and social features. The goal is to make everyday activities more engaging and rewarding, leading to increased user engagement (40-60% improvement), higher retention rates (25-40% boost), and improved customer loyalty. What specific aspect of gamification would you like to explore?",
+      type: "gamification"
+    };
   }
-  
-  if (lowerQuery.includes('fitness') || lowerQuery.includes('workout')) {
-    return { useCase: gamelayerKnowledge.useCases.fitness };
+
+  if (lowerMessage.includes('retention') || lowerMessage.includes('keep users')) {
+    conversationContext.lastTopic = 'retention';
+    return {
+      message: "User retention is one of the biggest challenges in digital products, and gamification is a proven solution. Effective retention strategies include daily streaks to build habits, achievement systems to provide progress feedback, social features to create community, and personalized challenges to maintain interest. GameLayer's platform provides tools for all these strategies, with analytics to measure their effectiveness. The key is creating a progression system that feels meaningful and rewarding. What's your current retention rate and what specific retention challenges are you facing?",
+      type: "retention"
+    };
   }
-  
-  if (lowerQuery.includes('ecommerce') || lowerQuery.includes('shopping') || lowerQuery.includes('retail')) {
-    return { useCase: gamelayerKnowledge.useCases.ecommerce };
+
+  if (lowerMessage.includes('engagement') || lowerMessage.includes('active users')) {
+    conversationContext.lastTopic = 'engagement';
+    return {
+      message: "User engagement is about creating meaningful interactions that keep users coming back. Gamification drives engagement through immediate feedback (points, badges), social competition (leaderboards), progress visualization (levels, streaks), and community features. GameLayer's platform provides all these tools with real-time analytics to measure engagement metrics like DAU/MAU, session duration, and feature adoption. The key is understanding your users' motivations and designing experiences that align with their goals. What's your current engagement strategy and what metrics are you trying to improve?",
+      type: "engagement"
+    };
   }
-  
-  if (lowerQuery.includes('education') || lowerQuery.includes('learning')) {
-    return { useCase: gamelayerKnowledge.useCases.education };
+
+  if (lowerMessage.includes('loyalty') || lowerMessage.includes('customer')) {
+    conversationContext.lastTopic = 'loyalty';
+    return {
+      message: "Customer loyalty programs are essential for long-term business success, and gamification makes them more engaging and effective. Modern loyalty programs go beyond simple points - they create emotional connections through tier systems, exclusive access, personalized rewards, and community features. GameLayer's platform supports sophisticated loyalty strategies with flexible reward systems, social features, and advanced analytics. Successful programs like Starbucks Rewards and Sephora Beauty Insider show how gamification can drive repeat purchases and increase customer lifetime value. What type of loyalty program are you considering?",
+      type: "loyalty"
+    };
   }
-  
-  if (lowerQuery.includes('health') || lowerQuery.includes('wellness')) {
-    return { useCase: gamelayerKnowledge.useCases.health };
+
+  // Industry-specific responses
+  if (lowerMessage.includes('fitness') || lowerMessage.includes('workout')) {
+    conversationContext.lastTopic = 'useCase';
+    conversationContext.industry = 'fitness';
+    return {
+      message: "Fitness apps are perfect for gamification - they naturally align with goal-setting, progress tracking, and social motivation. Successful fitness apps like Nike Run Club and Strava use gamification to drive engagement through workout tracking, achievement badges, social challenges, and progress visualization. GameLayer's platform provides all the tools needed: points for workouts, achievement systems for milestones, leaderboards for competition, and social features for community support. The key is making fitness feel like a game while maintaining authenticity. What specific fitness app features are you looking to gamify?",
+      type: "useCase"
+    };
   }
-  
-  return null;
+
+  if (lowerMessage.includes('ecommerce') || lowerMessage.includes('shopping')) {
+    conversationContext.lastTopic = 'useCase';
+    conversationContext.industry = 'ecommerce';
+    return {
+      message: "E-commerce gamification is about creating emotional connections and driving repeat purchases. Successful programs like Starbucks Rewards and Sephora Beauty Insider use tier systems, points multipliers, exclusive access, and social features to build loyalty. GameLayer's platform supports sophisticated e-commerce gamification with flexible reward systems, referral programs, seasonal challenges, and advanced analytics. The key is making shopping feel rewarding beyond just the purchase. What specific e-commerce challenges are you looking to solve with gamification?",
+      type: "useCase"
+    };
+  }
+
+  // API-specific questions
+  if (lowerMessage.includes('api') && lowerMessage.includes('player')) {
+    conversationContext.lastTopic = 'api';
+    return {
+      message: "GameLayer's player management API is comprehensive and flexible. Use POST /players to create new player profiles with metadata like preferences, demographics, and custom fields. GET /players/{id} retrieves player details, PUT /players/{id} updates information, and GET /players lists players with filtering options. The API supports rich player profiles with custom attributes, making it easy to personalize experiences. What specific player management features do you need?",
+      type: "api"
+    };
+  }
+
+  if (lowerMessage.includes('api') && lowerMessage.includes('achievement')) {
+    conversationContext.lastTopic = 'api';
+    return {
+      message: "GameLayer's achievement system is highly customizable. Use POST /achievements to award achievements to players with custom criteria and metadata. GET /achievements lists available achievements, and GET /players/{id}/achievements shows player progress. Achievements can be based on points, actions, time, or custom criteria. The system supports automatic and manual achievement awarding, with real-time notifications. What type of achievements are you planning to implement?",
+      type: "api"
+    };
+  }
+
+  // Default expert response with more personality
+  return {
+    message: "I'm your gamification and GameLayer expert! I can help you with user engagement strategies, loyalty programs, retention optimization, implementation guidance, API integration, pricing, and industry-specific use cases. What would you like to explore? I can provide detailed, actionable insights to help you succeed with gamification.",
+    type: "general"
+  };
 }
-
-
 
 function generateContextualResponse(message, context) {
   const lowerMessage = message.toLowerCase();
@@ -298,21 +393,21 @@ function generateContextualResponse(message, context) {
   // Handle follow-up questions based on context
   if (context.lastTopic === 'pricing' && (lowerMessage.includes('starter') || lowerMessage.includes('€100'))) {
     return {
-      message: "Starter plan (€100/month) is perfect for small apps and MVPs. Includes 1,000 users, all gamification features, unlimited elements, email support, and basic analytics. Great starting point! 🚀",
+      message: "The Starter plan (€100/month) is ideal for small apps and MVPs testing gamification. It includes up to 1,000 active users, all core gamification features, unlimited elements, email support, basic analytics, and full API access. This plan is perfect for validating gamification concepts before scaling. You can upgrade to Growth plan when you reach 1,000 users or need advanced features like A/B testing and priority support.",
       type: "pricing_detail"
     };
   }
   
   if (context.lastTopic === 'pricing' && (lowerMessage.includes('growth') || lowerMessage.includes('€1,000'))) {
     return {
-      message: "Growth plan (€1,000/month) is ideal for growing apps. Includes 25,000 users, all mechanics, unlimited elements, priority support, and advanced analytics. Perfect for scaling! 📈",
+      message: "The Growth plan (€1,000/month) is designed for apps with proven engagement and scaling needs. It supports up to 25,000 users with all gamification mechanics, unlimited elements, advanced customization, priority support (8-hour response), advanced analytics, behavioral insights, and A/B testing framework. This plan is perfect for apps that have validated gamification and are ready to scale their engagement strategy.",
       type: "pricing_detail"
     };
   }
   
   if (context.lastTopic === 'api' && lowerMessage.includes('implementation')) {
     return {
-      message: "Implementation takes 1-2 days for basic setup. Create account, get API keys, integrate SDK/REST API, start tracking actions. Full system: 1-2 weeks. We provide documentation and support! ⚡",
+      message: "API implementation is straightforward. Start with our SDKs (JavaScript, React, React Native, iOS, Android) or use our REST API directly. Basic integration takes 1-2 days: create account, get API keys, initialize SDK, start tracking user actions. Full gamification system: 1-2 weeks. We provide comprehensive documentation, code examples, and support. What's your current tech stack? I can provide specific implementation guidance.",
       type: "implementation"
     };
   }
@@ -321,7 +416,7 @@ function generateContextualResponse(message, context) {
     const useCase = gamelayerKnowledge.useCases[context.industry];
     if (useCase && lowerMessage.includes('implement')) {
       return {
-        message: `For ${context.industry}: ${useCase.implementation}. Start with basic tracking, add features gradually, use our ${useCase.features.join(', ')}. Examples: ${useCase.examples.join(', ')}! 🎯`,
+        message: `For ${context.industry} apps: ${useCase.implementation}. Start with basic tracking, add features gradually using our ${useCase.features.join(', ')}. Successful examples include ${useCase.examples.join(', ')}. The key is making the experience feel natural and rewarding. What specific ${context.industry} features are you looking to gamify?`,
         type: "implementation_detail"
       };
     }
@@ -330,199 +425,12 @@ function generateContextualResponse(message, context) {
   return null;
 }
 
-function generateResponse(message) {
-  const lowerMessage = message.toLowerCase();
-  const knowledge = searchKnowledgeBase(message);
-  
-  // Update conversation context
-  conversationContext.lastQuestion = message;
-  
-  // Check for follow-up questions first
-  const contextualResponse = generateContextualResponse(message, conversationContext);
-  if (contextualResponse) {
-    return contextualResponse;
-  }
-  
-  // Questions about GameLayer's capabilities and help
-  if (lowerMessage.includes('gamelayer can help') || 
-      lowerMessage.includes('gamelayer help') ||
-      lowerMessage.includes('can gamelayer help') ||
-      lowerMessage.includes('gamelayer api can help') ||
-      lowerMessage.includes('gamelayer api help') ||
-      lowerMessage.includes('can gamelayer api help')) {
-    conversationContext.lastTopic = 'capabilities';
-    return {
-      message: "Absolutely! GameLayer can help with gamification, user engagement, loyalty programs, and retention. Our API provides points, badges, leaderboards, challenges, and analytics. What's your specific goal? 🚀",
-      type: "capabilities"
-    };
-  }
-  
-  // Questions about what GameLayer can do
-  if (lowerMessage.includes('what can gamelayer') || 
-      lowerMessage.includes('gamelayer can do') ||
-      lowerMessage.includes('gamelayer features') ||
-      lowerMessage.includes('gamelayer capabilities')) {
-    conversationContext.lastTopic = 'features';
-    return {
-      message: "GameLayer provides: Player management, achievement systems, leaderboards, points & rewards, challenges & missions, analytics dashboard, and easy API integration. Perfect for boosting engagement! 🎮",
-      type: "features"
-    };
-  }
-  
-  // Questions about GameLayer's API capabilities
-  if (lowerMessage.includes('gamelayer api') && 
-      (lowerMessage.includes('can') || lowerMessage.includes('help') || lowerMessage.includes('do'))) {
-    conversationContext.lastTopic = 'api';
-    return {
-      message: "GameLayer's API can: Create players, award achievements, manage leaderboards, track points, create challenges, and monitor engagement. Ready to implement gamification! 🔧",
-      type: "api_capabilities"
-    };
-  }
-  
-  // Pricing questions
-  if (lowerMessage.includes('pricing') || lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('costs') || lowerMessage.includes('how much')) {
-    conversationContext.lastTopic = 'pricing';
-    return {
-      message: "GameLayer pricing: Starter €100/month (1K users), Growth €1,000/month (25K users), Scale €2,500/month (100K users), Enterprise (contact us). All plans include full gamification features! 💰",
-      type: "pricing"
-    };
-  }
-  
-  // Implementation questions
-  if (lowerMessage.includes('implement') || lowerMessage.includes('setup') || lowerMessage.includes('start') || lowerMessage.includes('begin')) {
-    conversationContext.lastTopic = 'implementation';
-    return {
-      message: "Implementation is straightforward: 1) Create GameLayer account, 2) Get API keys, 3) Install SDK or use REST API, 4) Start tracking user actions, 5) Monitor analytics. Takes 1-2 days for basic setup! ⚡",
-      type: "implementation"
-    };
-  }
-  
-  // API-specific questions
-  if (lowerMessage.includes('api') && (lowerMessage.includes('player') || lowerMessage.includes('create'))) {
-    conversationContext.lastTopic = 'api';
-    return {
-      message: "For creating players, use POST /players with JSON payload: { id, name, description }. Need a sample request?",
-      type: "api_help"
-    };
-  }
-  
-  if (lowerMessage.includes('api') && lowerMessage.includes('achievement')) {
-    conversationContext.lastTopic = 'api';
-    return {
-      message: "Award achievements with POST /achievements. Send player ID and achievement type. Want the exact endpoint?",
-      type: "api_help"
-    };
-  }
-  
-  if (lowerMessage.includes('api') && lowerMessage.includes('leaderboard')) {
-    conversationContext.lastTopic = 'api';
-    return {
-      message: "Get leaderboards with GET /leaderboards. Can filter by time period, category, or player group.",
-      type: "api_help"
-    };
-  }
-  
-  // Gamification mechanics
-  if (lowerMessage.includes('retention') || lowerMessage.includes('keep users')) {
-    conversationContext.lastTopic = 'retention';
-    return {
-      message: "Boost retention with daily streaks + XP rewards. Add badges for milestones. Gamify the routine! 💪",
-      type: "strategy"
-    };
-  }
-  
-  if (lowerMessage.includes('engagement') || lowerMessage.includes('active users')) {
-    conversationContext.lastTopic = 'engagement';
-    return {
-      message: "Drive engagement with challenges, leaderboards, and social features. Make it competitive and shareable! 🏆",
-      type: "strategy"
-    };
-  }
-  
-  if (lowerMessage.includes('loyalty') || lowerMessage.includes('customer')) {
-    conversationContext.lastTopic = 'loyalty';
-    return {
-      message: "Build loyalty with tier-based rewards, exclusive access, and personalized experiences. Points + perks = happy customers! ⭐",
-      type: "strategy"
-    };
-  }
-  
-  // Use case specific
-  if (lowerMessage.includes('fitness') || lowerMessage.includes('workout')) {
-    conversationContext.lastTopic = 'useCase';
-    conversationContext.industry = 'fitness';
-    return {
-      message: "Fitness apps: Daily workout streaks, achievement badges, social challenges, progress tracking. Turn sweat into wins! 💪",
-      type: "use_case"
-    };
-  }
-  
-  if (lowerMessage.includes('ecommerce') || lowerMessage.includes('shopping')) {
-    conversationContext.lastTopic = 'useCase';
-    conversationContext.industry = 'ecommerce';
-    return {
-      message: "E-commerce: Loyalty points, tier benefits, referral rewards, seasonal challenges. Shop + earn = repeat customers! 🛒",
-      type: "use_case"
-    };
-  }
-  
-  if (lowerMessage.includes('education') || lowerMessage.includes('learning')) {
-    conversationContext.lastTopic = 'useCase';
-    conversationContext.industry = 'education';
-    return {
-      message: "Education: Learning progress, skill badges, study streaks, peer competitions. Make learning fun and engaging! 📚",
-      type: "use_case"
-    };
-  }
-  
-  // General gamification
-  if (knowledge && knowledge.mechanics) {
-    conversationContext.lastTopic = 'gamification';
-    const mechanics = knowledge.mechanics.slice(0, 3).join(", ");
-    return {
-      message: `Key gamification mechanics: ${mechanics}. Start with one, measure impact, then scale! 🎮`,
-      type: "mechanics"
-    };
-  }
-  
-  if (knowledge && knowledge.strategies) {
-    conversationContext.lastTopic = 'loyalty';
-    const strategies = knowledge.strategies.slice(0, 2).join(" + ");
-    return {
-      message: `Loyalty strategy: ${strategies}. Combine for maximum impact! 🎯`,
-      type: "strategy"
-    };
-  }
-  
-  if (knowledge && knowledge.useCase) {
-    conversationContext.lastTopic = 'useCase';
-    return {
-      message: `Perfect use case: ${knowledge.useCase}. Ready to implement with GameLayer! 🚀`,
-      type: "use_case"
-    };
-  }
-  
-  if (knowledge && knowledge.starter) {
-    conversationContext.lastTopic = 'pricing';
-    return {
-      message: "GameLayer pricing: Starter €100/month (1K users), Growth €1,000/month (25K users), Scale €2,500/month (100K users), Enterprise (contact us). All plans include full gamification features! 💰",
-      type: "pricing"
-    };
-  }
-  
-  // Default response for gamification focus
-  return {
-    message: "I'm your gamification expert! Ask me about user engagement, loyalty programs, retention strategies, GameLayer's API, or pricing. What's your goal? 🎮",
-    type: "general"
-  };
-}
-
 export const clientSideAI = {
   sendMessage: async (message, conversationId) => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Simulate API delay for natural feel
+    await new Promise(resolve => setTimeout(resolve, 800));
     
-    const result = generateResponse(message);
+    const result = generateExpertResponse(message);
     
     return {
       response: result.message,

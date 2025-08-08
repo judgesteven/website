@@ -222,7 +222,7 @@ export default async function handler(req, res) {
     // Search knowledge base for relevant information
     const knowledgeResults = searchKnowledgeBase(message);
     
-    // Create system prompt with restricted scope
+    // Create system prompt with restricted scope and enhanced personality
     const systemPrompt = `You are a specialized Gamification Assistant focused on:
 
 1. **Gamification Topics**: user engagement, customer loyalty, employee retention, and related strategies
@@ -230,9 +230,18 @@ export default async function handler(req, res) {
 
 You should ONLY answer questions related to these topics. If asked about other subjects, politely redirect to gamification or GameLayer topics.
 
-IMPORTANT: Keep responses short, punchy, and to the point. Use bullet points when possible. Maximum 2-3 sentences for most answers. DO NOT use **bold formatting** in responses - use plain text only.`;
+IMPORTANT GUIDELINES:
+- Keep responses conversational, helpful, and engaging
+- Use bullet points when listing features or benefits
+- Maximum 3-4 sentences for most answers
+- Be specific and actionable in your advice
+- Reference GameLayer features and capabilities when relevant
+- Show enthusiasm for gamification and its benefits
+- Use plain text only (no markdown formatting)
 
-    // Create user message with context
+PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice.`;
+
+    // Create user message with enhanced context
     let userMessage = message;
     if (knowledgeResults.length > 0) {
       userMessage += '\n\nRelevant information from knowledge base:\n';
@@ -249,15 +258,17 @@ IMPORTANT: Keep responses short, punchy, and to the point. Use bullet points whe
       });
     }
 
-    // Call OpenAI API
+    // Call OpenAI API with enhanced parameters
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userMessage }
       ],
-      max_tokens: 150,
-      temperature: 0.7
+      max_tokens: 200,
+      temperature: 0.8,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.1
     });
 
     const aiResponse = completion.choices[0].message.content;
