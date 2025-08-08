@@ -1,212 +1,215 @@
 // Client-side AI Assistant for GameLayer
-// This provides responses when the backend API is not available
+// Focused on gamification, user engagement, customer loyalty, and GameLayer platform
 
 const gamelayerKnowledge = {
-  pricing: {
-    starter: {
-      title: 'Starter',
-      users: 'Up to 1,000 users',
-      price: '€100',
-      description: 'per month',
-      features: [
-        'Up to 1,000 active users',
-        'All gamification features',
-        'Unlimited elements',
-        'Email support',
-        'Basic analytics'
-      ]
-    },
-    growth: {
-      title: 'Growth',
-      users: 'Up to 25,000 users',
-      price: '€1,000',
-      description: 'per month',
-      features: [
-        'Up to 25,000 active users',
-        'All gamification mechanics',
-        'Unlimited elements',
-        'Priority support',
-        'Basic Analytics'
-      ]
-    },
-    scale: {
-      title: 'Scale',
-      users: 'Up to 100,000 users',
-      price: '€2,500',
-      description: 'per month',
-      features: [
-        'Up to 100,000 active users',
-        'All gamification mechanics',
-        'Unlimited elements',
-        'Advanced support',
-        'Advanced reporting'
-      ]
-    },
-    enterprise: {
-      title: 'Enterprise',
-      users: 'Above 100,000 users',
-      price: 'Contact us',
-      description: '',
-      features: [
-        'Unlimited active users',
-        'All gamification mechanics',
-        'Unlimited elements',
-        'Custom SLA and support',
-        'Advanced reporting'
-      ]
+  // Core gamification concepts
+  gamification: {
+    mechanics: [
+      "Points & Rewards - Users earn points for actions, redeem for rewards",
+      "Badges & Achievements - Visual recognition for milestones and accomplishments", 
+      "Leaderboards - Competitive element to drive engagement",
+      "Streaks - Daily engagement through consecutive activity tracking",
+      "Levels & Progression - Clear advancement path with increasing challenges",
+      "Challenges & Missions - Time-limited goals to boost activity",
+      "Social Features - Team challenges, sharing achievements, peer recognition"
+    ],
+    benefits: [
+      "Increased user engagement by 40-60%",
+      "Higher retention rates through habit formation",
+      "Boosted customer loyalty and lifetime value",
+      "Improved user satisfaction and brand affinity",
+      "Data-driven insights into user behavior patterns"
+    ]
+  },
+
+  // Loyalty program strategies
+  loyalty: {
+    strategies: [
+      "Tier-based rewards - Bronze, Silver, Gold with escalating benefits",
+      "Points multipliers - Bonus points for premium actions",
+      "Exclusive access - Early access, VIP events, special content",
+      "Personalization - Tailored rewards based on user behavior",
+      "Gamified challenges - Monthly/seasonal competitions",
+      "Referral programs - Reward users for bringing friends"
+    ],
+    examples: [
+      "Starbucks Rewards - Stars for purchases, free drinks, birthday rewards",
+      "Sephora Beauty Insider - Points, birthday gifts, exclusive events",
+      "Nike Run Club - Challenges, achievements, social sharing"
+    ]
+  },
+
+  // User engagement techniques
+  engagement: [
+    "Daily check-ins with streak tracking",
+    "Progressive challenges that increase in difficulty",
+    "Social features like team competitions",
+    "Personalized content and recommendations",
+    "Real-time feedback and notifications",
+    "Community features and user-generated content"
+  ],
+
+  // GameLayer specific features
+  gamelayerFeatures: {
+    core: [
+      "Player Management - Create, update, and track user profiles",
+      "Achievement System - Custom badges and milestone tracking",
+      "Leaderboards - Competitive rankings and social comparison",
+      "Points & Rewards - Flexible scoring and redemption system",
+      "Challenges & Missions - Time-limited goals and objectives",
+      "Analytics Dashboard - Real-time engagement metrics",
+      "API Integration - Easy implementation with existing platforms"
+    ],
+    api: {
+      players: "POST /players - Create new player profiles",
+      achievements: "POST /achievements - Award achievements to players", 
+      leaderboards: "GET /leaderboards - Retrieve competitive rankings",
+      points: "POST /points - Award or deduct points from players",
+      challenges: "POST /challenges - Create time-limited missions",
+      events: "POST /events - Track user actions and behaviors"
     }
   },
-  features: [
-    'Points and Rewards System',
-    'Leaderboards and Rankings',
-    'Achievements and Badges',
-    'Missions and Challenges',
-    'Streaks and Daily Goals',
-    'Mystery Boxes and Surprises',
-    'Team Competitions',
-    'Real-time Analytics',
-    'API Integration',
-    'Custom Branding'
-  ],
-  caseStudies: [
-    {
-      title: 'Veikkaus Points',
-      description: 'Finnish National Lottery loyalty experience with challenges and rewards',
-      category: 'Gaming & Lottery'
-    },
-    {
-      title: 'Reima GO!',
-      description: 'Kids learning adventure with collaborative physical activity',
-      category: 'Kids & Education'
-    },
-    {
-      title: 'Finnair',
-      description: 'Airline loyalty program with personalized non-transactional tasks',
-      category: 'Travel & Aviation'
-    },
-    {
-      title: 'Baaz',
-      description: 'Social platform gamification with content creation challenges',
-      category: 'Social Media'
-    }
-  ]
+
+  // Industry use cases
+  useCases: {
+    fitness: "Daily workout streaks, achievement badges, social challenges, progress tracking",
+    ecommerce: "Loyalty points, tier benefits, referral rewards, seasonal challenges",
+    education: "Learning progress, skill badges, study streaks, peer competitions",
+    gaming: "Player progression, achievement systems, social features, seasonal events",
+    health: "Wellness tracking, habit formation, community support, milestone rewards"
+  }
 };
 
 function searchKnowledgeBase(query) {
   const lowerQuery = query.toLowerCase();
-  const results = [];
-
-  // Search pricing
-  Object.entries(gamelayerKnowledge.pricing).forEach(([key, plan]) => {
-    if (lowerQuery.includes(plan.title.toLowerCase()) || 
-        lowerQuery.includes('pricing') || 
-        lowerQuery.includes('price') || 
-        lowerQuery.includes('cost')) {
-      results.push({ type: 'pricing', data: plan });
-    }
-  });
-
-  // Search features
-  gamelayerKnowledge.features.forEach(feature => {
-    if (lowerQuery.includes(feature.toLowerCase())) {
-      results.push({ type: 'feature', data: feature });
-    }
-  });
-
-  // Search case studies
-  gamelayerKnowledge.caseStudies.forEach(study => {
-    if (lowerQuery.includes(study.title.toLowerCase()) || 
-        lowerQuery.includes(study.category.toLowerCase())) {
-      results.push({ type: 'caseStudy', data: study });
-    }
-  });
-
-  return results;
+  
+  // Check for specific topics
+  if (lowerQuery.includes('gamification') || lowerQuery.includes('game mechanics')) {
+    return gamelayerKnowledge.gamification;
+  }
+  
+  if (lowerQuery.includes('loyalty') || lowerQuery.includes('retention')) {
+    return gamelayerKnowledge.loyalty;
+  }
+  
+  if (lowerQuery.includes('engagement') || lowerQuery.includes('user activity')) {
+    return gamelayerKnowledge.engagement;
+  }
+  
+  if (lowerQuery.includes('gamelayer') || lowerQuery.includes('api') || lowerQuery.includes('platform')) {
+    return gamelayerKnowledge.gamelayerFeatures;
+  }
+  
+  if (lowerQuery.includes('fitness') || lowerQuery.includes('workout')) {
+    return { useCase: gamelayerKnowledge.useCases.fitness };
+  }
+  
+  if (lowerQuery.includes('ecommerce') || lowerQuery.includes('shopping') || lowerQuery.includes('retail')) {
+    return { useCase: gamelayerKnowledge.useCases.ecommerce };
+  }
+  
+  if (lowerQuery.includes('education') || lowerQuery.includes('learning')) {
+    return { useCase: gamelayerKnowledge.useCases.education };
+  }
+  
+  if (lowerQuery.includes('health') || lowerQuery.includes('wellness')) {
+    return { useCase: gamelayerKnowledge.useCases.health };
+  }
+  
+  return null;
 }
 
 function generateResponse(message) {
   const lowerMessage = message.toLowerCase();
-  const knowledgeResults = searchKnowledgeBase(message);
-
-  // Pricing questions
-  if (lowerMessage.includes('pricing') || lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+  const knowledge = searchKnowledgeBase(message);
+  
+  // API-specific questions
+  if (lowerMessage.includes('api') && (lowerMessage.includes('player') || lowerMessage.includes('create'))) {
     return {
-      response: `GameLayer offers flexible pricing plans:
-
-• Starter: €100/month for up to 1,000 users
-• Growth: €1,000/month for up to 25,000 users  
-• Scale: €2,500/month for up to 100,000 users
-• Enterprise: Custom pricing for unlimited users
-
-All plans include full gamification features, unlimited elements, and support.`,
-      knowledgeBaseResults: knowledgeResults
+      text: "For creating players, use POST /players with JSON payload: { id, name, description }. Need a sample request?",
+      type: "api_help"
     };
   }
-
-  // Feature questions
-  if (lowerMessage.includes('feature') || lowerMessage.includes('what can') || lowerMessage.includes('capabilities')) {
+  
+  if (lowerMessage.includes('api') && lowerMessage.includes('achievement')) {
     return {
-      response: `GameLayer includes powerful gamification features:
-
-• Points and rewards system
-• Leaderboards and rankings
-• Achievements and badges
-• Missions and challenges
-• Streaks and daily goals
-• Mystery boxes and surprises
-• Team competitions
-• Real-time analytics
-• API integration
-• Custom branding
-
-Perfect for boosting user engagement and retention!`,
-      knowledgeBaseResults: knowledgeResults
+      text: "Award achievements with POST /achievements. Send player ID and achievement type. Want the exact endpoint?",
+      type: "api_help"
     };
   }
-
-  // Case studies
-  if (lowerMessage.includes('case study') || lowerMessage.includes('example') || lowerMessage.includes('success')) {
+  
+  if (lowerMessage.includes('api') && lowerMessage.includes('leaderboard')) {
     return {
-      response: `GameLayer has powered successful gamification programs:
-
-• Veikkaus Points: Finnish lottery loyalty with challenges
-• Reima GO!: Kids learning adventure platform
-• Finnair: Airline loyalty with personalized tasks
-• Baaz: Social platform content creation challenges
-
-These show how gamification drives engagement across industries.`,
-      knowledgeBaseResults: knowledgeResults
+      text: "Get leaderboards with GET /leaderboards. Can filter by time period, category, or player group.",
+      type: "api_help"
     };
   }
-
-  // General gamification questions
-  if (lowerMessage.includes('gamification') || lowerMessage.includes('what is')) {
+  
+  // Gamification mechanics
+  if (lowerMessage.includes('retention') || lowerMessage.includes('keep users')) {
     return {
-      response: `Gamification uses game mechanics to boost engagement and motivation. GameLayer makes it easy to add:
-
-• Points and rewards for actions
-• Leaderboards to drive competition
-• Badges for achievements
-• Challenges to complete
-• Progress tracking
-
-This increases user retention, engagement, and loyalty.`,
-      knowledgeBaseResults: knowledgeResults
+      text: "Boost retention with daily streaks + XP rewards. Add badges for milestones. Gamify the routine! 💪",
+      type: "strategy"
     };
   }
-
-  // Default response
+  
+  if (lowerMessage.includes('engagement') || lowerMessage.includes('active users')) {
+    return {
+      text: "Drive engagement with challenges, leaderboards, and social features. Make it competitive and shareable! 🏆",
+      type: "strategy"
+    };
+  }
+  
+  if (lowerMessage.includes('loyalty') || lowerMessage.includes('customer')) {
+    return {
+      text: "Build loyalty with tier-based rewards, exclusive access, and personalized experiences. Points + perks = happy customers! ⭐",
+      type: "strategy"
+    };
+  }
+  
+  // Use case specific
+  if (lowerMessage.includes('fitness') || lowerMessage.includes('workout')) {
+    return {
+      text: "Fitness apps: Daily workout streaks, achievement badges, social challenges, progress tracking. Turn sweat into wins! 💪",
+      type: "use_case"
+    };
+  }
+  
+  if (lowerMessage.includes('ecommerce') || lowerMessage.includes('shopping')) {
+    return {
+      text: "E-commerce: Loyalty points, tier benefits, referral rewards, seasonal challenges. Shop + earn = repeat customers! 🛒",
+      type: "use_case"
+    };
+  }
+  
+  // General gamification
+  if (knowledge && knowledge.mechanics) {
+    const mechanics = knowledge.mechanics.slice(0, 3).join(", ");
+    return {
+      text: `Key gamification mechanics: ${mechanics}. Start with one, measure impact, then scale! 🎮`,
+      type: "mechanics"
+    };
+  }
+  
+  if (knowledge && knowledge.strategies) {
+    const strategies = knowledge.strategies.slice(0, 2).join(" + ");
+    return {
+      text: `Loyalty strategy: ${strategies}. Combine for maximum impact! 🎯`,
+      type: "strategy"
+    };
+  }
+  
+  if (knowledge && knowledge.useCase) {
+    return {
+      text: `Perfect use case: ${knowledge.useCase}. Ready to implement with GameLayer! 🚀`,
+      type: "use_case"
+    };
+  }
+  
+  // Default response for gamification focus
   return {
-    response: `I can help you with GameLayer information! Ask me about:
-
-• Pricing plans and costs
-• Gamification features
-• Case studies and examples
-• How gamification works
-• Implementation guidance
-
-What would you like to know?`,
-    knowledgeBaseResults: knowledgeResults
+    text: "I'm your gamification expert! Ask me about user engagement, loyalty programs, retention strategies, or GameLayer's API. What's your goal? 🎮",
+    type: "general"
   };
 }
 
@@ -218,9 +221,10 @@ export const clientSideAI = {
     const result = generateResponse(message);
     
     return {
-      ...result,
+      message: result.text,
       conversationId: conversationId || 'client-side',
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      type: result.type || 'general'
     };
   }
 }; 
