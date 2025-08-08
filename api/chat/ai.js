@@ -164,18 +164,37 @@ function searchKnowledgeBase(query) {
     });
   }
   
-  // Search pricing information
-  Object.keys(gamelayerKnowledge.pricing).forEach(tier => {
-    const plan = gamelayerKnowledge.pricing[tier];
-    if (lowerQuery.includes(tier) || lowerQuery.includes(plan.title.toLowerCase()) || 
-        lowerQuery.includes('pricing') || lowerQuery.includes('price') || lowerQuery.includes('cost')) {
+  // Search pricing information - enhanced to catch more variations
+  const pricingKeywords = [
+    'pricing', 'price', 'cost', 'how much', 'costs', 'prices', 'fee', 'fees',
+    'subscription', 'plan', 'plans', 'tier', 'tiers', 'starter', 'growth', 'scale', 'enterprise'
+  ];
+  
+  const hasPricingQuery = pricingKeywords.some(keyword => lowerQuery.includes(keyword));
+  
+  if (hasPricingQuery || lowerQuery.includes('how much') || lowerQuery.includes('cost')) {
+    // Return all pricing plans for comprehensive pricing questions
+    Object.keys(gamelayerKnowledge.pricing).forEach(tier => {
+      const plan = gamelayerKnowledge.pricing[tier];
       results.push({
         type: 'pricing',
         tier: tier,
         data: plan
       });
-    }
-  });
+    });
+  } else {
+    // Check for specific plan mentions
+    Object.keys(gamelayerKnowledge.pricing).forEach(tier => {
+      const plan = gamelayerKnowledge.pricing[tier];
+      if (lowerQuery.includes(tier) || lowerQuery.includes(plan.title.toLowerCase())) {
+        results.push({
+          type: 'pricing',
+          tier: tier,
+          data: plan
+        });
+      }
+    });
+  }
   
   // Search features
   gamelayerKnowledge.features.forEach(feature => {
@@ -372,6 +391,12 @@ IMPORTANT GUIDELINES:
 - Always cite sources when using web search results
 - Combine local knowledge with web search results for comprehensive answers
 
+PRICING QUESTIONS:
+- When asked about pricing, always provide all available pricing tiers
+- Include user limits, features, and pricing for each tier
+- Mention that Enterprise pricing is custom for larger deployments
+- Suggest the best plan based on user count if mentioned
+
 FORMATTING RULES:
 - Use bullet points (•) for lists
 - Add line breaks between sections
@@ -394,6 +419,7 @@ PERSONALITY: You're an expert gamification consultant who's passionate about hel
           userMessage += `- Key Benefits: ${result.data.keyBenefits.join(', ')}\n`;
         } else if (result.type === 'pricing') {
           userMessage += `- ${result.data.title} plan: ${result.data.price} ${result.data.description} for ${result.data.users}\n`;
+          userMessage += `  Features: ${result.data.features.join(', ')}\n`;
         } else if (result.type === 'feature') {
           userMessage += `- Feature: ${result.data}\n`;
         } else if (result.type === 'caseStudy') {

@@ -305,10 +305,11 @@ function generateExpertResponse(message) {
     };
   }
 
-  if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
+  if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('how much') || 
+      lowerMessage.includes('price') || lowerMessage.includes('costs') || lowerMessage.includes('fee')) {
     conversationContext.lastTopic = 'pricing';
     return {
-      message: "GameLayer offers flexible pricing designed to scale with your business.\n\nOur Starter plan (€100/month) is perfect for small apps and MVPs with up to 1,000 users.\n\nGrowth plan (€1,000/month) supports up to 25,000 users with advanced features.\n\nScale plan (€2,500/month) handles up to 100,000 users with enterprise features.\n\nFor larger deployments, our Enterprise plan offers unlimited users with custom pricing.\n\nAll plans include full gamification features, API access, and support.\n\nWhich plan aligns with your current user base and growth projections?",
+      message: "GameLayer offers flexible pricing designed to scale with your business.\n\nPricing Plans:\n\n• Starter Plan: €100/month\n  - Up to 1,000 active users\n  - All gamification features\n  - Unlimited elements\n  - Email support\n  - Basic analytics\n\n• Growth Plan: €1,000/month\n  - Up to 25,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Priority support\n  - Advanced analytics\n\n• Scale Plan: €2,500/month\n  - Up to 100,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Advanced support\n  - Advanced reporting\n\n• Enterprise Plan: Custom pricing\n  - Unlimited active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Custom SLA and support\n  - Advanced reporting\n\nAll plans include full gamification features, API access, and support. Which plan aligns with your current user base and growth projections?",
       type: "pricing"
     };
   }
