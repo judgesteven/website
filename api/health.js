@@ -24,7 +24,7 @@ export default function handler(req, res) {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    message: 'Vercel API server running with AI crawler support',
+    message: 'Vercel API server running with AI crawler support - Deployment: 2025-08-08',
     aiStatus: hasOpenAIKey ? 'enabled' : 'disabled',
     environment: process.env.NODE_ENV || 'development',
     hasOpenAIKey: hasOpenAIKey,
