@@ -516,114 +516,163 @@ export default async function handler(req, res) {
     const knowledgeResults = searchResults.local;
     const webResults = searchResults.web;
     
-    // Create system prompt with restricted scope and enhanced personality
-    const systemPrompt = `You are a specialized Gamification Assistant focused on:
-
-1. **Gamification Topics**: user engagement, customer loyalty, employee retention, and related strategies
-2. **GameLayer Platform**: pricing, features, API documentation, case studies, and implementation guidance
-
-You should ONLY answer questions related to these topics. If asked about other subjects, politely redirect to gamification or GameLayer topics.
-
-IMPORTANT GUIDELINES:
-- Keep responses conversational, helpful, and engaging
-- Use bullet points when listing features or benefits
-- Format responses in readable chunks with proper spacing
-- Use line breaks to separate different sections
-- Maximum 4-5 sentences for most answers
-- Be specific and actionable in your advice
-- Reference GameLayer features and capabilities when relevant
-- Show enthusiasm for gamification and its benefits
-- Use plain text only (no markdown formatting)
-- If web search results are available, incorporate them into your response
-- Always cite sources when using web search results
-- Combine local knowledge with web search results for comprehensive answers
-
-CRITICAL: When you say you can provide detailed guidance, ACTUALLY PROVIDE IT. Don't just make promises - deliver specific, actionable information.
-
-PRICING QUESTIONS:
-- When asked about pricing, always provide all available pricing tiers
-- Include user limits, features, and pricing for each tier
-- Mention that Enterprise pricing is custom for larger deployments
-- Suggest the best plan based on user count if mentioned
-
-USE CASES & IMPLEMENTATION:
-- When asked about use cases, provide specific examples with implementation details
-- Include benefits, features, and real-world examples
-- When asked about implementation, provide phase-by-phase guidance
-- Include best practices and actionable steps
-
-FORMATTING RULES:
-- Use bullet points (•) for lists
-- Add line breaks between sections
-- Keep paragraphs short and readable
-- Use clear headings when appropriate
-- When citing web sources, mention the source briefly
-
-PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice. You have access to both local knowledge and real-time web search results to provide the most up-to-date information.`;
-
-    // Create user message with enhanced context
-    let userMessage = message;
+    // Enhanced context building for GPT-5.0
+    let contextMessage = `User Query: ${message}\n\n`;
     
-    // Add local knowledge base results
+    // Add conversation context if available
+    if (req.body.conversationHistory && req.body.conversationHistory.length > 0) {
+      const recentHistory = req.body.conversationHistory.slice(-3); // Last 3 messages
+      contextMessage += `Recent conversation context:\n`;
+      recentHistory.forEach(msg => {
+        contextMessage += `${msg.role}: ${msg.content}\n`;
+      });
+      contextMessage += '\n';
+    }
+    
+    // Add local knowledge base results with enhanced structure
     if (knowledgeResults.length > 0) {
-      userMessage += '\n\nRelevant information from knowledge base:\n';
+      contextMessage += 'Relevant knowledge base information:\n';
       knowledgeResults.forEach(result => {
         if (result.type === 'overview') {
-          userMessage += `- GameLayer Overview: ${result.data.what}\n`;
-          userMessage += `- Purpose: ${result.data.purpose}\n`;
-          userMessage += `- Key Benefits: ${result.data.keyBenefits.join(', ')}\n`;
+          contextMessage += `• GameLayer Overview: ${result.data.what}\n`;
+          contextMessage += `• Purpose: ${result.data.purpose}\n`;
+          contextMessage += `• Key Benefits: ${result.data.keyBenefits.join(', ')}\n`;
         } else if (result.type === 'pricing') {
-          userMessage += `- ${result.data.title} plan: ${result.data.price} ${result.data.description} for ${result.data.users}\n`;
-          userMessage += `  Features: ${result.data.features.join(', ')}\n`;
+          contextMessage += `• ${result.data.title} plan: ${result.data.price} ${result.data.description} for ${result.data.users}\n`;
+          contextMessage += `  Features: ${result.data.features.join(', ')}\n`;
         } else if (result.type === 'feature') {
-          userMessage += `- Feature: ${result.data}\n`;
+          contextMessage += `• Feature: ${result.data}\n`;
         } else if (result.type === 'caseStudy') {
-          userMessage += `- Case Study: ${result.data.title} (${result.data.category})\n`;
-        } else if (result.type === 'concept') {
-          userMessage += `- ${result.concept}: ${result.data}\n`;
+          contextMessage += `• Case Study: ${result.data.title} (${result.data.category}) - ${result.data.details || result.data.description}\n`;
         } else if (result.type === 'useCase') {
-          userMessage += `- Use Case: ${result.data.title}\n`;
-          userMessage += `  Description: ${result.data.description}\n`;
-          userMessage += `  Implementation: ${result.data.implementation.join(', ')}\n`;
-          userMessage += `  Benefits: ${result.data.benefits.join(', ')}\n`;
-          userMessage += `  Examples: ${result.data.examples.join(', ')}\n`;
+          contextMessage += `• Use Case: ${result.data.title}\n`;
+          contextMessage += `  Description: ${result.data.description}\n`;
+          contextMessage += `  Implementation: ${result.data.implementation.join(', ')}\n`;
+          contextMessage += `  Benefits: ${result.data.benefits.join(', ')}\n`;
+          contextMessage += `  Examples: ${result.data.examples.join(', ')}\n`;
         } else if (result.type === 'implementation') {
-          userMessage += `- Implementation Phases:\n`;
+          contextMessage += `• Implementation Phases:\n`;
           result.data.phases.forEach(phase => {
-            userMessage += `  Phase ${phase.phase}: ${phase.duration}\n`;
-            userMessage += `    Features: ${phase.features.join(', ')}\n`;
-            userMessage += `    Description: ${phase.description}\n`;
+            contextMessage += `  Phase ${phase.phase}: ${phase.duration}\n`;
+            contextMessage += `    Features: ${phase.features.join(', ')}\n`;
+            contextMessage += `    Description: ${phase.description}\n`;
           });
-          userMessage += `- Best Practices: ${result.data.bestPractices.join(', ')}\n`;
+          contextMessage += `• Best Practices: ${result.data.bestPractices.join(', ')}\n`;
         }
       });
+      contextMessage += '\n';
     }
     
-    // Add web search results
+    // Add web search results with enhanced formatting
     if (webResults.length > 0) {
-      userMessage += '\n\nRecent web search results:\n';
-      webResults.forEach(result => {
-        userMessage += `- ${result.title}: ${result.content}\n`;
+      contextMessage += 'Recent web search results:\n';
+      webResults.forEach((result, index) => {
+        contextMessage += `• ${result.title}: ${result.content}\n`;
         if (result.url) {
-          userMessage += `  Source: ${result.url}\n`;
+          contextMessage += `  Source: ${result.url}\n`;
         }
+        if (index < webResults.length - 1) contextMessage += '\n';
       });
+      contextMessage += '\n';
     }
 
-    // Call OpenAI API with enhanced parameters
+    // Create system prompt optimized for GPT-5.0 capabilities
+    const systemPrompt = `You are a specialized Gamification Assistant powered by GPT-5.0, focused on providing expert-level guidance on gamification strategies, user engagement, customer loyalty, and retention.
+
+CORE EXPERTISE:
+• Gamification mechanics and psychology
+• Loyalty programs and user incentives  
+• User engagement strategies and frameworks
+• Retention optimization techniques
+• Implementation best practices and case studies
+
+TARGET AUDIENCE:
+• Product Managers - strategic use cases and feature ideas
+• Marketing Managers - engagement and loyalty opportunities  
+• Developers - implementation guidance and best practices
+
+CONVERSATION STYLE:
+• Short, punchy, and actionable responses
+• Friendly and helpful tone (Slack-savvy sidekick, not corporate chatbot)
+• Jargon-light unless speaking to developers
+• Conversational and engaging
+• Maximum 4-5 sentences for most answers
+• Use bullet points (•) for lists and key points
+• Add line breaks between sections for readability
+
+RESPONSE GUIDELINES:
+• Be specific and actionable - provide concrete advice, not just general statements
+• Reference real-world examples and case studies when relevant
+• Incorporate web search results when available (cite sources briefly)
+• Focus on practical implementation rather than theoretical concepts
+• Suggest next steps or follow-up questions when appropriate
+• Use data and metrics to support recommendations when possible
+
+FORMATTING RULES:
+• Use bullet points (•) for lists
+• Add line breaks between sections
+• Keep paragraphs short and readable
+• Use clear headings when appropriate
+• When citing sources, mention briefly: "According to [source]..."
+
+CRITICAL REQUIREMENTS:
+• ONLY answer questions related to gamification, engagement, retention, or loyalty
+• Politely redirect off-topic questions to gamification topics
+• When you say you can provide detailed guidance, ACTUALLY PROVIDE IT
+• Don't make empty promises - deliver specific, actionable information
+• Use GPT-5.0's enhanced reasoning to provide more accurate and nuanced responses
+
+PERSONALITY: You're an expert gamification consultant who's passionate about helping businesses succeed through user engagement. You're knowledgeable, friendly, and always ready to provide practical advice. You leverage GPT-5.0's advanced capabilities to deliver the most accurate, helpful, and actionable guidance possible.`;
+
+    // Create user message with enhanced context
+    const userMessage = contextMessage;
+
+    // Call OpenAI API with enhanced parameters for GPT-5.0
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-5o",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage }
+        {
+          role: "system",
+          content: systemPrompt
+        },
+        {
+          role: "user", 
+          content: userMessage
+        }
       ],
-      max_tokens: 200,
-      temperature: 0.8,
+      max_tokens: 2000,
+      temperature: 0.7,
+      top_p: 0.9,
+      frequency_penalty: 0.1,
       presence_penalty: 0.1,
-      frequency_penalty: 0.1
+      response_format: { type: "text" }
     });
 
-    const aiResponse = completion.choices[0].message.content;
+    // Enhanced response processing for GPT-5.0
+    let aiResponse = completion.choices[0]?.message?.content || 'I apologize, but I\'m having trouble processing your request right now. Please try again.';
+    
+    // Post-process response for better formatting
+    aiResponse = aiResponse.trim();
+    
+    // Ensure response follows our formatting guidelines
+    if (!aiResponse.includes('•') && (aiResponse.includes('features') || aiResponse.includes('benefits') || aiResponse.includes('steps'))) {
+      // Convert dashes to bullet points if needed
+      aiResponse = aiResponse.replace(/^- /gm, '• ');
+    }
+    
+    // Add follow-up suggestions for better engagement
+    const followUpSuggestions = [
+      "Would you like me to elaborate on any of these points?",
+      "What specific aspect would you like to explore further?",
+      "How can I help you implement this in your project?",
+      "Would you like to see some real-world examples?"
+    ];
+    
+    // Only add follow-up if response is substantial and doesn't already have one
+    if (aiResponse.length > 200 && !aiResponse.includes('Would you like') && !aiResponse.includes('What specific')) {
+      const randomSuggestion = followUpSuggestions[Math.floor(Math.random() * followUpSuggestions.length)];
+      aiResponse += `\n\n${randomSuggestion}`;
+    }
 
     res.json({
       response: aiResponse,

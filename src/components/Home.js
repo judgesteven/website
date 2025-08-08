@@ -295,7 +295,7 @@ const Testing = () => {
             >
               Expert Guidance with{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-                GPT-4o-mini
+                GPT-5.0
               </span>
             </motion.h2>
             

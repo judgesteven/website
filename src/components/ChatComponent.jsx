@@ -115,7 +115,7 @@ export default function ChatComponent() {
           </div>
           <div>
             <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
-            <p className="text-sm text-gray-400">Powered by GPT-4o-mini</p>
+            <p className="text-sm text-gray-400">Powered by GPT-5.0</p>
           </div>
         </div>
         <div className="flex items-center space-x-3">

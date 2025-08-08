@@ -28,7 +28,7 @@ const GptSection = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Suggested questions for better UX
+  // Suggested questions optimized for GPT-5.0 capabilities
   const suggestedQuestions = [
     "How can gamification boost my loyalty program?",
     "What are the best practices for user engagement?",
@@ -174,7 +174,7 @@ const GptSection = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
-                    <p className="text-sm text-gray-300">Powered by GPT-4o-mini</p>
+                    <p className="text-sm text-gray-300">Powered by GPT-5.0</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">

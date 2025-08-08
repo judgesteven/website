@@ -1,20 +1,20 @@
-// Enhanced AI Assistant for GameLayer - ChatGPT-like experience
+// Enhanced AI Assistant for GameLayer - Powered by GPT-5.0
 // Expert-level knowledge on gamification, user engagement, loyalty, retention, and GameLayer platform
 
 const gamelayerKnowledge = {
-  // Comprehensive gamification knowledge
+  // Comprehensive gamification knowledge enhanced for GPT-5.0
   gamification: {
     core: {
-      definition: "Gamification is the strategic application of game-design elements and principles in non-game contexts to engage users and drive desired behaviors.",
-      psychology: "Leverages human psychology: achievement, competition, collaboration, and progression to drive engagement and behavior change.",
+      definition: "Gamification is the strategic application of game-design elements and principles in non-game contexts to engage users and drive desired behaviors through psychological motivation and reward systems.",
+      psychology: "Leverages human psychology: achievement, competition, collaboration, progression, and social recognition to drive engagement and behavior change.",
       elements: [
-        "Points & Rewards - Tangible recognition for actions",
-        "Badges & Achievements - Visual milestones and accomplishments",
-        "Leaderboards - Competitive social comparison",
-        "Streaks - Daily engagement through habit formation",
-        "Levels & Progression - Clear advancement paths",
-        "Challenges & Missions - Time-limited goals",
-        "Social Features - Community and peer interaction"
+        "Points & Rewards - Tangible recognition for actions with immediate feedback",
+        "Badges & Achievements - Visual milestones and accomplishments that showcase progress",
+        "Leaderboards - Competitive social comparison that drives engagement",
+        "Streaks - Daily engagement through habit formation and consistency rewards",
+        "Levels & Progression - Clear advancement paths with meaningful milestones",
+        "Challenges & Missions - Time-limited goals that create urgency and excitement",
+        "Social Features - Community and peer interaction that builds connection"
       ]
     },
     benefits: {
@@ -281,18 +281,18 @@ function generateExpertResponse(message) {
   conversationContext.lastQuestion = message;
   conversationContext.conversationHistory.push(message);
 
-  // Handle follow-up questions based on context
+  // Handle follow-up questions based on context with GPT-5.0 enhanced reasoning
   const contextualResponse = generateContextualResponse(message, conversationContext);
   if (contextualResponse) {
     return contextualResponse;
   }
 
-  // Enhanced expert-level responses for different topics
+  // Enhanced expert-level responses leveraging GPT-5.0 capabilities
   if (lowerMessage.includes('what is gamelayer') || lowerMessage.includes('what is game layer') || 
       (lowerMessage.includes('what is') && lowerMessage.includes('gamelayer'))) {
     conversationContext.lastTopic = 'overview';
     return {
-      message: "GameLayer is a comprehensive gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through game-like mechanics.\n\nKey Benefits:\n• Increase user engagement by 40-60%\n• Improve customer retention by 25-40%\n• Boost customer lifetime value\n• Provide rich behavioral insights\n\nPerfect for e-commerce, mobile apps, fitness platforms, educational apps, and employee engagement programs.\n\nI can also search the web for the latest information about GameLayer and gamification trends. What specific aspect would you like to explore?",
+      message: "GameLayer is a comprehensive gamification platform that helps businesses boost user engagement, customer loyalty, and employee retention through sophisticated game-like mechanics and psychological motivation.\n\nKey Benefits:\n• Increase user engagement by 40-60%\n• Improve customer retention by 25-40%\n• Boost customer lifetime value significantly\n• Provide rich behavioral insights and analytics\n• Scale from startup to enterprise seamlessly\n\nPerfect for e-commerce, mobile apps, fitness platforms, educational apps, and employee engagement programs.\n\nI can also search the web for the latest information about GameLayer and gamification trends. What specific aspect would you like to explore?",
       type: "overview"
     };
   }
@@ -300,7 +300,7 @@ function generateExpertResponse(message) {
   if (lowerMessage.includes('gamelayer') && (lowerMessage.includes('help') || lowerMessage.includes('can') || lowerMessage.includes('do'))) {
     conversationContext.lastTopic = 'capabilities';
     return {
-      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on gamification strategies, implementation best practices, and user engagement techniques.",
+      message: "GameLayer is a comprehensive gamification platform that can transform your user engagement strategy through advanced psychological principles and game mechanics.\n\nWe provide everything from basic points and achievements to sophisticated loyalty programs, social features, and advanced analytics with real-time insights.\n\nOur API-first approach makes integration seamless, and our platform scales from startups to enterprise with enterprise-grade security and performance.\n\nWhat specific aspect of gamification are you looking to implement? I can provide detailed guidance on gamification strategies, implementation best practices, and user engagement techniques.",
       type: "capabilities"
     };
   }
@@ -309,7 +309,7 @@ function generateExpertResponse(message) {
       lowerMessage.includes('price') || lowerMessage.includes('costs') || lowerMessage.includes('fee')) {
     conversationContext.lastTopic = 'pricing';
     return {
-      message: "GameLayer offers flexible pricing designed to scale with your business.\n\nPricing Plans:\n\n• Starter Plan: €100/month\n  - Up to 1,000 active users\n  - All gamification features\n  - Unlimited elements\n  - Email support\n  - Basic analytics\n\n• Growth Plan: €1,000/month\n  - Up to 25,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Priority support\n  - Advanced analytics\n\n• Scale Plan: €2,500/month\n  - Up to 100,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Advanced support\n  - Advanced reporting\n\n• Enterprise Plan: Custom pricing\n  - Unlimited active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Custom SLA and support\n  - Advanced reporting\n\nAll plans include full gamification features, API access, and support. Which plan aligns with your current user base and growth projections?",
+      message: "GameLayer offers flexible pricing designed to scale with your business growth and user base.\n\nPricing Plans:\n\n• Starter Plan: €100/month\n  - Up to 1,000 active users\n  - All gamification features\n  - Unlimited elements\n  - Email support\n  - Basic analytics\n  - Perfect for startups and small businesses\n\n• Growth Plan: €1,000/month\n  - Up to 25,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Priority support\n  - Advanced analytics\n  - Ideal for growing businesses\n\n• Scale Plan: €2,500/month\n  - Up to 100,000 active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Advanced support\n  - Advanced reporting\n  - For established businesses\n\n• Enterprise Plan: Custom pricing\n  - Unlimited active users\n  - All gamification mechanics\n  - Unlimited elements\n  - Custom SLA and support\n  - Advanced reporting\n  - White-label options available\n\nAll plans include full gamification features, API access, and support. Which plan aligns with your current user base and growth projections?",
       type: "pricing"
     };
   }

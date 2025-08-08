@@ -1,8 +1,8 @@
 # AI Assistant Setup Guide
 
-## Current Status: ✅ AI Assistant Enabled
+## Current Status: ✅ AI Assistant Enabled with GPT-5.0
 
-The AI assistant is now fully functional with a restricted scope focused on gamification topics and GameLayer platform questions.
+The AI assistant is now fully functional with GPT-5.0, providing enhanced reasoning, more accurate responses, and improved context understanding focused on gamification topics and GameLayer platform questions.
 
 ## Features
 
@@ -10,6 +10,9 @@ The AI assistant is now fully functional with a restricted scope focused on gami
 - **Gamification Topics**: user engagement, customer loyalty, employee retention
 - **GameLayer Platform**: pricing, features, API documentation, case studies
 - **Implementation Guidance**: best practices, strategies, examples
+- **Enhanced Reasoning**: GPT-5.0 powered responses with better context understanding
+- **Web Search Integration**: Real-time information from web sources
+- **Conversational AI**: Natural, engaging conversations with follow-up suggestions
 
 ### ❌ What the AI Assistant Will NOT Answer:
 - General questions outside gamification scope
@@ -26,7 +29,7 @@ npm run dev
 ```
 
 ### 2. Full AI Setup (With OpenAI API Key)
-For enhanced AI responses, add your OpenAI API key:
+For enhanced AI responses with GPT-5.0, add your OpenAI API key:
 
 1. **Get an OpenAI API Key**:
    - Visit: https://platform.openai.com/account/api-keys
@@ -63,6 +66,7 @@ curl -X POST http://localhost:3001/chat/api/ai \
 - "How do I implement employee retention with gamification?"
 - "Tell me about GameLayer case studies"
 - "What gamification features does GameLayer offer?"
+- "What are the latest gamification trends?"
 
 ## Knowledge Base
 
@@ -72,6 +76,22 @@ The AI assistant has access to:
 - **Case Studies**: Veikkaus, Reima GO!, Finnair, Baaz, Dubbz
 - **Gamification Concepts**: User engagement, customer loyalty, employee retention
 - **Best Practices**: Implementation strategies and guidelines
+- **Web Search**: Real-time information from DuckDuckGo and Wikipedia APIs
+
+## GPT-5.0 Enhancements
+
+### New Capabilities:
+- **Enhanced Reasoning**: More accurate and nuanced responses
+- **Better Context Understanding**: Improved conversation flow and follow-up handling
+- **Advanced Response Processing**: Better formatting and engagement suggestions
+- **Increased Token Limit**: Up to 2000 tokens for more detailed responses
+- **Improved Accuracy**: Better understanding of complex queries and context
+
+### Technical Improvements:
+- **Model**: Upgraded from GPT-4o-mini to GPT-5.0
+- **Response Format**: Enhanced formatting with bullet points and line breaks
+- **Context Handling**: Better conversation history and context management
+- **Error Handling**: Improved error handling and fallback responses
 
 ## Troubleshooting
 
@@ -84,9 +104,10 @@ The AI assistant has access to:
 The knowledge base search works independently of the OpenAI API. If you're not getting relevant results, try rephrasing your question.
 
 ### Performance Issues
-- The AI uses GPT-4o-mini for fast responses
+- The AI uses GPT-5.0 for enhanced responses
 - Knowledge base searches are performed locally
-- Responses are limited to 500 tokens for quick interactions
+- Web search integration provides real-time information
+- Responses are optimized for readability and engagement
 
 ## Contact Support
 
