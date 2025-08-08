@@ -70,6 +70,40 @@ Allow: /
 User-agent: AI-User
 Allow: /
 
+# Additional AI and automation tools
+User-agent: Bot
+Allow: /
+
+User-agent: Crawler
+Allow: /
+
+User-agent: Spider
+Allow: /
+
+User-agent: Scraper
+Allow: /
+
+User-agent: Automation
+Allow: /
+
+User-agent: AI
+Allow: /
+
+User-agent: LLM
+Allow: /
+
+User-agent: GPT
+Allow: /
+
+User-agent: OpenAI
+Allow: /
+
+User-agent: Anthropic
+Allow: /
+
+User-agent: Claude
+Allow: /
+
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /private/
