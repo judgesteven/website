@@ -123,6 +123,39 @@ function generateResponse(message) {
   const lowerMessage = message.toLowerCase();
   const knowledge = searchKnowledgeBase(message);
   
+  // Questions about GameLayer's capabilities and help
+  if (lowerMessage.includes('gamelayer can help') || 
+      lowerMessage.includes('gamelayer help') ||
+      lowerMessage.includes('can gamelayer help') ||
+      lowerMessage.includes('gamelayer api can help') ||
+      lowerMessage.includes('gamelayer api help') ||
+      lowerMessage.includes('can gamelayer api help')) {
+    return {
+      message: "Absolutely! GameLayer can help with gamification, user engagement, loyalty programs, and retention. Our API provides points, badges, leaderboards, challenges, and analytics. What's your specific goal? 🚀",
+      type: "capabilities"
+    };
+  }
+  
+  // Questions about what GameLayer can do
+  if (lowerMessage.includes('what can gamelayer') || 
+      lowerMessage.includes('gamelayer can do') ||
+      lowerMessage.includes('gamelayer features') ||
+      lowerMessage.includes('gamelayer capabilities')) {
+    return {
+      message: "GameLayer provides: Player management, achievement systems, leaderboards, points & rewards, challenges & missions, analytics dashboard, and easy API integration. Perfect for boosting engagement! 🎮",
+      type: "features"
+    };
+  }
+  
+  // Questions about GameLayer's API capabilities
+  if (lowerMessage.includes('gamelayer api') && 
+      (lowerMessage.includes('can') || lowerMessage.includes('help') || lowerMessage.includes('do'))) {
+    return {
+      message: "GameLayer's API can: Create players, award achievements, manage leaderboards, track points, create challenges, and monitor engagement. Ready to implement gamification! 🔧",
+      type: "api_capabilities"
+    };
+  }
+  
   // API-specific questions
   if (lowerMessage.includes('api') && (lowerMessage.includes('player') || lowerMessage.includes('create'))) {
     return {
