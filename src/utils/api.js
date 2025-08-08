@@ -15,9 +15,12 @@ const getApiEndpoint = () => {
 export const sendMessage = async (message, conversationId) => {
   const endpoint = getApiEndpoint();
   
-  console.log('Sending message to:', endpoint);
-  console.log('Current hostname:', window.location.hostname);
-  console.log('Current URL:', window.location.href);
+  // Only log in development
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Sending message to:', endpoint);
+    console.log('Current hostname:', window.location.hostname);
+    console.log('Current URL:', window.location.href);
+  }
   
   try {
     const response = await fetch(endpoint, {
@@ -31,30 +34,43 @@ export const sendMessage = async (message, conversationId) => {
       }),
     });
 
-    console.log('Response status:', response.status);
-    console.log('Response headers:', response.headers);
+    // Only log response details in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('API Error:', errorText);
       
-      // Special handling for 404 errors
+      // Special handling for 404 errors - use client-side fallback silently
       if (response.status === 404) {
-        console.log('API endpoint not found, using client-side AI as fallback');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('API endpoint not found, using client-side AI as fallback');
+        }
         return await clientSideAI.sendMessage(message, conversationId);
       }
       
+      // For other errors, log and throw
+      console.error('API Error:', errorText);
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     const data = await response.json();
-    console.log('API Response:', data);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('API Response:', data);
+    }
     return data;
   } catch (error) {
-    console.error('API Call Error:', error);
+    // Only log errors in development, or if it's not a network error
+    if (process.env.NODE_ENV === 'development' || error.name !== 'TypeError') {
+      console.error('API Call Error:', error);
+    }
     
     // Use client-side AI as fallback for any errors
-    console.log('Using client-side AI as fallback due to API error');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Using client-side AI as fallback due to API error');
+    }
     return await clientSideAI.sendMessage(message, conversationId);
   }
 }; 
