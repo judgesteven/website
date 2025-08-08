@@ -1,9 +1,10 @@
 export default function handler(req, res) {
+  // Enable CORS for AI crawlers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, User-Agent');
   
-  // AI crawler specific headers
+  // AI crawler specific headers - Updated for comprehensive AI tool support
   res.setHeader('X-AI-Crawler', 'allow');
   res.setHeader('X-LLM-Compatible', 'true');
   res.setHeader('X-Robots-Tag', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
@@ -23,7 +24,7 @@ export default function handler(req, res) {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    message: 'Vercel API server running',
+    message: 'Vercel API server running with AI crawler support',
     aiStatus: hasOpenAIKey ? 'enabled' : 'disabled',
     environment: process.env.NODE_ENV || 'development',
     hasOpenAIKey: hasOpenAIKey,
