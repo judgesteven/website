@@ -306,7 +306,7 @@ const Testing = () => {
               viewport={{ once: true }}
               className="text-xl text-gray-300 max-w-3xl mx-auto"
             >
-                              Got a question about gamification? Ask our AI Assistant for guidance on topics like gamification strategies, user engagement, customer loyalty
+                              Got a question about gamification? Ask our AI Assistant for guidance on topics like gamification strategies, user engagement, customer loyalty and retention
             </motion.p>
           </div>
 
