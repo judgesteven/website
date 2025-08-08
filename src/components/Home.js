@@ -327,7 +327,7 @@ const Testing = () => {
                     </div>
                     <div>
                                           <h3 className="text-lg font-semibold text-white">Gamification Assistant</h3>
-                    <p className="text-sm text-gray-300">Powered by GPT-4o-min</p>
+                    <p className="text-sm text-gray-300">Powered by GPT-5.0</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-green-400">
