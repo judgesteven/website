@@ -70,6 +70,62 @@ const gamelayerKnowledge = {
     }
   },
 
+  // GameLayer pricing information
+  pricing: {
+    starter: {
+      title: "Starter",
+      users: "Up to 1,000 users",
+      price: "€100",
+      description: "per month",
+      features: [
+        "Up to 1,000 active users",
+        "All gamification features",
+        "Unlimited elements",
+        "Email support",
+        "Basic analytics"
+      ]
+    },
+    growth: {
+      title: "Growth",
+      users: "Up to 25,000 users",
+      price: "€1,000",
+      description: "per month",
+      features: [
+        "Up to 25,000 active users",
+        "All gamification mechanics",
+        "Unlimited elements",
+        "Priority support",
+        "Advanced Analytics"
+      ]
+    },
+    scale: {
+      title: "Scale",
+      users: "Up to 100,000 users",
+      price: "€2,500",
+      description: "per month",
+      features: [
+        "Up to 100,000 active users",
+        "All gamification mechanics",
+        "Unlimited elements",
+        "Advanced support",
+        "Advanced reporting"
+      ]
+    },
+    enterprise: {
+      title: "Enterprise",
+      users: "Above 100,000 users",
+      price: "Contact us",
+      description: "",
+      features: [
+        "Unlimited active users",
+        "All gamification mechanics",
+        "Unlimited elements",
+        "Custom SLA and support",
+        "Advanced reporting"
+      ]
+    }
+  },
+
   // Industry use cases
   useCases: {
     fitness: "Daily workout streaks, achievement badges, social challenges, progress tracking",
@@ -98,6 +154,10 @@ function searchKnowledgeBase(query) {
   
   if (lowerQuery.includes('gamelayer') || lowerQuery.includes('api') || lowerQuery.includes('platform')) {
     return gamelayerKnowledge.gamelayerFeatures;
+  }
+  
+  if (lowerQuery.includes('pricing') || lowerQuery.includes('price') || lowerQuery.includes('cost') || lowerQuery.includes('costs')) {
+    return gamelayerKnowledge.pricing;
   }
   
   if (lowerQuery.includes('fitness') || lowerQuery.includes('workout')) {
@@ -153,6 +213,14 @@ function generateResponse(message) {
     return {
       message: "GameLayer's API can: Create players, award achievements, manage leaderboards, track points, create challenges, and monitor engagement. Ready to implement gamification! 🔧",
       type: "api_capabilities"
+    };
+  }
+  
+  // Pricing questions
+  if (lowerMessage.includes('pricing') || lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('costs') || lowerMessage.includes('how much')) {
+    return {
+      message: "GameLayer pricing: Starter €100/month (1K users), Growth €1,000/month (25K users), Scale €2,500/month (100K users), Enterprise (contact us). All plans include full gamification features! 💰",
+      type: "pricing"
     };
   }
   
@@ -236,6 +304,13 @@ function generateResponse(message) {
     return {
       message: `Perfect use case: ${knowledge.useCase}. Ready to implement with GameLayer! 🚀`,
       type: "use_case"
+    };
+  }
+  
+  if (knowledge && knowledge.starter) {
+    return {
+      message: "GameLayer pricing: Starter €100/month (1K users), Growth €1,000/month (25K users), Scale €2,500/month (100K users), Enterprise (contact us). All plans include full gamification features! 💰",
+      type: "pricing"
     };
   }
   
