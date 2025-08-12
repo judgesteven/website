@@ -1,128 +1,142 @@
+# GameLayer Robots.txt - Optimized for Maximum Crawler Access
+# Last Updated: 2025-08-12
+
+# Allow ALL crawlers by default
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://gamelayer.io/sitemap.xml
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
-
-# Allow all major search engines and LLMs
+# Explicitly allow major search engines
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Slurp
 Allow: /
+Crawl-delay: 1
 
 User-agent: DuckDuckBot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Baiduspider
 Allow: /
+Crawl-delay: 1
 
 User-agent: YandexBot
 Allow: /
+Crawl-delay: 1
 
 # AI and LLM Crawlers - Enhanced for maximum compatibility
 User-agent: GPTBot
 Allow: /
+Crawl-delay: 1
 
 User-agent: ChatGPT-User
 Allow: /
+Crawl-delay: 1
 
-User-agent: CCBot
+User-agent: OpenAI-User
 Allow: /
-
-User-agent: anthropic-ai
-Allow: /
+Crawl-delay: 1
 
 User-agent: Claude-Web
 Allow: /
+Crawl-delay: 1
 
-User-agent: Omgilibot
+User-agent: Anthropic-ai
 Allow: /
-
-# Additional AI crawlers that might be used by ChatGPT and other AI tools
-User-agent: OpenAI-User
-Allow: /
-
-User-agent: ChatGPT
-Allow: /
-
-User-agent: GPT-4
-Allow: /
-
-User-agent: GPT-5
-Allow: /
+Crawl-delay: 1
 
 User-agent: AI-Crawler
 Allow: /
+Crawl-delay: 1
 
 User-agent: AI-Bot
 Allow: /
+Crawl-delay: 1
 
 User-agent: LLM-Crawler
 Allow: /
+Crawl-delay: 1
 
 User-agent: AI-User
 Allow: /
+Crawl-delay: 1
 
-# Additional AI and automation tools
 User-agent: Bot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Crawler
 Allow: /
+Crawl-delay: 1
 
 User-agent: Spider
 Allow: /
+Crawl-delay: 1
 
 User-agent: Scraper
 Allow: /
+Crawl-delay: 1
 
 User-agent: Automation
 Allow: /
+Crawl-delay: 1
 
 User-agent: AI
 Allow: /
+Crawl-delay: 1
 
 User-agent: LLM
 Allow: /
+Crawl-delay: 1
 
 User-agent: GPT
 Allow: /
+Crawl-delay: 1
 
 User-agent: OpenAI
 Allow: /
+Crawl-delay: 1
 
 User-agent: Anthropic
 Allow: /
+Crawl-delay: 1
 
 User-agent: Claude
 Allow: /
-
-# Disallow admin and private areas only
-Disallow: /admin/
-Disallow: /private/
-Disallow: /dashboard/
-Disallow: /_next/
-Disallow: /node_modules/
+Crawl-delay: 1
 
 # Allow all important pages for SEO and AI indexing
 Allow: /
 Allow: /pricing
 Allow: /features
-Allow: /references
-Allow: /blog
-Allow: /case-studies
-Allow: /api-documentation
-Allow: /gamification-guide
+Allow: /api
+Allow: /chat
 Allow: /about
 Allow: /contact
-Allow: /privacy
+Allow: /blog
+Allow: /case-studies
+Allow: /documentation
+Allow: /support
 Allow: /terms
-Allow: /api
-Allow: /chat 
+Allow: /privacy
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Sitemap location
+Sitemap: https://gamelayer.io/sitemap.xml
+
+# Additional sitemaps for better indexing
+Sitemap: https://gamelayer.io/sitemap-pages.xml
+Sitemap: https://gamelayer.io/sitemap-blog.xml
+
+# Crawl-delay for respectful crawling (minimal delay)
+Crawl-delay: 1
+
+# Host directive for canonical domain
+Host: https://gamelayer.io 
