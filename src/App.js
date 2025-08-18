@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, Suspense, lazy, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -36,6 +36,34 @@ function PageTracker() {
 }
 
 function App() {
+  const [isAppReady, setIsAppReady] = useState(false);
+
+  useEffect(() => {
+    // Signal that the React app is ready
+    const timer = setTimeout(() => {
+      setIsAppReady(true);
+      
+      // Remove the loading overlay if it still exists
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      if (loadingOverlay) {
+        loadingOverlay.classList.add('fade-out');
+        setTimeout(() => {
+          if (loadingOverlay.parentNode) {
+            loadingOverlay.parentNode.removeChild(loadingOverlay);
+          }
+        }, 300);
+      }
+      
+      // Ensure the root element is visible
+      const root = document.getElementById('root');
+      if (root) {
+        root.classList.add('loaded');
+      }
+    }, 100); // Small delay to ensure smooth transition
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router>
       <div className="App">
