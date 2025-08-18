@@ -57,13 +57,13 @@ const DashboardLogin = () => {
     setCredentials({ username: '', password: '' });
   };
 
-  // Check if already authenticated from sessionStorage
-  React.useEffect(() => {
-    const isAuth = sessionStorage.getItem('dashboardAuthenticated');
-    if (isAuth === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  // Remove the automatic authentication check from sessionStorage
+  // React.useEffect(() => {
+  //   const isAuth = sessionStorage.getItem('dashboardAuthenticated');
+  //   if (isAuth === 'true') {
+  //     setIsAuthenticated(true);
+  //   }
+  // }, []);
 
   if (isAuthenticated) {
     return (
