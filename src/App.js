@@ -7,6 +7,7 @@ import { useAnalytics } from './hooks/useAnalytics';
 
 // Lazy load components for better performance
 const DashboardLogin = lazy(() => import('./components/DashboardLogin'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
 const Pricing = lazy(() => import('./components/Pricing'));
 const Home = lazy(() => import('./components/Home'));
 const References = lazy(() => import('./components/References'));
@@ -46,6 +47,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/dashboard" element={<DashboardLogin />} />
+            <Route path="/dashboard_admin" element={<Dashboard />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/references" element={<References />} />
             <Route path="/api" element={<ApiPage />} />

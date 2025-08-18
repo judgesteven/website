@@ -58,7 +58,7 @@ const Hero = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Link
-                to="/dashboard"
+                to="/dashboard_admin"
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center"
               >
                 Get Started Free
