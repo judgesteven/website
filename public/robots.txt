@@ -123,10 +123,10 @@ Allow: /sitemap.xml
 Allow: /robots.txt
 
 # Sitemap location
-Sitemap: https://www.gamelayer.io/sitemap.xml
+Sitemap: https://gamelayer.io/sitemap.xml
 
 # Crawl-delay for respectful crawling (minimal delay)
 Crawl-delay: 1
 
 # Host directive for canonical domain
-Host: https://www.gamelayer.io 
+Host: https://gamelayer.io 
