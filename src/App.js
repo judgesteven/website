@@ -13,6 +13,8 @@ const Home = lazy(() => import('./components/Home'));
 const References = lazy(() => import('./components/References'));
 const ChatPage = lazy(() => import('./components/ChatPage'));
 const ApiPage = lazy(() => import('./components/ApiPage'));
+const AIContent = lazy(() => import('./components/AIContent'));
+const BlogPost = lazy(() => import('./components/BlogPost'));
 
 // Loading component for lazy-loaded routes
 const LoadingSpinner = () => (
@@ -55,6 +57,9 @@ function App() {
       if (root) {
         root.classList.add('loaded');
       }
+      
+      // Hide SEO content for users
+      document.body.classList.add('js-loaded');
     }, 100); // Small delay to ensure smooth transition
 
     return () => clearTimeout(timer);
@@ -75,6 +80,8 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/references" element={<References />} />
             <Route path="/api" element={<ApiPage />} />
+            <Route path="/ai-content" element={<AIContent />} />
+            <Route path="/blog/gamification-guide-2025" element={<BlogPost />} />
           </Routes>
         </Suspense>
         <Footer />
