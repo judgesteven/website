@@ -1,0 +1,7 @@
+# Redirect to www version
+User-agent: *
+Disallow: /
+
+# Redirect all crawlers to www.gamelayer.io
+# This robots.txt is for the non-www domain
+# Please visit: https://www.gamelayer.io/robots.txt
