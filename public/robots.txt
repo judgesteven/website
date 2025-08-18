@@ -1,5 +1,5 @@
 # GameLayer Robots.txt - Optimized for Maximum Crawler Access
-# Last Updated: 2025-08-12
+# Last Updated: 2025-08-18
 
 # Allow ALL crawlers by default
 User-agent: *
@@ -117,23 +117,13 @@ Allow: /pricing
 Allow: /features
 Allow: /api
 Allow: /chat
-Allow: /about
-Allow: /contact
-Allow: /blog
-Allow: /case-studies
-Allow: /documentation
-Allow: /support
-Allow: /terms
-Allow: /privacy
+Allow: /dashboard
+Allow: /api-docs
 Allow: /sitemap.xml
 Allow: /robots.txt
 
 # Sitemap location
 Sitemap: https://gamelayer.io/sitemap.xml
-
-# Additional sitemaps for better indexing
-Sitemap: https://gamelayer.io/sitemap-pages.xml
-Sitemap: https://gamelayer.io/sitemap-blog.xml
 
 # Crawl-delay for respectful crawling (minimal delay)
 Crawl-delay: 1

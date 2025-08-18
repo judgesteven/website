@@ -21,7 +21,7 @@
         overflow-x: hidden;
       }
       
-      /* Loading state management */
+      /* Loading state management - Only show for users with JavaScript */
       .loading-overlay {
         position: fixed;
         top: 0;
@@ -30,11 +30,15 @@
         height: 100%;
         background: #ffffff;
         z-index: 9999;
-        display: flex;
+        display: none; /* Hidden by default for crawlers */
         flex-direction: column;
         align-items: center;
         justify-content: center;
         transition: opacity 0.3s ease-out;
+      }
+      
+      .loading-overlay.show {
+        display: flex;
       }
       
       .loading-overlay.fade-out {
@@ -90,24 +94,89 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
       }
       
-      /* SEO Content - Initially hidden, only for crawlers */
+      /* SEO Content - Visible to crawlers, hidden from users with JavaScript */
       .seo-content {
-        position: absolute !important;
-        left: -9999px !important;
-        top: -9999px !important;
-        width: 1px !important;
-        height: 1px !important;
-        overflow: hidden !important;
-        z-index: -1 !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
+        position: relative;
+        left: auto;
+        top: auto;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        z-index: auto;
+        visibility: visible;
+        opacity: 1;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-bottom: 2px solid #0ea5e9;
+        margin-bottom: 20px;
       }
       
-      /* Show SEO content only for crawlers and when JavaScript is disabled */
-      @media (prefers-reduced-motion: no-preference) {
-        .seo-content {
-          display: none;
-        }
+      .seo-content h1 {
+        color: #0ea5e9;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      
+      .seo-content h2 {
+        color: #374151;
+        font-size: 1.8em;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #0ea5e9;
+        padding-bottom: 10px;
+      }
+      
+      .seo-content ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .seo-content li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #f8fafc;
+        border-left: 4px solid #0ea5e9;
+        border-radius: 4px;
+      }
+      
+      .seo-content .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+      
+      .seo-content .pricing-card {
+        border: 2px solid #0ea5e9;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        background: #ffffff;
+      }
+      
+      .seo-content .pricing-card h3 {
+        color: #0ea5e9;
+        margin-bottom: 10px;
+      }
+      
+      .seo-content .pricing-card .price {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #059669;
+        margin-bottom: 10px;
+      }
+      
+      .seo-content .pricing-card .description {
+        font-size: 0.9em;
+        color: #6b7280;
+      }
+      
+      /* Hide SEO content for users with JavaScript */
+      .js-loaded .seo-content {
+        display: none;
       }
       
       /* Ensure smooth transitions */
@@ -332,14 +401,7 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   </head>
   <body>
-    <!-- Loading Overlay - Shows immediately to prevent flash -->
-    <div class="loading-overlay" id="loadingOverlay">
-      <img src="%PUBLIC_URL%/gamelayer-logo.png" alt="GameLayer" class="loading-logo">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">Loading GameLayer...</div>
-    </div>
-
-    <!-- SEO Content - Hidden from users, only for crawlers -->
+    <!-- SEO Content - Immediately visible to crawlers and search engines -->
     <div class="seo-content">
       <h1>GameLayer - Leading Gamification Platform & API for Business</h1>
       
@@ -418,11 +480,21 @@
       <p>Email: steve@gamelayer.co | Website: https://gamelayer.io | API Documentation: https://gamelayer.io/api</p>
     </div>
 
+    <!-- Loading Overlay - Only shows for users with JavaScript -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <img src="%PUBLIC_URL%/gamelayer-logo.png" alt="GameLayer" class="loading-logo">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading GameLayer...</div>
+    </div>
+
     <!-- React App Container -->
     <div id="root"></div>
     
     <!-- Performance optimization script -->
     <script>
+      // Show loading overlay for users with JavaScript
+      document.getElementById('loadingOverlay').classList.add('show');
+      
       // Improved loading state management
       let appLoaded = false;
       
@@ -440,6 +512,9 @@
           
           // Show React app with fade-in effect
           root.classList.add('loaded');
+          
+          // Hide SEO content for users
+          document.body.classList.add('js-loaded');
           
           // Remove loading overlay after transition
           setTimeout(() => {
