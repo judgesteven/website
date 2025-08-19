@@ -11,6 +11,8 @@ const ApiPage = () => {
           border: 'none'
         }}
         title="API Documentation"
+        allow="fullscreen"
+        loading="lazy"
       />
     </div>
   );
