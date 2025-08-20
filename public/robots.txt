@@ -1,5 +1,5 @@
 # GameLayer Robots.txt - Optimized for Maximum Crawler Access
-# Last Updated: 2025-08-18
+# Last Updated: 2025-01-27
 
 # Allow ALL crawlers by default
 User-agent: *
@@ -111,6 +111,47 @@ User-agent: Claude
 Allow: /
 Crawl-delay: 1
 
+# Additional AI Crawlers
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bard
+Allow: /
+Crawl-delay: 1
+
+User-agent: Copilot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Gemini
+Allow: /
+Crawl-delay: 1
+
+User-agent: Grok
+Allow: /
+Crawl-delay: 1
+
+User-agent: Cohere
+Allow: /
+Crawl-delay: 1
+
+User-agent: HuggingFace
+Allow: /
+Crawl-delay: 1
+
+User-agent: AI-Search
+Allow: /
+Crawl-delay: 1
+
+User-agent: AI-Indexer
+Allow: /
+Crawl-delay: 1
+
+User-agent: AI-Reader
+Allow: /
+Crawl-delay: 1
+
 # Allow all important pages for SEO and AI indexing
 Allow: /
 Allow: /pricing
@@ -121,9 +162,15 @@ Allow: /dashboard
 Allow: /api-docs
 Allow: /sitemap.xml
 Allow: /robots.txt
+Allow: /ai-content
+Allow: /references
+Allow: /blog/*
 
-# Sitemap location
+# Sitemap locations
+Sitemap: https://gamelayer.io/sitemap-index.xml
 Sitemap: https://gamelayer.io/sitemap.xml
+Sitemap: https://gamelayer.io/sitemap-blog.xml
+Sitemap: https://gamelayer.io/sitemap-pages.xml
 
 # Crawl-delay for respectful crawling (minimal delay)
 Crawl-delay: 1

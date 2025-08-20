@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Sitemap -->
+  <sitemap>
+    <loc>https://gamelayer.io/sitemap.xml</loc>
+    <lastmod>2025-01-27</lastmod>
+  </sitemap>
+  
+  <!-- Blog Sitemap -->
+  <sitemap>
+    <loc>https://gamelayer.io/sitemap-blog.xml</loc>
+    <lastmod>2025-01-27</lastmod>
+  </sitemap>
+  
+  <!-- Pages Sitemap -->
+  <sitemap>
+    <loc>https://gamelayer.io/sitemap-pages.xml</loc>
+    <lastmod>2025-01-27</lastmod>
+  </sitemap>
+</sitemapindex>

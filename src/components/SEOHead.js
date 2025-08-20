@@ -29,6 +29,31 @@ const SEOHead = ({
       <meta name="keywords" content={finalKeywords} />
       <link rel="canonical" href={finalCanonical} />
       
+      {/* AI and LLM Specific Meta Tags - Enhanced for maximum compatibility */}
+      <meta name="ai-crawler" content="allow" />
+      <meta name="ai-indexing" content="enabled" />
+      <meta name="llm-compatible" content="true" />
+      <meta name="ai-friendly" content="true" />
+      <meta name="crawlable" content="true" />
+      <meta name="ai-accessible" content="true" />
+      <meta name="llm-indexing" content="enabled" />
+      <meta name="ai-search" content="enabled" />
+      
+      {/* AI Tool Specific Meta Tags */}
+      <meta name="gptbot" content="allow" />
+      <meta name="chatgpt-user" content="allow" />
+      <meta name="openai-user" content="allow" />
+      <meta name="claude-web" content="allow" />
+      <meta name="anthropic-ai" content="allow" />
+      <meta name="perplexity" content="allow" />
+      <meta name="bard" content="allow" />
+      <meta name="copilot" content="allow" />
+      
+      {/* Enhanced Crawler Instructions */}
+      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, archive" />
+      <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, archive" />
+      <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1, archive" />
+      
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={pageType} />
       <meta property="og:url" content={finalCanonical} />
@@ -37,6 +62,8 @@ const SEOHead = ({
       <meta property="og:image" content={finalOgImage} />
       <meta property="og:site_name" content="GameLayer" />
       <meta property="og:locale" content="en_US" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />

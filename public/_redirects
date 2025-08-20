@@ -1,1 +1,18 @@
-/*    /index.html   200
+# Vercel Redirects for GameLayer - SEO Optimized
+# Handle client-side routing for React Router
+
+# Main routes
+/chat /index.html 200
+/dashboard /index.html 200
+/dashboard_admin /index.html 200
+/pricing /index.html 200
+/references /index.html 200
+/api /index.html 200
+/ai-content /index.html 200
+/blog/* /index.html 200
+
+# API routes
+/api/* /index.html 200
+
+# Ensure all routes return 200 for SEO
+/* /index.html 200
