@@ -1,4 +1,4 @@
-# GameLayer Robots.txt - Optimized for Maximum Crawler Access
+# GameLayer Robots.txt - Clean and Accurate for Google Indexing
 # Last Updated: 2025-01-27
 
 # Allow ALL crawlers by default
@@ -152,21 +152,18 @@ User-agent: AI-Reader
 Allow: /
 Crawl-delay: 1
 
-# Allow all important pages for SEO and AI indexing
+# Allow ONLY pages that actually exist on the site
 Allow: /
-Allow: /pricing
-Allow: /features
-Allow: /api
 Allow: /chat
 Allow: /dashboard
-Allow: /api-docs
-Allow: /sitemap.xml
-Allow: /robots.txt
-Allow: /ai-content
+Allow: /dashboard_admin
+Allow: /pricing
 Allow: /references
-Allow: /blog/*
+Allow: /api
+Allow: /ai-content
+Allow: /blog/gamification-guide-2025
 
-# Sitemap locations
+# Sitemap locations - Only clean, accurate sitemaps
 Sitemap: https://gamelayer.io/sitemap-index.xml
 Sitemap: https://gamelayer.io/sitemap.xml
 Sitemap: https://gamelayer.io/sitemap-blog.xml
