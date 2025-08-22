@@ -17,7 +17,8 @@ const Navbar = () => {
     { name: 'Home', href: '/' },
     { name: 'References', href: '/references' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'API', href: '/api' },
+    { name: 'API Docs', href: '/api' },
+    { name: 'Getting Started', href: 'https://gl-assets.vercel.app', external: true },
     { name: 'Dashboard', href: '/dashboard' },
   ];
 
@@ -42,13 +43,25 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
-              >
-                {item.name}
-              </Link>
+              item.external ? (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
 
@@ -73,14 +86,27 @@ const Navbar = () => {
           >
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
               {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.name}
-                </Link>
+                item.external ? (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
             </div>
           </motion.div>
