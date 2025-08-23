@@ -163,11 +163,8 @@ Allow: /api
 Allow: /ai-content
 Allow: /blog/gamification-guide-2025
 
-# Sitemap locations - Only clean, accurate sitemaps
-Sitemap: https://gamelayer.io/sitemap-index.xml
+# Sitemap location - Only the main sitemap that exists
 Sitemap: https://gamelayer.io/sitemap.xml
-Sitemap: https://gamelayer.io/sitemap-blog.xml
-Sitemap: https://gamelayer.io/sitemap-pages.xml
 
 # Crawl-delay for respectful crawling (minimal delay)
 Crawl-delay: 1

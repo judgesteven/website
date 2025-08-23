@@ -226,8 +226,18 @@
     <meta name="ai-friendly" content="true" />
     <meta name="crawlable" content="true" />
     
+    <!-- Enhanced Search Engine Visibility -->
+    <meta name="google" content="notranslate" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="slurp" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="duckduckbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    
+    <!-- Content Type and Language -->
+    <meta http-equiv="content-language" content="en" />
+    <meta name="content-language" content="en" />
+    
     <!-- Additional AI Crawler Compatibility -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     
@@ -264,7 +274,6 @@
     <meta name="mobile-web-app-capable" content="yes" />
     
     <!-- SEO Enhancement Tags -->
-    <meta name="language" content="English" />
     <meta name="revisit-after" content="7 days" />
     <meta name="distribution" content="global" />
     <meta name="rating" content="general" />
@@ -394,6 +403,65 @@
         "@type": "Organization",
         "name": "GameLayer Team"
       }
+    }
+    </script>
+    
+    <!-- Additional Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://gamelayer.io/"
+        },
+        {
+          "@type": "ListItem", 
+          "position": 2,
+          "name": "Features",
+          "item": "https://gamelayer.io/#features"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Pricing",
+          "item": "https://gamelayer.io/pricing"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "API Documentation",
+          "item": "https://gamelayer.io/api"
+        }
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GameLayer",
+      "url": "https://gamelayer.io",
+      "logo": "https://gamelayer.io/gamelayer-logo.png",
+      "description": "Leading gamification platform and API for businesses",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "FI"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://gamelayer.io/chat"
+      },
+      "sameAs": [
+        "https://twitter.com/gamelayer",
+        "https://linkedin.com/company/gamelayer"
+      ]
     }
     </script>
     
