@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import SEOHead from './SEOHead';
 import { 
   Zap, 
   CheckCircle, 
@@ -257,6 +258,11 @@ const Pricing = () => {
 
   return (
     <>
+      <SEOHead
+        title="Pricing - GameLayer"
+        description="Transparent pricing for GameLayer. Choose the plan that fits your project needs. Start with a 30-day free trial."
+        keywords="pricing, game layer, gamification, user engagement, user rewards, user incentives, user motivation"
+      />
       {/* Main Hero Section */}
       <section className="hero-gradient min-h-screen flex items-center relative overflow-hidden">
         {/* Background Elements */}

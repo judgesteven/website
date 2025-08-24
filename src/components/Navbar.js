@@ -36,6 +36,7 @@ const Navbar = () => {
               src="/gamelayer-logo.png" 
               alt="GameLayer Logo" 
               className="h-6 w-auto"
+              loading="lazy"
             />
             <span className="text-xl font-bold text-gray-900">GameLayer</span>
           </motion.div>

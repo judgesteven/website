@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEOHead from './SEOHead';
 import { 
   Star, 
   Users, 
@@ -182,6 +183,11 @@ const References = () => {
 
   return (
     <>
+      <SEOHead
+        title="Project References - GameLayer"
+        description="Explore real-world gamification projects powered by GameLayer. From aviation to lottery, discover how we've helped companies launch engaging experiences."
+        keywords="gamification, game layer, project references, loyalty programs, user engagement, game design, web3, education, travel, retail"
+      />
       {/* Main Hero Section */}
       <section className="hero-gradient min-h-screen flex items-center relative overflow-hidden">
         {/* Background Elements */}

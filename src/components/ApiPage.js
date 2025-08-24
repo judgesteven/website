@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import SEOHead from './SEOHead';
 
 const ApiPage = () => {
   const containerRef = useRef(null);
@@ -53,6 +54,7 @@ const ApiPage = () => {
 
   return (
     <div className="pt-16">
+      <SEOHead title="API Documentation" description="Detailed API documentation for the GameLayer platform." />
       <div ref={containerRef} className="w-full h-screen">
         {/* RapiDoc will be inserted here */}
       </div>

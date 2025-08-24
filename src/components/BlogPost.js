@@ -1,8 +1,45 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import SEOHead from './SEOHead';
 
 const BlogPost = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
+      <SEOHead
+        title="Complete Gamification Guide 2025: How to Gamify Your Business"
+        description="Learn how to gamify your business with this comprehensive guide. Discover the psychology behind gamification, use cases, and step-by-step implementation."
+        keywords="gamification, business, user engagement, customer retention, game design, psychology, gamification strategies"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Complete Gamification Guide 2025: How to Gamify Your Business",
+          "description": "Learn how to gamify your business with this comprehensive guide. Discover the psychology behind gamification, use cases, and step-by-step implementation.",
+          "image": "https://gamelayer.io/gamelayer_socialsharing.png",
+          "author": {
+            "@type": "Organization",
+            "name": "GameLayer Team",
+            "url": "https://gamelayer.io"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "GameLayer",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://gamelayer.io/gamelayer-logo.png"
+            }
+          },
+          "datePublished": "2025-08-18",
+          "dateModified": "2025-08-18",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://gamelayer.io/blog/gamification-guide-2025"
+          },
+          "articleSection": "Gamification Guide",
+          "keywords": "gamification, business, user engagement, customer retention, game design, psychology, gamification strategies",
+          "wordCount": "2500",
+          "timeRequired": "PT10M"
+        }}
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article className="bg-white rounded-lg shadow-lg p-8">
           <header className="mb-8">
