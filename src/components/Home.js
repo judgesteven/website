@@ -225,7 +225,7 @@ const Testing = () => {
                 transition={{ delay: 0.4, duration: 0.8 }}
                 className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-8"
               >
-                More engagement. Higher retention.{' '}
+                More engagement. Deeper loyalty.{' '}
                 <span className="text-yellow-400">
                   Happier customers.
                 </span>
@@ -237,7 +237,7 @@ const Testing = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
               >
-                Start turning users into loyal fans who will keep coming back for more with a{' '}
+                Turn users into loyal fans who keep coming back for more with a{' '}
                 <span className="text-yellow-400 font-semibold">
                   simple API integration
                 </span>
