@@ -50,7 +50,7 @@ const Navbar = () => {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative"
                 >
                   {item.name}
                 </a>
@@ -58,9 +58,19 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-200 relative"
                 >
                   {item.name}
+                  {/* Active page indicator */}
+                  {location.pathname === item.href && (
+                    <motion.div
+                      layoutId="activePageIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 rounded-full"
+                      initial={{ opacity: 0, scaleX: 0 }}
+                      animate={{ opacity: 1, scaleX: 1 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    />
+                  )}
                 </Link>
               )
             ))}
@@ -102,7 +112,11 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className="block px-3 py-2 text-gray-700 hover:text-primary-600 font-medium"
+                    className={`block px-3 py-2 font-medium transition-colors duration-200 relative ${
+                      location.pathname === item.href 
+                        ? 'text-primary-600 bg-primary-50 border-l-4 border-primary-600' 
+                        : 'text-gray-700 hover:text-primary-600'
+                    }`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
