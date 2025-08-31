@@ -237,10 +237,11 @@ const Testing = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
               >
-                Turn users into loyal fans who keep coming back for more with a{' '}
+                All it takes is a{' '}
                 <span className="text-yellow-400 font-semibold">
                   simple API integration
                 </span>
+                {' '}to turn users into loyal fans who keep coming back for more.
               </motion.p>
 
               <motion.div
