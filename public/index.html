@@ -26,20 +26,23 @@
         overflow-x: hidden;
       }
       
-      /* Loading state management - Show loading overlay until React is fully ready */
+      /* Professional loading overlay - covers everything until React is ready */
       .loading-overlay {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         background: #ffffff;
         z-index: 9999;
-        display: flex; /* Always show initially */
+        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        /* Smooth transition out */
         transition: opacity 0.3s ease-out;
+        /* Ensure it covers everything */
+        overflow: hidden;
       }
       
       .loading-overlay.hide {
@@ -56,6 +59,8 @@
         height: 80px;
         margin-bottom: 20px;
         animation: pulse 2s infinite;
+        /* Prevent any layout shifts */
+        flex-shrink: 0;
       }
       
       .loading-spinner {
@@ -66,12 +71,17 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin-bottom: 20px;
+        /* Prevent any layout shifts */
+        flex-shrink: 0;
       }
       
       .loading-text {
         color: #6b7280;
         font-size: 16px;
         font-weight: 500;
+        /* Prevent any layout shifts */
+        flex-shrink: 0;
+        white-space: nowrap;
       }
       
       @keyframes pulse {
@@ -84,20 +94,57 @@
         100% { transform: rotate(360deg); }
       }
       
-      /* Hide the root element completely until React is ready */
+      /* Professional loading experience - NO CONTENT MOVEMENT */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        line-height: 1.6;
+        color: #1f2937;
+        background-color: #ffffff;
+        overflow-x: hidden;
+        /* Prevent any layout shifts during loading */
+        min-height: 100vh;
+        position: relative;
+      }
+      
+      /* Ensure no content can cause layout shifts */
+      html, body {
+        overflow: hidden;
+      }
+      
+      /* Re-enable scrolling after app is ready */
+      body.app-ready {
+        overflow: auto;
+      }
+      
+      /* Professional loading experience - NO CONTENT MOVEMENT */
       #root {
         min-height: 100vh;
         opacity: 0;
         visibility: hidden;
-        transition: opacity 0.5s ease-in, visibility 0.5s ease-in;
-        /* Prevent layout shifts */
-        position: relative;
+        /* Completely hidden until ready to prevent any movement */
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
+        /* No transitions until ready to prevent movement */
+        transition: none;
+        /* Ensure it doesn't affect layout */
+        pointer-events: none;
+        z-index: -1;
       }
       
       #root.ready {
         opacity: 1;
         visibility: visible;
+        /* Only add transitions after content is positioned */
+        transition: opacity 0.3s ease-in, visibility 0.3s ease-in;
+        /* Restore normal positioning and interaction */
+        position: relative;
+        pointer-events: auto;
+        z-index: auto;
       }
       
       /* SEO Content - Always hidden from users, only visible to crawlers */
@@ -119,9 +166,13 @@
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
       }
       
-      /* Ensure smooth transitions */
-      * {
-        transition: opacity 0.3s ease, transform 0.3s ease;
+      /* Only apply transitions where needed, not globally */
+      .loading-overlay {
+        transition: opacity 0.3s ease-out;
+      }
+      
+      #root.ready {
+        transition: opacity 0.3s ease-in, visibility 0.3s ease-in;
       }
     </style>
     
@@ -503,7 +554,7 @@
     
     <!-- Performance optimization script -->
     <script>
-      // Simple, reliable loading logic - NO CONTENT JUMPING
+      // Professional loading logic - NO CONTENT MOVEMENT
       let appReady = false;
       
       function showApp() {
@@ -518,35 +569,46 @@
           if (loadingOverlay && root) {
             appReady = true;
             
-            // Hide loading overlay smoothly
-            loadingOverlay.classList.add("hide");
+            // First, ensure React content is fully positioned
+            // Force a reflow to ensure all content is laid out
+            root.offsetHeight;
             
-            // Show React app
+            // Now show the React app with proper positioning
             root.classList.add("ready");
             
-            // Remove loading overlay after transition
-            setTimeout(() => {
-              loadingOverlay.classList.add("remove");
-            }, 300);
+            // Re-enable scrolling on body
+            document.body.classList.add("app-ready");
             
-            console.log('App displayed successfully!');
+            // Wait a moment for content to settle, then hide loading overlay
+            setTimeout(() => {
+              loadingOverlay.classList.add("hide");
+              
+              // Remove loading overlay after transition
+              setTimeout(() => {
+                loadingOverlay.classList.add("remove");
+              }, 300);
+            }, 100);
+            
+            console.log('App displayed successfully with no content movement!');
           }
         } catch (error) {
           console.error('Error showing app:', error);
         }
       }
       
-      // Wait for React to be fully loaded before showing anything
+      // Enhanced React detection - ensure content is fully positioned
       function waitForReact() {
-        // Check if React is ready by looking for the root element content
         const root = document.getElementById("root");
+        
         if (root && (
           root.children.length > 0 || 
           root.innerHTML.trim() !== '' ||
           root.textContent.trim() !== ''
         )) {
-          // React has rendered content, show the app
-          showApp();
+          // React has rendered content, but wait a bit more for positioning
+          setTimeout(() => {
+            showApp();
+          }, 200); // Small delay to ensure content is positioned
         } else {
           // React not ready yet, wait a bit more
           setTimeout(waitForReact, 100);
