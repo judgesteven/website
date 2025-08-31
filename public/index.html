@@ -8,6 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0ea5e9" />
     
+    <!-- Cache Control - Prevent caching issues -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
     <!-- Critical CSS for above-the-fold content -->
     <style>
       /* Critical CSS for immediate rendering */
@@ -563,54 +568,69 @@
     
     <!-- Performance optimization script -->
     <script>
-      // Show loading overlay for users with JavaScript
-      document.getElementById('loadingOverlay').classList.add('show');
+      // Enhanced loading logic with better error handling
+      document.getElementById("loadingOverlay").classList.add("show");
       
-      // Improved loading state management
       let appLoaded = false;
+      let loadAttempts = 0;
+      const maxLoadAttempts = 3;
       
-      // Function to hide loading overlay and show React app
       function showApp() {
         if (appLoaded) return;
-        appLoaded = true;
         
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const root = document.getElementById('root');
-        
-        if (loadingOverlay && root) {
-          // Fade out loading overlay
-          loadingOverlay.classList.add('fade-out');
+        try {
+          console.log('Attempting to load app...', loadAttempts + 1);
           
-          // Show React app with fade-in effect
-          root.classList.add('loaded');
+          const loadingOverlay = document.getElementById("loadingOverlay");
+          const root = document.getElementById("root");
           
-          // Hide SEO content for users
-          document.body.classList.add('js-loaded');
-          
-          // Remove loading overlay after transition
-          setTimeout(() => {
-            if (loadingOverlay.parentNode) {
-              loadingOverlay.parentNode.removeChild(loadingOverlay);
+          if (loadingOverlay && root) {
+            appLoaded = true;
+            console.log('App loaded successfully!');
+            
+            // Remove loading overlay
+            loadingOverlay.classList.add("fade-out");
+            root.classList.add("loaded");
+            document.body.classList.add("js-loaded");
+            
+            setTimeout(() => {
+              if (loadingOverlay.parentNode) {
+                loadingOverlay.parentNode.removeChild(loadingOverlay);
+              }
+            }, 300);
+          } else {
+            console.error('Required elements not found:', { loadingOverlay: !!loadingOverlay, root: !!root });
+            if (loadAttempts < maxLoadAttempts) {
+              loadAttempts++;
+              setTimeout(showApp, 500);
             }
-          }, 300);
+          }
+        } catch (error) {
+          console.error('Error during app loading:', error);
+          if (loadAttempts < maxLoadAttempts) {
+            loadAttempts++;
+            setTimeout(showApp, 500);
+          }
         }
       }
       
-      // Show app when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', showApp);
+      // Try to load immediately
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", showApp);
       } else {
         showApp();
       }
       
-      // Fallback: show app after a maximum delay
+      // Fallback: ensure app loads even if there are issues
+      setTimeout(showApp, 1000);
+      setTimeout(showApp, 2000);
       setTimeout(showApp, 3000);
       
-      // Preload critical resources
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js').catch(function(err) {
-            console.log('ServiceWorker registration failed: ', err);
+      // Service Worker registration
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+          navigator.serviceWorker.register("/sw.js").catch(function(err) {
+            console.log("ServiceWorker registration failed: ", err);
           });
         });
       }

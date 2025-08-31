@@ -44,15 +44,15 @@ function PageTracker() {
 
 function App() {
   useEffect(() => {
-    // Signal that the React app is ready
-    const timer = setTimeout(() => {
+    // Handle browser refresh scenarios
+    const handleRefresh = () => {
       try {
-        console.log('App mounting...');
+        console.log('App mounting after refresh...');
         
-        // Remove the loading overlay if it still exists
+        // Force remove any existing loading overlay
         const loadingOverlay = document.getElementById('loadingOverlay');
         if (loadingOverlay) {
-          console.log('Removing loading overlay...');
+          console.log('Removing loading overlay after refresh...');
           loadingOverlay.classList.add('fade-out');
           setTimeout(() => {
             if (loadingOverlay.parentNode) {
@@ -64,17 +64,17 @@ function App() {
         // Ensure the root element is visible
         const root = document.getElementById('root');
         if (root) {
-          console.log('Setting root as loaded...');
+          console.log('Setting root as loaded after refresh...');
           root.classList.add('loaded');
         } else {
-          console.error('Root element not found!');
+          console.error('Root element not found after refresh!');
         }
         
         // Hide SEO content for users
         document.body.classList.add('js-loaded');
-        console.log('App mounted successfully!');
+        console.log('App mounted successfully after refresh!');
       } catch (error) {
-        console.error('Error during app mounting:', error);
+        console.error('Error during app mounting after refresh:', error);
         // Fallback: ensure the app is visible even if there's an error
         const root = document.getElementById('root');
         if (root) {
@@ -82,7 +82,10 @@ function App() {
         }
         document.body.classList.add('js-loaded');
       }
-    }, 100); // Small delay to ensure smooth transition
+    };
+
+    // Signal that the React app is ready
+    const timer = setTimeout(handleRefresh, 100); // Small delay to ensure smooth transition
 
     return () => clearTimeout(timer);
   }, []);
