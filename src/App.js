@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -41,25 +41,36 @@ function App() {
   useEffect(() => {
     // Signal that the React app is ready
     const timer = setTimeout(() => {
-      // Remove the loading overlay if it still exists
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      if (loadingOverlay) {
-        loadingOverlay.classList.add('fade-out');
-        setTimeout(() => {
-          if (loadingOverlay.parentNode) {
-            loadingOverlay.parentNode.removeChild(loadingOverlay);
-          }
-        }, 300);
+      try {
+        console.log('App mounting...');
+        
+        // Remove the loading overlay if it still exists
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        if (loadingOverlay) {
+          console.log('Removing loading overlay...');
+          loadingOverlay.classList.add('fade-out');
+          setTimeout(() => {
+            if (loadingOverlay.parentNode) {
+              loadingOverlay.parentNode.removeChild(loadingOverlay);
+            }
+          }, 300);
+        }
+        
+        // Ensure the root element is visible
+        const root = document.getElementById('root');
+        if (root) {
+          console.log('Setting root as loaded...');
+          root.classList.add('loaded');
+        } else {
+          console.error('Root element not found!');
+        }
+        
+        // Hide SEO content for users
+        document.body.classList.add('js-loaded');
+        console.log('App mounted successfully!');
+      } catch (error) {
+        console.error('Error during app mounting:', error);
       }
-      
-      // Ensure the root element is visible
-      const root = document.getElementById('root');
-      if (root) {
-        root.classList.add('loaded');
-      }
-      
-      // Hide SEO content for users
-      document.body.classList.add('js-loaded');
     }, 100); // Small delay to ensure smooth transition
 
     return () => clearTimeout(timer);
