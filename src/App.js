@@ -49,10 +49,10 @@ function App() {
       try {
         console.log('React app mounted and ready...');
         
-        // The HTML loading script will handle showing the app
-        // We just need to ensure our content is rendered
+        // Ensure the root element is properly set up for the loading system
         const root = document.getElementById('root');
         if (root) {
+          // Make sure the root element has content so the loading system can detect it
           console.log('Root element ready for React content');
         }
       } catch (error) {

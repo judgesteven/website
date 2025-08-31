@@ -1,33 +1,21 @@
-# GameLayer Robots.txt - Optimized for Maximum Crawler Access
-# Last Updated: 2025-08-18
+# GameLayer Robots.txt - Clean and Optimized for SEO
+# Last Updated: 2025-01-27
 
 # Allow ALL crawlers by default
 User-agent: *
 Allow: /
 
-# Explicitly allow major search engines
+# Major Search Engines - Specific instructions
 User-agent: Googlebot
-Allow: /
 Crawl-delay: 1
 
 User-agent: Bingbot
-Allow: /
 Crawl-delay: 1
 
 User-agent: Slurp
-Allow: /
 Crawl-delay: 1
 
 User-agent: DuckDuckBot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Baiduspider
-Allow: /
-Crawl-delay: 1
-
-User-agent: YandexBot
-Allow: /
 Crawl-delay: 1
 
 # AI and LLM Crawlers - Enhanced for maximum compatibility
@@ -51,82 +39,24 @@ User-agent: Anthropic-ai
 Allow: /
 Crawl-delay: 1
 
-User-agent: AI-Crawler
+User-agent: PerplexityBot
 Allow: /
 Crawl-delay: 1
 
-User-agent: AI-Bot
+User-agent: Bard
 Allow: /
 Crawl-delay: 1
 
-User-agent: LLM-Crawler
+User-agent: Copilot
 Allow: /
 Crawl-delay: 1
 
-User-agent: AI-User
+User-agent: Gemini
 Allow: /
 Crawl-delay: 1
 
-User-agent: Bot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Crawler
-Allow: /
-Crawl-delay: 1
-
-User-agent: Spider
-Allow: /
-Crawl-delay: 1
-
-User-agent: Scraper
-Allow: /
-Crawl-delay: 1
-
-User-agent: Automation
-Allow: /
-Crawl-delay: 1
-
-User-agent: AI
-Allow: /
-Crawl-delay: 1
-
-User-agent: LLM
-Allow: /
-Crawl-delay: 1
-
-User-agent: GPT
-Allow: /
-Crawl-delay: 1
-
-User-agent: OpenAI
-Allow: /
-Crawl-delay: 1
-
-User-agent: Anthropic
-Allow: /
-Crawl-delay: 1
-
-User-agent: Claude
-Allow: /
-Crawl-delay: 1
-
-# Allow all important pages for SEO and AI indexing
-Allow: /
-Allow: /pricing
-Allow: /features
-Allow: /api
-Allow: /chat
-Allow: /dashboard
-Allow: /api-docs
-Allow: /sitemap.xml
-Allow: /robots.txt
-
-# Sitemap location
+# Sitemap locations
 Sitemap: https://gamelayer.io/sitemap.xml
-
-# Crawl-delay for respectful crawling (minimal delay)
-Crawl-delay: 1
 
 # Host directive for canonical domain
 Host: https://gamelayer.io 
