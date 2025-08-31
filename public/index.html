@@ -108,13 +108,14 @@
         position: relative;
       }
       
-      /* Ensure no content can cause layout shifts */
+      /* Ensure no content can cause layout shifts during loading */
       html, body {
         overflow: hidden;
       }
       
       /* Re-enable scrolling after app is ready */
-      body.app-ready {
+      body.app-ready,
+      html.app-ready {
         overflow: auto;
       }
       
@@ -738,8 +739,9 @@
             // Now show the React app with proper positioning
             root.classList.add("ready");
             
-            // Re-enable scrolling on body
+            // Re-enable scrolling on body and html
             document.body.classList.add("app-ready");
+            document.documentElement.classList.add("app-ready");
             
             // Wait a moment for content to settle, then hide loading overlay
             setTimeout(() => {
