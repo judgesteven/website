@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, lazy } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -29,9 +29,14 @@ function PageTracker() {
   const { trackPageView } = useAnalytics();
 
   useEffect(() => {
-    // Track page view when location changes
-    const pageName = location.pathname === '/' ? 'Home' : location.pathname.substring(1);
-    trackPageView(pageName, window.location.href);
+    try {
+      // Track page view when location changes
+      const pageName = location.pathname === '/' ? 'Home' : location.pathname.substring(1);
+      trackPageView(pageName, window.location.href);
+    } catch (error) {
+      console.error('Error tracking page view:', error);
+      // Don't let analytics errors break the app
+    }
   }, [location, trackPageView]);
 
   return null;
@@ -70,10 +75,48 @@ function App() {
         console.log('App mounted successfully!');
       } catch (error) {
         console.error('Error during app mounting:', error);
+        // Fallback: ensure the app is visible even if there's an error
+        const root = document.getElementById('root');
+        if (root) {
+          root.classList.add('loaded');
+        }
+        document.body.classList.add('js-loaded');
       }
     }, 100); // Small delay to ensure smooth transition
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Add error boundary for the entire app
+  const handleError = (error, errorInfo) => {
+    console.error('App Error:', error, errorInfo);
+    // Ensure the app is visible even if there's an error
+    const root = document.getElementById('root');
+    if (root) {
+      root.classList.add('loaded');
+    }
+    document.body.classList.add('js-loaded');
+  };
+
+  // Global error handler
+  useEffect(() => {
+    const handleUnhandledError = (event) => {
+      console.error('Unhandled error:', event.error);
+      handleError(event.error, { componentStack: event.error?.stack });
+    };
+
+    const handleUnhandledRejection = (event) => {
+      console.error('Unhandled promise rejection:', event.reason);
+      handleError(event.reason, { componentStack: event.reason?.stack });
+    };
+
+    window.addEventListener('error', handleUnhandledError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('error', handleUnhandledError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
   }, []);
 
   return (
