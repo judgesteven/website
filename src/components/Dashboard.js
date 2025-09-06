@@ -3208,6 +3208,7 @@ const Dashboard = () => {
                                         src={box.image}
                                         alt={box.name}
                                         className="w-full h-full object-cover"
+                                        loading="lazy"
                                         onError={(e) => {
                                           e.target.style.display = 'none';
                                           e.target.nextSibling.style.display = 'flex';
