@@ -259,9 +259,9 @@ const Pricing = () => {
   return (
     <>
       <SEOHead
-        title="Pricing - GameLayer"
-        description="Transparent pricing for GameLayer. Choose the plan that fits your project needs. Start with a 30-day free trial."
-        keywords="pricing, game layer, gamification, user engagement, user rewards, user incentives, user motivation"
+        title="Gamification Platform Pricing - GameLayer | Transparent Plans for All Business Sizes"
+        description="Choose the perfect gamification plan for your business. Transparent pricing starting at €100/month for up to 1,000 users. Enterprise gamification solutions with custom pricing available. All plans include full gamification API access."
+        keywords="gamification pricing, gamification platform cost, gamification software pricing, gamification API pricing, enterprise gamification pricing, gamification platform plans, gamification SaaS pricing, gamification tools pricing, gamification implementation cost, gamification ROI, gamification budget, gamification investment, gamification subscription, gamification monthly cost, gamification annual pricing, gamification enterprise cost, gamification startup pricing, gamification small business pricing, gamification medium business pricing, gamification large business pricing, gamification unlimited users, gamification per user pricing, gamification volume pricing, gamification custom pricing, gamification white label pricing, gamification API access pricing, gamification dashboard pricing, gamification analytics pricing, gamification support pricing, gamification consulting pricing, gamification implementation pricing, gamification integration pricing, gamification customization pricing, gamification branding pricing, gamification security pricing, gamification compliance pricing, gamification GDPR pricing, gamification SOC2 pricing, gamification ISO27001 pricing"
       />
       {/* Main Hero Section */}
       <section className="hero-gradient min-h-screen flex items-center relative overflow-hidden">
@@ -487,7 +487,7 @@ const Pricing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-xl text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-white max-w-2xl mx-auto"
             >
               Request free access and start transforming your user engagement
             </motion.p>

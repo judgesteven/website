@@ -352,7 +352,7 @@ const References = () => {
               viewport={{ once: true }}
               className="max-w-4xl mx-auto"
             >
-              <blockquote className="text-xl text-gray-300 italic mb-4 leading-relaxed">
+              <blockquote className="text-xl text-white italic mb-4 leading-relaxed">
                 "Using GameLayer's platform has been a rewarding experience for us. We had some initial ideas on how to gamify our web service and engage our visitors better, however, we lacked the technical solution to make it happen. GameLayer has enabled us to bring those ideas to reality quickly and easily. And the results so far look more than promising."
               </blockquote>
               <div className="text-right">
@@ -502,7 +502,7 @@ const References = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
               viewport={{ once: true }}
-              className="text-xl text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-white max-w-2xl mx-auto"
             >
               Request free access and start transforming your user engagement
             </motion.p>
