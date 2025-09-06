@@ -306,7 +306,7 @@ const Pricing = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="text-xl text-blue-100 mb-8 leading-relaxed"
               >
-                Start with a 30-day free trial. No credit card required. 
+                Start with a <span className="bg-yellow-400 text-black px-2 py-1 rounded font-semibold">30-day free trial</span>. No credit card required. 
                 Scale as you grow with predictable pricing based on your active user count
               </motion.p>
 
