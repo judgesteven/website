@@ -181,12 +181,78 @@ const References = () => {
     }));
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "GameLayer Project References",
+    "description": "Explore real-world gamification projects powered by GameLayer. From aviation to lottery, discover how we've helped companies launch engaging experiences.",
+    "url": "https://gamelayer.io/references",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Gamification Project References",
+      "description": "Real-world gamification implementations and case studies",
+      "numberOfItems": 8,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Veikkaus Points",
+            "description": "A loyalty experience that turned responsible gaming into fun challenges. Members earned points by completing challenges, which they could use to unlock rewards, enter prize draws, or score mystery wins.",
+            "image": "https://gamelayer.io/references/points copy.png",
+            "category": "Gaming & Lottery",
+            "about": "Gamification implementation",
+            "creator": {
+              "@type": "Organization",
+              "name": "Finnish National Lottery"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Veikkaus CheckPoints",
+            "description": "Location-based experience encouraging members to explore points of interest that benefit from Veikkaus funding. Members unlock mystery rewards while learning about beneficiaries.",
+            "image": "https://gamelayer.io/references/checkpoints copy.png",
+            "category": "Location-Based",
+            "about": "Gamification implementation",
+            "creator": {
+              "@type": "Organization",
+              "name": "Finnish National Lottery"
+            }
+          }
+        }
+      ]
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://gamelayer.io"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "References",
+          "item": "https://gamelayer.io/references"
+        }
+      ]
+    }
+  };
+
   return (
     <>
       <SEOHead
         title="Project References - GameLayer"
         description="Explore real-world gamification projects powered by GameLayer. From aviation to lottery, discover how we've helped companies launch engaging experiences."
         keywords="gamification, game layer, project references, loyalty programs, user engagement, game design, web3, education, travel, retail"
+        structuredData={structuredData}
       />
       {/* Main Hero Section */}
       <section className="hero-gradient min-h-screen flex items-center relative overflow-hidden">
