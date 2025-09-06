@@ -16,6 +16,8 @@ const ChatPage = lazy(() => import('./components/ChatPage'));
 const ApiPage = lazy(() => import('./components/ApiPage'));
 const AIContent = lazy(() => import('./components/AIContent'));
 const BlogPost = lazy(() => import('./components/BlogPost'));
+const LoginWelcome = lazy(() => import('./components/LoginWelcome'));
+const LoginEmail = lazy(() => import('./components/LoginEmail'));
 
 // Loading component for lazy-loaded routes
 const LoadingSpinner = () => (
@@ -113,6 +115,8 @@ function App() {
             <Route path="/api" element={<ApiPage />} />
             <Route path="/ai-content" element={<AIContent />} />
             <Route path="/blog/gamification-guide-2025" element={<BlogPost />} />
+            <Route path="/login-welcome" element={<LoginWelcome />} />
+            <Route path="/login-email" element={<LoginEmail />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
