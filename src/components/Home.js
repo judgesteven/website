@@ -226,7 +226,7 @@ const Testing = () => {
                 className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-8"
               >
                 More engagement. Deeper loyalty.{' '}
-                <span className="text-yellow-400">
+                <span className="text-yellow-300 font-semibold">
                   Happier customers.
                 </span>
               </motion.h1>
@@ -238,13 +238,13 @@ const Testing = () => {
                 className="text-xl text-white mb-8 max-w-4xl mx-auto"
               >
                 All it takes is a{' '}
-                <span className="text-yellow-400 font-semibold">
+                <span className="text-yellow-300 font-semibold">
                   simple API integration
                 </span>
                 {' '}to turn users into loyal fans who keep coming back for more. Our gamification API and enterprise gamification platform help businesses increase user engagement by{' '}
-                <span className="text-yellow-400 font-bold">40-60%</span>
+                <span className="text-yellow-300 font-semibold">40-60%</span>
                 {' '}and improve customer retention by{' '}
-                <span className="text-yellow-400 font-bold">25-40%</span>.
+                <span className="text-yellow-300 font-semibold">25-40%</span>.
               </motion.p>
 
               <motion.div
@@ -629,7 +629,7 @@ const Testing = () => {
               className="text-4xl lg:text-5xl font-bold text-white mb-6"
             >
               Ready to{' '}
-              <span className="text-yellow-400">
+              <span className="text-yellow-300 font-semibold">
                 Get Started?
               </span>
             </motion.h2>

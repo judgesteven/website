@@ -288,7 +288,7 @@ const References = () => {
                 className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-6"
               >
                 Powered by{' '}
-                <span className="text-yellow-300">GameLayer</span>
+                <span className="text-yellow-300 font-semibold">GameLayer</span>
               </motion.h1>
 
               <motion.p

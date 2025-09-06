@@ -48,7 +48,7 @@ const ChatPage = () => {
                 className="text-5xl lg:text-6xl font-bold leading-tight mb-12"
               >
                 Build digital loyalty and user engagement experiences with a simple{' '}
-                <span className="text-yellow-300">API integration</span>
+                <span className="text-yellow-300 font-semibold">API integration</span>
               </motion.h1>
 
               {/* Badge Elements */}

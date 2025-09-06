@@ -297,7 +297,7 @@ const Pricing = () => {
                 className="text-5xl lg:text-6xl font-bold leading-tight mt-6 mb-6"
               >
                 Simple Pricing based on your{' '}
-                <span className="text-yellow-300">Project Needs</span>
+                <span className="text-yellow-300 font-semibold">Project Needs</span>
               </motion.h1>
 
               <motion.p
@@ -477,7 +477,7 @@ const Pricing = () => {
               className="text-4xl lg:text-5xl font-bold text-white mb-6"
             >
               Ready to{' '}
-              <span className="text-yellow-400">
+              <span className="text-yellow-300 font-semibold">
                 Get Started?
               </span>
             </motion.h2>
