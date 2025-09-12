@@ -58,5 +58,8 @@ Crawl-delay: 1
 # Sitemap locations
 Sitemap: https://gamelayer.io/sitemap.xml
 
+# AI Guidelines
+# Allow: /ai.txt
+
 # Host directive for canonical domain
 Host: https://gamelayer.io 

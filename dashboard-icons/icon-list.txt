@@ -1,0 +1,66 @@
+COMPLETE LIST OF ICONS USED IN DASHBOARD_ADMIN PAGE
+====================================================
+
+Source: Lucide React (https://lucide.dev/)
+Package: lucide-react
+
+NAVIGATION TABS ICONS:
+- User (Players)
+- Users2 (Teams)
+- Flag (Missions)
+- Activity (Streaks)
+- Trophy (Rewards)
+- Medal (Achievements)
+- Layers (Levels)
+- Crown (Leaderboards)
+- HelpCircle (Quizzes)
+- ClipboardCheck (Surveys)
+- Settings (Settings)
+
+STATISTICS ICONS:
+- Users (Players Registered)
+- Flag (Missions Started)
+- Trophy (Prizes Claimed)
+- Medal (Achievements Unlocked)
+- Layers (Level-Ups)
+- Zap (Points Awarded)
+- DollarSign (Credits Earned)
+- Activity (Streaks Started)
+- BookOpen (Quizzes Completed)
+- ClipboardCheck (Surveys Completed)
+
+ACTION ICONS:
+- Search (Search functionality)
+- Filter (Filter options)
+- Edit (Edit actions)
+- Trash2 (Delete actions)
+- Bell (Notifications)
+- Gift (Gift/Prize actions)
+- Box (Mystery box actions)
+- Ticket (Raffle actions)
+- Star (Star ratings)
+- Target (Target/goal actions)
+- Tag (Tagging)
+- Check (Confirmations)
+- Upload (File uploads)
+- Calendar (Date/time)
+- RefreshCw (Refresh/reload)
+- Clock (Time-related)
+- X (Close/cancel)
+- ChevronLeft (Navigation left)
+- ChevronRight (Navigation right)
+- Image (Image handling)
+
+SPECIAL ALIASES:
+- ZapIcon (aliased from Zap)
+- ImageIcon (aliased from Image)
+
+TOTAL ICONS USED: 40 unique icons from Lucide React
+
+EMOJI ICONS (in achievements data):
+- 🩸 (First Blood achievement)
+- 🦋 (Social Butterfly achievement)
+- 👥 (Team Player achievement)
+- 🧠 (Quiz Master achievement)
+- ⭐ (Level 50 achievement)
+
