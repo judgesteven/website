@@ -517,7 +517,7 @@ const Testing = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-slate-800 via-blue-900 to-slate-800 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
             <motion.div
