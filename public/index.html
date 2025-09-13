@@ -146,23 +146,22 @@
         z-index: auto;
       }
       
-      /* SEO Content - Visible to both users and crawlers for better indexing */
+      /* SEO Content - Hidden from users but visible to crawlers for better indexing */
       .seo-content {
-        position: relative !important;
-        left: auto !important;
-        top: auto !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        z-index: 1 !important;
-        padding: 20px !important;
-        background: #f8f9fa !important;
-        border-radius: 8px !important;
-        margin: 20px 0 !important;
-        border: 1px solid #e9ecef !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -1 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        margin: 0 !important;
       }
       
       /* Font fallback for Inter */
