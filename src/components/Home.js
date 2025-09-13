@@ -561,7 +561,7 @@ const Testing = () => {
               },
               {
                 question: "How quickly can I implement gamification with GameLayer?",
-                answer: "With GameLayer's API and pre-built components, you can implement basic gamification features in just a few hours. Our comprehensive documentation, SDKs, and integration guides make it easy for developers to get started quickly. Most customers see results within the first week of implementation."
+                answer: "With GameLayer's API and pre-built components, you can implement basic gamification features in just a few hours. Our comprehensive documentation and integration guides make it easy for developers to get started quickly. Most customers see results within the first week of implementation."
               },
               {
                 question: "What gamification features does GameLayer offer?",
