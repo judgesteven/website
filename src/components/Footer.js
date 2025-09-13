@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Twitter, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => {
   const socialLinks = [
-    { name: 'Twitter', href: '#', icon: Twitter },
-    { name: 'LinkedIn', href: '#', icon: Linkedin },
-    { name: 'Instagram', href: '#', icon: Instagram },
+    { name: 'Twitter', href: 'https://twitter.com/gamelayerco', icon: Twitter },
+    { name: 'LinkedIn', href: 'https://linkedin.com/company/gamelayer', icon: Linkedin },
+    { name: 'Instagram', href: 'https://instagram.com/gamelayer.co', icon: Instagram },
   ];
 
   return (
@@ -31,6 +30,8 @@ const Footer = () => {
                 <a
                   key={social.name}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors duration-200 p-2 rounded-full hover:bg-gray-800"
                   aria-label={social.name}
                 >
@@ -54,18 +55,22 @@ const Footer = () => {
             
             {/* Right side - Legal links */}
             <div className="flex flex-col items-center lg:items-end space-y-1">
-              <Link
-                to="/privacy"
+              <a
+                href="https://gamelayer.co/privacy-policy/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
               >
                 Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
+              </a>
+              <a
+                href="https://gamelayer.co/terms-of-service/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
               >
                 Terms of Service
-              </Link>
+              </a>
             </div>
           </div>
         </div>

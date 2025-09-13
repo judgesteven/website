@@ -5,12 +5,12 @@
   "keywords": ["gamification", "user engagement", "loyalty programs", "retention strategies", "gamification platform", "engagement API", "loyalty microservice", "user retention", "gamification mechanics", "digital engagement", "rewards platform"],
   "icons": [
     {
-      "src": "gamelayer-logo.png",
+      "src": "favicon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "gamelayer-logo.png",
+      "src": "favicon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
